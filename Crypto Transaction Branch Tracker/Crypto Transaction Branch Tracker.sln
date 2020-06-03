@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoBranchTracker.WFA", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoBranchTracker.Objects", "CryptoBranchTracker.Objects\CryptoBranchTracker.Objects.csproj", "{D23941F4-DED7-4008-911A-D076C85A22AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoBranchTracker.WPF", "CryptoBranchTracker.WPF\CryptoBranchTracker.WPF.csproj", "{6F7A091D-DAE9-4288-B1F7-C87B38C87947}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D23941F4-DED7-4008-911A-D076C85A22AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D23941F4-DED7-4008-911A-D076C85A22AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D23941F4-DED7-4008-911A-D076C85A22AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F7A091D-DAE9-4288-B1F7-C87B38C87947}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F7A091D-DAE9-4288-B1F7-C87B38C87947}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F7A091D-DAE9-4288-B1F7-C87B38C87947}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F7A091D-DAE9-4288-B1F7-C87B38C87947}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
