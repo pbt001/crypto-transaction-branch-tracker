@@ -24,5 +24,17 @@ namespace CryptoBranchTracker.WFA.Forms
         {
             
         }
+
+        private void btnNewBranch_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
     }
 }

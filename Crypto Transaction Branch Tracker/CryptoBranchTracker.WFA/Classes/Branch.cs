@@ -79,6 +79,41 @@ namespace CryptoBranchTracker.WFA.Classes
             }
         }
 
+        public static List<Branch> GetAllLocalBranches()
+        {
+            List<Branch> lstBranches = new List<Branch>();
+
+            try
+            {
+                Globals.FixRegistry();
+
+                RegistryView platformView = Environment.Is64BitOperatingSystem
+                    ? RegistryView.Registry64
+                    : RegistryView.Registry32;
+
+                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                {
+                    if (registryBase != null)
+                    {
+                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
+                        {
+                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.BRANCH_LIST))
+                            {
+                                lstBranches = branchList.GetValueNames().
+                                    Select(valueName => new Branch(branchList.GetValue(valueName).ToString())).ToList();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred getting local branches: {ex}");
+            }
+
+            return lstBranches;
+        }
+
         public void Save()
         {
             try
