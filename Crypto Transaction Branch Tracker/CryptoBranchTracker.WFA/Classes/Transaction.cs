@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -13,6 +14,8 @@ namespace CryptoBranchTracker.WFA.Classes
 {
     public class Transaction
     {
+        public Guid Identifier { get; set; } = new Guid();
+
         public Guid BranchIdentifier { get; set; } = new Guid();
 
         public DateTime? DateProcessed { get; set; }
@@ -39,6 +42,13 @@ namespace CryptoBranchTracker.WFA.Classes
 
                 Dictionary<string, string> dictDelimitedValues = decompressedString.Split('|').
                     Select(pair => pair.Split(';')).ToDictionary(key => key[0], value => value[1]);
+
+                //Identifier
+                KeyValuePair<string, string>? identifierPair = dictDelimitedValues.
+                    Where(x => x.Key == Constants.TransactionKeys.TRANSACTION_IDENTIFIER).FirstOrDefault();
+
+                if (identifierPair.HasValue)
+                    this.Identifier = new Guid(identifierPair.Value.Value);
 
                 //Branch Identifier
                 KeyValuePair<string, string>? branchIdentifierPair = dictDelimitedValues.
@@ -98,6 +108,41 @@ namespace CryptoBranchTracker.WFA.Classes
             }
         }
 
+        public void Save()
+        {
+            try
+            {
+                //If this is the first time the transaction is being saved, create a new identifier for it
+                this.Identifier = this.Identifier == Guid.Empty
+                    ? Guid.NewGuid()
+                    : this.Identifier;
+
+                string saveValue = Globals.Compress(this.GetDelimitedValue());
+
+                Globals.FixRegistry();
+
+                RegistryView platformView = Environment.Is64BitOperatingSystem
+                    ? RegistryView.Registry64
+                    : RegistryView.Registry32;
+
+                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                {
+                    if (registryBase != null)
+                    {
+                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Constants.RegistryLocations.APPLICATION_LOCATION))
+                        {
+                            using (RegistryKey branchList = applicationKey.CreateSubKey(Constants.RegistryLocations.TRANSACTION_LIST))
+                                branchList.SetValue($"{this.Identifier}", saveValue, RegistryValueKind.String);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred saving transaction: {ex}");
+            }
+        }
+
         public string GetDelimitedValue()
         {
             string value;
@@ -107,6 +152,7 @@ namespace CryptoBranchTracker.WFA.Classes
                 //TODO: Format this better, it looks horrible
 
                 value = $"{Constants.TransactionKeys.TRANSACTION_BRANCH}{Constants.VALUE_DELIMITER}{this.BranchIdentifier}";
+                value += $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_IDENTIFIER}{Constants.VALUE_DELIMITER}{this.Identifier}";
                 value += $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_FIAT}{Constants.VALUE_DELIMITER}{this.FiatDifference}";
                 value += $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_TYPE}{Constants.VALUE_DELIMITER}{this.TransactionType}";
                 value += $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_NOTES}{Constants.VALUE_DELIMITER}{Globals.Compress(this.Notes)}";

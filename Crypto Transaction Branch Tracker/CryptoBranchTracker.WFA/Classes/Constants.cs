@@ -16,6 +16,8 @@ namespace CryptoBranchTracker.WFA.Classes
 
         public struct TransactionKeys
         {
+            public const string TRANSACTION_IDENTIFIER = "TRANSACTION_IDENTIFIER";
+
             public const string TRANSACTION_BRANCH = "TRANSACTION_BRANCH";
 
             public const string TRANSACTION_DATE = "TRANSACTION_DATE";
