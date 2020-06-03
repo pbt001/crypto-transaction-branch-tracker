@@ -22,7 +22,7 @@ namespace CryptoBranchTracker.WFA.Forms
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            
+            Branch n = new Branch("cwpy9HP2iPd0cfUL8XTzdA2yTjVPMzc0M0jRNU8xTdU1sUgx0k0yN0nVNUgzNkkzN0hLM042q3GCaPPzD3ENtna2yPP0cYt0zM8OdivzC6rMSAzOrPCpynZxDXUEAA==");
         }
     }
 }

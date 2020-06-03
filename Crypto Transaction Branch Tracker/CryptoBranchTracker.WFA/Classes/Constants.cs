@@ -10,6 +10,10 @@ namespace CryptoBranchTracker.WFA.Classes
     {
         public const string NULL_VALUE = "NULL";
 
+        public const string PAIR_DELIMITER = "|";
+
+        public const string VALUE_DELIMITER = ";";
+
         public struct TransactionKeys
         {
             public const string TRANSACTION_BRANCH = "TRANSACTION_BRANCH";

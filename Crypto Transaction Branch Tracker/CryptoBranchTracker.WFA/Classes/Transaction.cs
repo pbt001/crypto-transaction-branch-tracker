@@ -31,15 +31,14 @@ namespace CryptoBranchTracker.WFA.Classes
             SELL
         }
 
-        public void PopulateProperties(string base64Value)
+        private void PopulateProperties(string base64Value)
         {
             try
             {
                 string decompressedString = Globals.Decompress(base64Value);
 
                 Dictionary<string, string> dictDelimitedValues = decompressedString.Split('|').
-                    Select(set => set.Split(';')).ToDictionary(pair => pair[0], pair => pair[1]);
-
+                    Select(pair => pair.Split(';')).ToDictionary(key => key[0], value => value[1]);
 
                 //Branch Identifier
                 KeyValuePair<string, string>? branchIdentifierPair = dictDelimitedValues.
@@ -105,18 +104,20 @@ namespace CryptoBranchTracker.WFA.Classes
 
             try
             {
-                value = $"{Constants.TransactionKeys.TRANSACTION_BRANCH};{this.BranchIdentifier}";
-                value += $"|{Constants.TransactionKeys.TRANSACTION_FIAT};{this.FiatDifference}";
-                value += $"|{Constants.TransactionKeys.TRANSACTION_TYPE};{this.TransactionType}";
-                value += $"|{Constants.TransactionKeys.TRANSACTION_NOTES};{Globals.Compress(this.Notes)}";
+                //TODO: Format this better, it looks horrible
+
+                value = $"{Constants.TransactionKeys.TRANSACTION_BRANCH}{Constants.VALUE_DELIMITER}{this.BranchIdentifier}";
+                value += $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_FIAT}{Constants.VALUE_DELIMITER}{this.FiatDifference}";
+                value += $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_TYPE}{Constants.VALUE_DELIMITER}{this.TransactionType}";
+                value += $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_NOTES}{Constants.VALUE_DELIMITER}{Globals.Compress(this.Notes)}";
 
                 value += this.DateProcessed.HasValue
-                    ? $"|{Constants.TransactionKeys.TRANSACTION_DATE};{this.DateProcessed.Value.Ticks}"
-                    : $"|{Constants.TransactionKeys.TRANSACTION_DATE};{Constants.NULL_VALUE}";
+                    ? $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_DATE}{Constants.VALUE_DELIMITER}{this.DateProcessed.Value.Ticks}"
+                    : $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_DATE}{Constants.VALUE_DELIMITER}{Constants.NULL_VALUE}";
 
                 value += this.TimeProcessed.HasValue
-                    ? $"|{Constants.TransactionKeys.TRANSACTION_TIME};{this.TimeProcessed.Value.Ticks}"
-                    : $"|{Constants.TransactionKeys.TRANSACTION_TIME};{Constants.NULL_VALUE}";
+                    ? $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_TIME}{Constants.VALUE_DELIMITER}{this.TimeProcessed.Value.Ticks}"
+                    : $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_TIME}{Constants.VALUE_DELIMITER}{Constants.NULL_VALUE}";
             }
             catch (Exception ex)
             {
