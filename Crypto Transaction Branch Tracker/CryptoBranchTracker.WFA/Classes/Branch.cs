@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CryptoBranchTracker.WFA.Classes
 {
@@ -55,6 +58,41 @@ namespace CryptoBranchTracker.WFA.Classes
             catch (Exception ex)
             {
                 throw new Exception($"An error occurred populating branch values: {ex}");
+            }
+        }
+
+        public void Save()
+        {
+            try
+            {
+                //If this is the first time the branch is being saved, create a new identifier for it
+                this.Identifier = this.Identifier == Guid.Empty
+                    ? Guid.NewGuid()
+                    : this.Identifier;
+
+                string saveValue = Globals.Compress(this.GetDelimitedValue());
+
+                Globals.FixRegistry();
+
+                RegistryView platformView = Environment.Is64BitOperatingSystem
+                    ? RegistryView.Registry64
+                    : RegistryView.Registry32;
+
+                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                {
+                    if (registryBase != null)
+                    {
+                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Constants.RegistryLocations.APPLICATION_LOCATION))
+                        {
+                            using (RegistryKey branchList = applicationKey.CreateSubKey(Constants.RegistryLocations.BRANCH_LIST))
+                                branchList.SetValue($"{this.Identifier}", saveValue, RegistryValueKind.String);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred saving the branch: {ex}");
             }
         }
 

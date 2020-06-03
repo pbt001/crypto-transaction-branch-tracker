@@ -4,13 +4,48 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using Microsoft.Win32;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace CryptoBranchTracker.WFA.Classes
 {
     public class Globals
     {
-        //Compress a string down to a base64 format
+        /// <summary>
+        /// Sort out the registry directory, fix any tampering that may have been done
+        /// </summary>
+        public static void FixRegistry()
+        {
+            try
+            {
+                RegistryView platformView = Environment.Is64BitOperatingSystem
+                    ? RegistryView.Registry64
+                    : RegistryView.Registry32;
+
+                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                {
+                    if (registryBase != null)
+                    {
+                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Constants.RegistryLocations.APPLICATION_LOCATION))
+                        {
+                            applicationKey.CreateSubKey(Constants.RegistryLocations.BRANCH_LIST).Close();
+                            applicationKey.CreateSubKey(Constants.RegistryLocations.TRANSACTION_LIST).Close();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred fixing the registry: {ex}");
+            }
+        }
+
+        /// <summary>
+        /// Compress a string down to a base64 format
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static string Compress(string text)
         {
             string compressedString;
@@ -40,7 +75,11 @@ namespace CryptoBranchTracker.WFA.Classes
             return compressedString;
         }
 
-        //Decompress a string from the Compress method back to the readable string
+        /// <summary>
+        /// Decompress a string from the Compress method back to the readable string
+        /// </summary>
+        /// <param name="compressedString"></param>
+        /// <returns></returns>
         public static string Decompress(string compressedString)
         {
             string decompressedString;

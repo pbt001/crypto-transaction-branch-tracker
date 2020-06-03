@@ -35,5 +35,14 @@ namespace CryptoBranchTracker.WFA.Classes
 
             public const string BRANCH_NOTES = "BRANCH_NOTES";
         }
+
+        public struct RegistryLocations
+        {
+            public const string APPLICATION_LOCATION = @"Software\Crypto Branch Tracker";
+
+            public const string TRANSACTION_LIST = "Transactions";
+
+            public const string BRANCH_LIST = "Branches";
+        }
     }
 }
