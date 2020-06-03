@@ -23,12 +23,17 @@ namespace CryptoBranchTracker.WFA.Classes
 
             try
             {
-                value = $"{Strings.BranchKeys.BRANCH_IDENTIFIER}{Strings.VALUE_DELIMITER}{this.Identifier}";
-                value += $"{Strings.PAIR_DELIMITER}{Strings.BranchKeys.BRANCH_NOTES}{Strings.VALUE_DELIMITER}{Globals.Compress(this.Notes)}";
+                Dictionary<string, object> dictPairs = new Dictionary<string, object>()
+                {
+                    { Strings.BranchKeys.BRANCH_NOTES, Globals.Compress(this.Notes) },
+                    { Strings.BranchKeys.BRANCH_CREATED, this.DateCreated.HasValue ? this.DateCreated.Value.Ticks : (object)Strings.NULL_VALUE },
+                };
 
-                value += this.DateCreated.HasValue
-                    ? $"{Strings.PAIR_DELIMITER}{Strings.BranchKeys.BRANCH_CREATED}{Strings.VALUE_DELIMITER}{this.DateCreated.Value.Ticks}"
-                    : $"{Strings.PAIR_DELIMITER}{Strings.BranchKeys.BRANCH_CREATED}{Strings.VALUE_DELIMITER}{Strings.NULL_VALUE}";
+                //Initial value
+                value = $"{Strings.BranchKeys.BRANCH_IDENTIFIER}{Strings.VALUE_DELIMITER}{this.Identifier}";
+
+                foreach (KeyValuePair<string, object> kvPair in dictPairs)
+                    value += $"{Strings.PAIR_DELIMITER}{kvPair.Key}{Strings.VALUE_DELIMITER}{kvPair.Value}";
             }
             catch (Exception ex)
             {

@@ -149,21 +149,21 @@ namespace CryptoBranchTracker.WFA.Classes
 
             try
             {
-                //TODO: Format this better, it looks horrible
+                Dictionary<string, object> dictPairs = new Dictionary<string, object>()
+                {
+                    { Strings.TransactionKeys.TRANSACTION_BRANCH, this.BranchIdentifier },
+                    { Strings.TransactionKeys.TRANSACTION_DATE, this.DateProcessed.HasValue ? this.DateProcessed.Value.Ticks : (object)Strings.NULL_VALUE },
+                    { Strings.TransactionKeys.TRANSACTION_TIME, this.TimeProcessed.HasValue ? this.TimeProcessed.Value.Ticks : (object)Strings.NULL_VALUE },
+                    { Strings.TransactionKeys.TRANSACTION_FIAT, this.FiatDifference },
+                    { Strings.TransactionKeys.TRANSACTION_NOTES, Globals.Compress(this.Notes) },
+                    { Strings.TransactionKeys.TRANSACTION_TYPE, this.TransactionType }
+                };
 
-                value = $"{Strings.TransactionKeys.TRANSACTION_BRANCH}{Strings.VALUE_DELIMITER}{this.BranchIdentifier}";
-                value += $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_IDENTIFIER}{Strings.VALUE_DELIMITER}{this.Identifier}";
-                value += $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_FIAT}{Strings.VALUE_DELIMITER}{this.FiatDifference}";
-                value += $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_TYPE}{Strings.VALUE_DELIMITER}{this.TransactionType}";
-                value += $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_NOTES}{Strings.VALUE_DELIMITER}{Globals.Compress(this.Notes)}";
+                //Initial value
+                value = $"{Strings.TransactionKeys.TRANSACTION_IDENTIFIER}{Strings.VALUE_DELIMITER}{this.Identifier}";
 
-                value += this.DateProcessed.HasValue
-                    ? $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_DATE}{Strings.VALUE_DELIMITER}{this.DateProcessed.Value.Ticks}"
-                    : $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_DATE}{Strings.VALUE_DELIMITER}{Strings.NULL_VALUE}";
-
-                value += this.TimeProcessed.HasValue
-                    ? $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_TIME}{Strings.VALUE_DELIMITER}{this.TimeProcessed.Value.Ticks}"
-                    : $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_TIME}{Strings.VALUE_DELIMITER}{Strings.NULL_VALUE}";
+                foreach (KeyValuePair<string, object> kvPair in dictPairs)
+                    value += $"{Strings.PAIR_DELIMITER}{kvPair.Key}{Strings.VALUE_DELIMITER}{kvPair.Value}";
             }
             catch (Exception ex)
             {
