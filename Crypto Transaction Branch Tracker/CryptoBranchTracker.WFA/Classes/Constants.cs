@@ -8,13 +8,7 @@ namespace CryptoBranchTracker.WFA.Classes
 {
     public class Constants
     {
-        public const string TRANSACTION_NOTE_START_PREFIX = "!TRANSACTION_NOTE_START!";
-
-        public const string TRANSACTION_NOTE_END_SUFFIX = "!TRANSACTION_NOTE_END!";
-
-        public const string BRANCH_NOTE_START_PREFIX = "!BRANCH_NOTE_START!";
-
-        public const string BRANCH_NOTE_END_SUFFIX = "!BRANCH_NOTE_END!";
+        public const string NULL_VALUE = "NULL";
 
         public struct TransactionKeys
         {
