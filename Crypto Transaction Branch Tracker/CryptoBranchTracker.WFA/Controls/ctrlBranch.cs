@@ -8,12 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CryptoBranchTracker.WFA.Classes;
-using System.Reflection.Emit;
-using System.Configuration;
 
 namespace CryptoBranchTracker.WFA.Controls
 {
-    public partial class ctrlBranch : GroupBox
+    public partial class ctrlBranch : UserControl
     {
         public Branch Branch { get; set; } = new Branch();
 
@@ -22,32 +20,54 @@ namespace CryptoBranchTracker.WFA.Controls
             InitializeComponent();
         }
 
-        private void RefreshDetails()
-        {
-            try
-            {
-                //Don't want to be dealing with totally empty branches really
-                if (this.Branch.Identifier != Guid.Empty)
-                {
-                    this.Text = this.Branch.DateCreated.HasValue ? this.Branch.DateCreated.Value.ToLongDateString() : "Unknown";
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"An error occurred refreshing details: {ex}");
-            }
-        }
-
         public ctrlBranch(Branch branch)
         {
             try
             {
                 this.Branch = branch;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred initializing control: {ex}");
+            }
+        }
+
+        private void RefreshDetails()
+        {
+            try
+            {
+                if (this.Branch.Identifier != Guid.Empty)
+                {
+                    this.gbMain.Text = this.Branch.DateCreated.HasValue ? this.Branch.DateCreated.Value.ToLongDateString() : "Unknown";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred refreshing the details: {ex}");
+            }
+        }
+
+        public void ImportTransactions(List<Transaction> lstTransactions)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred importing transactions: {ex}");
+            }
+        }
+
+        private void ctrlBranch_Load(object sender, EventArgs e)
+        {
+            try
+            {
                 this.RefreshDetails();
             }
             catch (Exception ex)
             {
-                throw new Exception($"An error occurred initializing the branch control: {ex}");
+                MessageBox.Show(ex.ToString());
             }
         }
     }

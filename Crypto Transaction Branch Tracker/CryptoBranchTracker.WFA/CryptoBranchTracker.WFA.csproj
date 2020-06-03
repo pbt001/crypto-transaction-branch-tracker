@@ -51,7 +51,7 @@
     <Compile Include="Classes\Globals.cs" />
     <Compile Include="Classes\Transaction.cs" />
     <Compile Include="Controls\ctrlBranch.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\ctrlBranch.Designer.cs">
       <DependentUpon>ctrlBranch.cs</DependentUpon>

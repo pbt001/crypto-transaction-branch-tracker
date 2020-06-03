@@ -28,15 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.gbMain = new System.Windows.Forms.GroupBox();
             this.SuspendLayout();
+            // 
+            // gbMain
+            // 
+            this.gbMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbMain.Location = new System.Drawing.Point(5, 5);
+            this.gbMain.Name = "gbMain";
+            this.gbMain.Size = new System.Drawing.Size(240, 240);
+            this.gbMain.TabIndex = 0;
+            this.gbMain.TabStop = false;
+            this.gbMain.Text = "awejdfha";
             // 
             // ctrlBranch
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.gbMain);
+            this.Name = "ctrlBranch";
+            this.Padding = new System.Windows.Forms.Padding(5);
             this.Size = new System.Drawing.Size(250, 250);
+            this.Load += new System.EventHandler(this.ctrlBranch_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.GroupBox gbMain;
     }
 }

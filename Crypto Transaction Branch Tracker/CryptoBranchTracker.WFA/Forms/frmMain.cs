@@ -25,12 +25,18 @@ namespace CryptoBranchTracker.WFA.Forms
         {
             try
             {
+                List<Transaction> lstTransactions = Transaction.GetAllLocalTransactions();
                 List<Branch> lstBranches = Branch.GetAllLocalBranches();
 
                 foreach (Branch branch in lstBranches)
                 {
-                    this.flpContainer.Controls.Add(new ctrlBranch(branch));
+                    ctrlBranch visBranch = new ctrlBranch(branch);
+                    visBranch.ImportTransactions(lstTransactions.Where(x => x.BranchIdentifier == branch.Identifier).ToList());
+
+                    this.flpContainer.Controls.Add(visBranch);
                 }
+
+                this.flpContainer.Refresh();
             }
             catch (Exception ex)
             {
