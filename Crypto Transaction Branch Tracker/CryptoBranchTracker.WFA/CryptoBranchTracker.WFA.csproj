@@ -50,6 +50,12 @@
     <Compile Include="Classes\Strings.cs" />
     <Compile Include="Classes\Globals.cs" />
     <Compile Include="Classes\Transaction.cs" />
+    <Compile Include="Controls\ctrlBranch.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ctrlBranch.Designer.cs">
+      <DependentUpon>ctrlBranch.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,6 +64,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\ctrlBranch.resx">
+      <DependentUpon>ctrlBranch.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
