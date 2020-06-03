@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CryptoBranchTracker.WFA.Classes
 {
-    public class Constants
+    public class Strings
     {
         public const string NULL_VALUE = "NULL";
 

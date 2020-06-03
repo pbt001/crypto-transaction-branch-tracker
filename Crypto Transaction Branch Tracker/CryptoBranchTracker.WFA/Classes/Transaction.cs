@@ -45,59 +45,59 @@ namespace CryptoBranchTracker.WFA.Classes
 
                 //Identifier
                 KeyValuePair<string, string>? identifierPair = dictDelimitedValues.
-                    Where(x => x.Key == Constants.TransactionKeys.TRANSACTION_IDENTIFIER).FirstOrDefault();
+                    Where(x => x.Key == Strings.TransactionKeys.TRANSACTION_IDENTIFIER).FirstOrDefault();
 
                 if (identifierPair.HasValue)
                     this.Identifier = new Guid(identifierPair.Value.Value);
 
                 //Branch Identifier
                 KeyValuePair<string, string>? branchIdentifierPair = dictDelimitedValues.
-                    Where(x => x.Key == Constants.TransactionKeys.TRANSACTION_BRANCH).FirstOrDefault();
+                    Where(x => x.Key == Strings.TransactionKeys.TRANSACTION_BRANCH).FirstOrDefault();
 
                 if (branchIdentifierPair.HasValue)
                     this.BranchIdentifier = new Guid(branchIdentifierPair.Value.Value);
 
                 //Date Processed
                 KeyValuePair<string, string>? dateProcessedPair = dictDelimitedValues.
-                    Where(x => x.Key == Constants.TransactionKeys.TRANSACTION_DATE).FirstOrDefault();
+                    Where(x => x.Key == Strings.TransactionKeys.TRANSACTION_DATE).FirstOrDefault();
 
                 if (dateProcessedPair.HasValue)
                 {
                     string dateValue = dateProcessedPair.Value.Value;
 
-                    if (dateValue != Constants.NULL_VALUE)
+                    if (dateValue != Strings.NULL_VALUE)
                         this.DateProcessed = new DateTime(Convert.ToInt64(dateValue));
                 }
 
                 //Time Processed
                 KeyValuePair<string, string>? timeProcessedPair = dictDelimitedValues.
-                    Where(x => x.Key == Constants.TransactionKeys.TRANSACTION_TIME).FirstOrDefault();
+                    Where(x => x.Key == Strings.TransactionKeys.TRANSACTION_TIME).FirstOrDefault();
 
                 if (timeProcessedPair.HasValue)
                 {
                     string timeValue = timeProcessedPair.Value.Value;
 
-                    if (timeValue != Constants.NULL_VALUE)
+                    if (timeValue != Strings.NULL_VALUE)
                         this.TimeProcessed = new TimeSpan(Convert.ToInt64(timeValue));
                 }
 
                 //Fiat Difference
                 KeyValuePair<string, string>? fiatDifferencePair = dictDelimitedValues.
-                    Where(x => x.Key == Constants.TransactionKeys.TRANSACTION_FIAT).FirstOrDefault();
+                    Where(x => x.Key == Strings.TransactionKeys.TRANSACTION_FIAT).FirstOrDefault();
 
                 if (fiatDifferencePair.HasValue)
                     this.FiatDifference = Convert.ToDouble(fiatDifferencePair.Value.Value);
 
                 //Notes
                 KeyValuePair<string, string>? notesPair = dictDelimitedValues.
-                    Where(x => x.Key == Constants.TransactionKeys.TRANSACTION_NOTES).FirstOrDefault();
+                    Where(x => x.Key == Strings.TransactionKeys.TRANSACTION_NOTES).FirstOrDefault();
 
                 if (notesPair.HasValue)
                     this.Notes = Globals.Decompress(notesPair.Value.Value);
 
                 //Transaction Type
                 KeyValuePair<string, string>? typePair = dictDelimitedValues.
-                    Where(x => x.Key == Constants.TransactionKeys.TRANSACTION_TYPE).FirstOrDefault();
+                    Where(x => x.Key == Strings.TransactionKeys.TRANSACTION_TYPE).FirstOrDefault();
 
                 if (typePair.HasValue)
                     this.TransactionType = (TransactionTypes)Enum.Parse(typeof(TransactionTypes), typePair.Value.Value);
@@ -129,9 +129,9 @@ namespace CryptoBranchTracker.WFA.Classes
                 {
                     if (registryBase != null)
                     {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Constants.RegistryLocations.APPLICATION_LOCATION))
+                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
                         {
-                            using (RegistryKey branchList = applicationKey.CreateSubKey(Constants.RegistryLocations.TRANSACTION_LIST))
+                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.TRANSACTION_LIST))
                                 branchList.SetValue($"{this.Identifier}", saveValue, RegistryValueKind.String);
                         }
                     }
@@ -151,19 +151,19 @@ namespace CryptoBranchTracker.WFA.Classes
             {
                 //TODO: Format this better, it looks horrible
 
-                value = $"{Constants.TransactionKeys.TRANSACTION_BRANCH}{Constants.VALUE_DELIMITER}{this.BranchIdentifier}";
-                value += $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_IDENTIFIER}{Constants.VALUE_DELIMITER}{this.Identifier}";
-                value += $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_FIAT}{Constants.VALUE_DELIMITER}{this.FiatDifference}";
-                value += $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_TYPE}{Constants.VALUE_DELIMITER}{this.TransactionType}";
-                value += $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_NOTES}{Constants.VALUE_DELIMITER}{Globals.Compress(this.Notes)}";
+                value = $"{Strings.TransactionKeys.TRANSACTION_BRANCH}{Strings.VALUE_DELIMITER}{this.BranchIdentifier}";
+                value += $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_IDENTIFIER}{Strings.VALUE_DELIMITER}{this.Identifier}";
+                value += $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_FIAT}{Strings.VALUE_DELIMITER}{this.FiatDifference}";
+                value += $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_TYPE}{Strings.VALUE_DELIMITER}{this.TransactionType}";
+                value += $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_NOTES}{Strings.VALUE_DELIMITER}{Globals.Compress(this.Notes)}";
 
                 value += this.DateProcessed.HasValue
-                    ? $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_DATE}{Constants.VALUE_DELIMITER}{this.DateProcessed.Value.Ticks}"
-                    : $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_DATE}{Constants.VALUE_DELIMITER}{Constants.NULL_VALUE}";
+                    ? $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_DATE}{Strings.VALUE_DELIMITER}{this.DateProcessed.Value.Ticks}"
+                    : $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_DATE}{Strings.VALUE_DELIMITER}{Strings.NULL_VALUE}";
 
                 value += this.TimeProcessed.HasValue
-                    ? $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_TIME}{Constants.VALUE_DELIMITER}{this.TimeProcessed.Value.Ticks}"
-                    : $"{Constants.PAIR_DELIMITER}{Constants.TransactionKeys.TRANSACTION_TIME}{Constants.VALUE_DELIMITER}{Constants.NULL_VALUE}";
+                    ? $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_TIME}{Strings.VALUE_DELIMITER}{this.TimeProcessed.Value.Ticks}"
+                    : $"{Strings.PAIR_DELIMITER}{Strings.TransactionKeys.TRANSACTION_TIME}{Strings.VALUE_DELIMITER}{Strings.NULL_VALUE}";
             }
             catch (Exception ex)
             {

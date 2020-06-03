@@ -21,8 +21,8 @@ namespace CryptoBranchTracker.WFA.Classes
 
             try
             {
-                value = $"{Constants.BranchKeys.BRANCH_IDENTIFIER}{Constants.VALUE_DELIMITER}{this.Identifier}";
-                value += $"{Constants.PAIR_DELIMITER}{Constants.BranchKeys.BRANCH_NOTES}{Constants.VALUE_DELIMITER}{Globals.Compress(this.Notes)}";
+                value = $"{Strings.BranchKeys.BRANCH_IDENTIFIER}{Strings.VALUE_DELIMITER}{this.Identifier}";
+                value += $"{Strings.PAIR_DELIMITER}{Strings.BranchKeys.BRANCH_NOTES}{Strings.VALUE_DELIMITER}{Globals.Compress(this.Notes)}";
             }
             catch (Exception ex)
             {
@@ -43,14 +43,14 @@ namespace CryptoBranchTracker.WFA.Classes
 
                 //Identifier
                 KeyValuePair<string, string>? identifierPair = dictDelimitedValues.
-                    Where(x => x.Key == Constants.BranchKeys.BRANCH_IDENTIFIER).FirstOrDefault();
+                    Where(x => x.Key == Strings.BranchKeys.BRANCH_IDENTIFIER).FirstOrDefault();
 
                 if (identifierPair.HasValue)
                     this.Identifier = new Guid(identifierPair.Value.Value);
 
                 //Notes
                 KeyValuePair<string, string>? notesPair = dictDelimitedValues.
-                    Where(x => x.Key == Constants.BranchKeys.BRANCH_NOTES).FirstOrDefault();
+                    Where(x => x.Key == Strings.BranchKeys.BRANCH_NOTES).FirstOrDefault();
 
                 if (notesPair.HasValue)
                     this.Notes = Globals.Decompress(notesPair.Value.Value);
@@ -82,9 +82,9 @@ namespace CryptoBranchTracker.WFA.Classes
                 {
                     if (registryBase != null)
                     {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Constants.RegistryLocations.APPLICATION_LOCATION))
+                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
                         {
-                            using (RegistryKey branchList = applicationKey.CreateSubKey(Constants.RegistryLocations.BRANCH_LIST))
+                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.BRANCH_LIST))
                                 branchList.SetValue($"{this.Identifier}", saveValue, RegistryValueKind.String);
                         }
                     }

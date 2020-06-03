@@ -27,10 +27,10 @@ namespace CryptoBranchTracker.WFA.Classes
                 {
                     if (registryBase != null)
                     {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Constants.RegistryLocations.APPLICATION_LOCATION))
+                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
                         {
-                            applicationKey.CreateSubKey(Constants.RegistryLocations.BRANCH_LIST).Close();
-                            applicationKey.CreateSubKey(Constants.RegistryLocations.TRANSACTION_LIST).Close();
+                            applicationKey.CreateSubKey(Strings.RegistryLocations.BRANCH_LIST).Close();
+                            applicationKey.CreateSubKey(Strings.RegistryLocations.TRANSACTION_LIST).Close();
                         }
                     }
                 }

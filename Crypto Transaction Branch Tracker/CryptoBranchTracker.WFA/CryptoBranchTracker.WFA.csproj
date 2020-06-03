@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Branch.cs" />
-    <Compile Include="Classes\Constants.cs" />
+    <Compile Include="Classes\Strings.cs" />
     <Compile Include="Classes\Globals.cs" />
     <Compile Include="Classes\Transaction.cs" />
     <Compile Include="Forms\frmMain.cs">
