@@ -11,6 +11,8 @@ namespace CryptoBranchTracker.WFA.Classes
 {
     public class Branch
     {
+        public DateTime? DateCreated { get; set; }
+
         public Guid Identifier = new Guid();
 
         public string Notes { get; set; } = "";
@@ -23,6 +25,10 @@ namespace CryptoBranchTracker.WFA.Classes
             {
                 value = $"{Strings.BranchKeys.BRANCH_IDENTIFIER}{Strings.VALUE_DELIMITER}{this.Identifier}";
                 value += $"{Strings.PAIR_DELIMITER}{Strings.BranchKeys.BRANCH_NOTES}{Strings.VALUE_DELIMITER}{Globals.Compress(this.Notes)}";
+
+                value += this.DateCreated.HasValue
+                    ? $"{Strings.PAIR_DELIMITER}{Strings.BranchKeys.BRANCH_CREATED}{Strings.VALUE_DELIMITER}{this.DateCreated.Value.Ticks}"
+                    : $"{Strings.PAIR_DELIMITER}{Strings.BranchKeys.BRANCH_CREATED}{Strings.VALUE_DELIMITER}{Strings.NULL_VALUE}";
             }
             catch (Exception ex)
             {
@@ -54,6 +60,18 @@ namespace CryptoBranchTracker.WFA.Classes
 
                 if (notesPair.HasValue)
                     this.Notes = Globals.Decompress(notesPair.Value.Value);
+
+                //Date Created
+                KeyValuePair<string, string>? createdPair = dictDelimitedValues.
+                    Where(x => x.Key == Strings.BranchKeys.BRANCH_CREATED).FirstOrDefault();
+
+                if (createdPair.HasValue)
+                {
+                    string createdValue = createdPair.Value.Value;
+
+                    if (createdValue != Strings.NULL_VALUE)
+                        this.DateCreated = new DateTime(Convert.ToInt64(createdValue));
+                }
             }
             catch (Exception ex)
             {

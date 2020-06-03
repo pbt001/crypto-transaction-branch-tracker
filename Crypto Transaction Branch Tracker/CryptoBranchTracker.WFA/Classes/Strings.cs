@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +34,8 @@ namespace CryptoBranchTracker.WFA.Classes
 
         public struct BranchKeys
         {
+            public const string BRANCH_CREATED = "BRANCH_CREATED";
+
             public const string BRANCH_IDENTIFIER = "BRANCH_IDENTIFIER";
 
             public const string BRANCH_NOTES = "BRANCH_NOTES";
