@@ -6,4 +6,4 @@ A branch is a series of investments/payments that are made, up until the point y
 # How your data is stored
 There are no logins, and nothing is stored on any kind of servers. When starting up, you'll be greated with a blank slate, with options to start new branches and add some transactions.
 
-All of this data is stored locally on your device. If you need to transfer your data to another device, you can do this by importing your CTBT code. This code is in Base64 format and includes any and all data necessary for a transfer. All of this skips the need for logins, and subsequently an internet connection, so that you can be reassured nothing is stored anywhere but your own device.
+All of this data is stored locally on your device. If you need to transfer your data to another device, you can do this by importing your CTBT key. This key is in Base64 format and includes any and all data necessary for a transfer. All of this skips the need for logins, and subsequently an internet connection, so that you can be reassured nothing is stored anywhere but your own device.
