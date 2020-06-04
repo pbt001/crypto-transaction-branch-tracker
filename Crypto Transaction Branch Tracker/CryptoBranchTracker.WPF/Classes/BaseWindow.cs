@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 
+/*
+ * https://blog.magnusmontin.net/2014/11/30/disabling-or-hiding-the-minimize-maximize-or-close-button-of-a-wpf-window/
+ * 
+ * That site provided the code to essentially disable the default minimize and maximize buttons on a window, so that I can provide my own without any difficulties
+ * 
+ * Without this code, the window title bar acts strange due to the fact that the buttons are still actually functional, just not visible.
+ */
+
 namespace CryptoBranchTracker.WPF.Classes
 {
     public class BaseWindow : Window
