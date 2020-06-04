@@ -55,25 +55,40 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <!--Menu Filler-->
-            <materialDesign:ColorZone
-                Mode="{Binding ElementName=czMenu, Path=Mode}"
-                VerticalAlignment="Stretch"
-                HorizontalAlignment="Left"
-                Width="{Binding ElementName=dhMenu, Path=MinWidth}">
+            <StackPanel
+                Orientation="Horizontal">
+                
+                <!--Menu Filler-->
+                <materialDesign:ColorZone
+                    Mode="{Binding ElementName=czMenu, Path=Mode}"
+                    VerticalAlignment="Stretch"
+                    HorizontalAlignment="Left"
+                    Width="{Binding ElementName=dhMenu, Path=MinWidth}">
 
-                <ToggleButton
-                    Style="{DynamicResource MaterialDesignHamburgerToggleButton}"
-                    Margin="8"
+                    <ToggleButton
+                        x:Name="tbMenu"
+                        Style="{DynamicResource MaterialDesignHamburgerToggleButton}"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="Left"
+                        Margin="8"
+                        WindowChrome.IsHitTestVisibleInChrome="True"
+                        Checked="ToggleButton_Checked"
+                        Unchecked="ToggleButton_Unchecked"
+                        Height="{DynamicResource MenuIconSize}"
+                        Width="{DynamicResource MenuIconSize}">
+                    </ToggleButton>
+                </materialDesign:ColorZone>
+
+                <TextBlock
                     VerticalAlignment="Center"
-                    HorizontalContentAlignment="Left"
-                    WindowChrome.IsHitTestVisibleInChrome="True"
-                    Checked="ToggleButton_Checked"
-                    Unchecked="ToggleButton_Unchecked"
-                    Height="{DynamicResource MenuIconSize}"
-                    Width="{DynamicResource MenuIconSize}">
-                </ToggleButton>
-            </materialDesign:ColorZone>
+                    HorizontalAlignment="Left"
+                    Margin="15,0,0,0"
+                    Text="Crypto Transaction Branch Tracker"
+                    FontSize="25"
+                    FontWeight="DemiBold"
+                    Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                </TextBlock>
+            </StackPanel>
 
             <!--Close Button-->
             <Button
@@ -173,8 +188,10 @@
 
                 <StackPanel
                     x:Name="pnlMenu">
+                    
                     <Button
                         x:Name="btnBranches"
+                        Click="btnBranches_Click"
                         Margin="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource MenuMarginConverter}}"
                         materialDesign:ShadowAssist.ShadowDepth="Depth0"
                         HorizontalContentAlignment="Left">
@@ -236,6 +253,7 @@
 
                     <Button
                         Margin="8"
+                        Click="Button_Click_4"
                         materialDesign:ShadowAssist.ShadowDepth="Depth0"
                         HorizontalContentAlignment="Left">
 
@@ -263,8 +281,78 @@
                             </TextBlock>
                         </Grid>
                     </Button>
+
+                    <Separator
+                        Margin="8"
+                        Background="{Binding ElementName=btnBranches, Path=Foreground}"/>
+
+                    <Button
+                        Margin="8"
+                        Click="Button_Click_5"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                        HorizontalContentAlignment="Left">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <materialDesign:PackIcon
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Margin="0"
+                                Padding="0"
+                                Height="{DynamicResource MenuIconSize}"
+                                Width="{DynamicResource MenuIconSize}"
+                                Kind="KeyLink">
+                            </materialDesign:PackIcon>
+
+                            <TextBlock
+                                Margin="15,0,0,0"
+                                VerticalAlignment="Center"
+                                Grid.Column="1"
+                                Text="CTBT Key">
+                            </TextBlock>
+                        </Grid>
+                    </Button>
                 </StackPanel>
             </materialDesign:ColorZone>
+
+            <TabControl
+                x:Name="tcMain"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                Grid.Column="1"
+                Margin="11">
+
+                <TabItem
+                    Visibility="Collapsed"
+                    x:Name="tiBranches">
+
+                    <Label
+                        Content="branches">
+                    </Label>
+                </TabItem>
+
+                <TabItem
+                    Visibility="Collapsed"
+                    x:Name="tiTransactions">
+
+                    <Label
+                        Content="transactions">
+                    </Label>
+                </TabItem>
+
+                <TabItem
+                    Visibility="Collapsed"
+                    x:Name="tiKey">
+
+                    <Label
+                        Content="key">
+                    </Label>
+                </TabItem>
+            </TabControl>
         </Grid>
     </Grid>
 </classes:BaseWindow>

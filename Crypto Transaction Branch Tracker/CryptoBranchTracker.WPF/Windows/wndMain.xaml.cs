@@ -144,5 +144,44 @@ namespace CryptoBranchTracker.WPF.Windows
                 MessageBox.Show(ex.ToString());
             }
         }
+
+        private void btnBranches_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.tcMain.SelectedItem = this.tiBranches;
+                this.tbMenu.IsChecked = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.tcMain.SelectedItem = this.tiTransactions;
+                this.tbMenu.IsChecked = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.tcMain.SelectedItem = this.tiKey;
+                this.tbMenu.IsChecked = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
     }
 }
