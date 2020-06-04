@@ -1,12 +1,112 @@
-﻿<Window x:Class="CryptoBranchTracker.WPF.Windows.wndMain"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CryptoBranchTracker.WPF.Windows"
-        mc:Ignorable="d"
-        Title="wndMain" Height="450" Width="800">
+﻿<classes:BaseWindow x:Class="CryptoBranchTracker.WPF.Windows.wndMain"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:classes="clr-namespace:CryptoBranchTracker.WPF.Classes"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:local="clr-namespace:CryptoBranchTracker.WPF.Windows"
+                    mc:Ignorable="d"
+                    Title="Crypto Transaction Branch Tracker"
+                    WindowStartupLocation="CenterScreen"
+                    StateChanged="BaseWindow_StateChanged"
+                    Height="450"
+                    Loaded="BaseWindow_Loaded"
+                    Width="800">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="34" />
+    </WindowChrome.WindowChrome>
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button
+                WindowChrome.IsHitTestVisibleInChrome="True"
+                ToolTip="Close"
+                Margin="0,5,5,0"
+                Click="Button_Click_1"
+                Grid.Column="3"
+                Style="{DynamicResource MaterialDesignToolButton}"
+                Background="Transparent"
+                BorderBrush="Transparent">
+
+                <materialDesign:PackIcon
+                    Height="Auto"
+                    Width="Auto"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Kind="WindowClose"/>
+            </Button>
+
+            <Button
+                x:Name="btnMaximize"
+                Margin="0,5,5,0"
+                Grid.Column="2"
+                ToolTip="Maximize"
+                WindowChrome.IsHitTestVisibleInChrome="True"
+                Click="Button_Click_2"
+                Style="{DynamicResource MaterialDesignToolButton}"
+                Background="Transparent"
+                BorderBrush="Transparent">
+
+                <materialDesign:PackIcon
+                    Height="Auto"
+                    Width="Auto"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Kind="WindowMaximize"/>
+            </Button>
+
+            <Button
+                x:Name="btnRestore"
+                Margin="0,5,5,0"
+                ToolTip="Restore Down"
+                Grid.Column="2"
+                Visibility="Collapsed"
+                WindowChrome.IsHitTestVisibleInChrome="True"
+                Click="Button_Click_3"
+                Opacity="1"
+                Style="{DynamicResource MaterialDesignToolButton}"
+                Background="Transparent"
+                BorderBrush="Transparent">
+
+                <materialDesign:PackIcon
+                    Height="Auto"
+                    Width="Auto"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Kind="WindowRestore"/>
+            </Button>
+
+            <Button
+                Grid.Column="1"
+                ToolTip="Minimize"
+                Margin="0,5,5,0"
+                WindowChrome.IsHitTestVisibleInChrome="True"
+                Click="Button_Click"
+                Style="{DynamicResource MaterialDesignToolButton}"
+                Background="Transparent"
+                BorderBrush="Transparent">
+
+                <materialDesign:PackIcon
+                    Height="Auto"
+                    Width="Auto"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Kind="WindowMinimize"/>
+            </Button>
+        </Grid>
     </Grid>
-</Window>
+</classes:BaseWindow>
