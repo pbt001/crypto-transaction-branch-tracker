@@ -1,4 +1,6 @@
-﻿using CryptoBranchTracker.WPF.Classes;
+﻿using CryptoBranchTracker.Objects.Classes;
+using CryptoBranchTracker.WPF.Classes;
+using CryptoBranchTracker.WPF.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -23,6 +26,23 @@ namespace CryptoBranchTracker.WPF.Windows
         public wndMain()
         {
             InitializeComponent();
+        }
+
+        private void LoadBranches()
+        {
+            try
+            {
+                List<Branch> lstBranches = Branch.GetAllLocalBranches();
+
+                foreach (Branch branch in lstBranches)
+                {
+                    this.ugBranches.Children.Add(new ctrlBranch(branch));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred loading branches: {ex}");
+            }
         }
         
         /// <summary>
@@ -114,6 +134,7 @@ namespace CryptoBranchTracker.WPF.Windows
             try
             {
                 this.CheckMaxRestore();
+                this.LoadBranches();
             }
             catch (Exception ex)
             {

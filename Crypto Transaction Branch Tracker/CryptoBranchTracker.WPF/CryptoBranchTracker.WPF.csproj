@@ -68,6 +68,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Classes\BaseWindow.cs" />
+    <Compile Include="Controls\ctrlBranch.xaml.cs">
+      <DependentUpon>ctrlBranch.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\ButtonTextRelativeXConverter.cs" />
     <Compile Include="Converters\NumericToThicknessConverter.cs" />
     <Compile Include="Windows\wndMain.xaml.cs">
@@ -102,6 +105,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\ctrlBranch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resource Dictionaries\Constants.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -110,6 +117,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CryptoBranchTracker.Objects\CryptoBranchTracker.Objects.csproj">
+      <Project>{d23941f4-ded7-4008-911a-d076c85a22ae}</Project>
+      <Name>CryptoBranchTracker.Objects</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets')" />

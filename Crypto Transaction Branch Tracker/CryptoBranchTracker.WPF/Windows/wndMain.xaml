@@ -330,9 +330,11 @@
                     Visibility="Collapsed"
                     x:Name="tiBranches">
 
-                    <Label
-                        Content="branches">
-                    </Label>
+                    <UniformGrid
+                        x:Name="ugBranches"
+                        Rows="2"
+                        Columns="5">
+                    </UniformGrid>
                 </TabItem>
 
                 <TabItem
