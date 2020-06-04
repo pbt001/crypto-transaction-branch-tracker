@@ -24,7 +24,7 @@ namespace CryptoBranchTracker.WPF.Windows
         {
             InitializeComponent();
         }
-
+        
         /// <summary>
         /// Check the state of the window to determine the visibility of the maximize/restore title bar buttons
         /// </summary>
@@ -114,6 +114,30 @@ namespace CryptoBranchTracker.WPF.Windows
             try
             {
                 this.CheckMaxRestore();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.dhMenu.IsLeftDrawerOpen = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.dhMenu.IsLeftDrawerOpen = false;
             }
             catch (Exception ex)
             {

@@ -68,6 +68,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Classes\BaseWindow.cs" />
+    <Compile Include="Converters\ButtonTextRelativeXConverter.cs" />
+    <Compile Include="Converters\NumericToThicknessConverter.cs" />
     <Compile Include="Windows\wndMain.xaml.cs">
       <DependentUpon>wndMain.xaml</DependentUpon>
     </Compile>
@@ -100,6 +102,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Resource Dictionaries\Constants.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\wndMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
