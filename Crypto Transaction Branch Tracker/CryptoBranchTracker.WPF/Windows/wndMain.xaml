@@ -33,14 +33,16 @@
         <materialDesign:DrawerHost
             x:Name="dhMenu"
             Grid.RowSpan="2"
-            HorizontalAlignment="Left">
+            MinWidth="{Binding ElementName=txtBranches, Converter={StaticResource ButtonRelativeX}}"
+            HorizontalAlignment="Left"
+            Width="Auto">
 
             <materialDesign:DrawerHost.LeftDrawerContent>
                 <materialDesign:ColorZone
                     Mode="PrimaryMid"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Stretch"
-                    Width="400">
+                    Width="250">
                 </materialDesign:ColorZone>
             </materialDesign:DrawerHost.LeftDrawerContent>
         </materialDesign:DrawerHost>
@@ -58,7 +60,7 @@
                 Mode="{Binding ElementName=czMenu, Path=Mode}"
                 VerticalAlignment="Stretch"
                 HorizontalAlignment="Left"
-                Width="{Binding ElementName=czMenu, Path=ActualWidth}">
+                Width="{Binding ElementName=dhMenu, Path=MinWidth}">
 
                 <ToggleButton
                     Style="{DynamicResource MaterialDesignHamburgerToggleButton}"
@@ -165,11 +167,12 @@
 
             <materialDesign:ColorZone
                 x:Name="czMenu"
-                Width="{Binding ElementName=txtBranches, Converter={StaticResource ButtonRelativeX}}"
+                Width="{Binding ElementName=dhMenu, Path=ActualWidth}"
                 Mode="PrimaryMid"
                 VerticalAlignment="Stretch">
 
-                <StackPanel>
+                <StackPanel
+                    x:Name="pnlMenu">
                     <Button
                         x:Name="btnBranches"
                         Margin="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource MenuMarginConverter}}"
@@ -193,7 +196,6 @@
 
                             <TextBlock
                                 x:Name="txtBranches"
-                                Panel.ZIndex="100"
                                 Margin="15,0,0,0"
                                 Text="Branches"
                                 Grid.Column="1"
@@ -205,7 +207,7 @@
                     <Button
                         Margin="8"
                         materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                        HorizontalAlignment="Left">
+                        HorizontalContentAlignment="Left">
 
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -226,6 +228,7 @@
                             <TextBlock
                                 Margin="15,0,0,0"
                                 Grid.Column="1"
+                                VerticalAlignment="Center"
                                 Text="New Branch">
                             </TextBlock>
                         </Grid>
@@ -234,7 +237,7 @@
                     <Button
                         Margin="8"
                         materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                        HorizontalAlignment="Left">
+                        HorizontalContentAlignment="Left">
 
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -254,6 +257,7 @@
 
                             <TextBlock
                                 Margin="15,0,0,0"
+                                VerticalAlignment="Center"
                                 Grid.Column="1"
                                 Text="Transactions">
                             </TextBlock>
