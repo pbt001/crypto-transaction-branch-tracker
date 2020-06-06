@@ -333,7 +333,7 @@
                     <UniformGrid
                         x:Name="ugBranches"
                         Rows="2"
-                        Columns="5">
+                        Columns="3">
                     </UniformGrid>
                 </TabItem>
 

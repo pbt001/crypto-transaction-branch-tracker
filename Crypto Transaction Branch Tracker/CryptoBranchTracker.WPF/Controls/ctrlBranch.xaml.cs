@@ -52,6 +52,10 @@ namespace CryptoBranchTracker.WPF.Controls
 
                 this.txtCrypto.Text = displayName;
                 this.imgCrypto.Source = Globals.GetResourceImage(resourceName);
+
+                this.txtDates.Text = this.Branch.DateCreated.HasValue
+                    ? $"{this.Branch.DateCreated.Value.ToShortDateString()} - Present"
+                    : "N/A";
             }
             catch (Exception ex)
             {
