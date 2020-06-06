@@ -78,6 +78,7 @@
     <Compile Include="Controls\ctrlCrypto.xaml.cs">
       <DependentUpon>ctrlCrypto.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ButtonTextRelativeXConverter.cs" />
     <Compile Include="Converters\NumericToThicknessConverter.cs" />
     <Compile Include="Windows\wndMain.xaml.cs">

@@ -24,6 +24,9 @@ namespace CryptoBranchTracker.WPF.Controls
     /// </summary>
     public partial class ctrlBranch : UserControl
     {
+        public delegate void OnRequestEdit(object sender, EventArgs e);
+        public event OnRequestEdit RequestEdit;
+
         public Branch Branch { get; set; } = new Branch();
 
         public List<Transaction> Transactions { get; set; } = new List<Transaction>();
@@ -116,6 +119,18 @@ namespace CryptoBranchTracker.WPF.Controls
             catch (Exception ex)
             {
                 throw new Exception($"An error occurred initializing control: {ex}");
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.RequestEdit?.Invoke(this, e);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
             }
         }
     }

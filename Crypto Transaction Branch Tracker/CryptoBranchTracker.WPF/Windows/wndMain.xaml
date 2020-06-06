@@ -57,7 +57,7 @@
                         Grid.Column="1"
                         VerticalAlignment="Center"
                         materialDesign:HintAssist.Hint="Search"
-                        KeyUp="txtCryptoSearch_KeyUp">
+                        TextChanged="txtCryptoSearch_TextChanged">
                     </TextBox>
                 </Grid>
 

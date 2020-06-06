@@ -44,6 +44,7 @@ namespace CryptoBranchTracker.WPF.Windows
                 foreach (Branch branch in lstBranches)
                 {
                     ctrlBranch curBranch = new ctrlBranch(branch);
+                    curBranch.RequestEdit += CurBranch_RequestEdit;
 
                     curBranch.ImportTransactions(
                             lstTransactions.
@@ -58,7 +59,20 @@ namespace CryptoBranchTracker.WPF.Windows
                 throw new Exception($"An error occurred loading branches: {ex}");
             }
         }
-        
+
+        private void CurBranch_RequestEdit(object sender, EventArgs e)
+        {
+            try
+            {
+                this.dhCryptocurrency.DataContext = (sender as ctrlBranch).Branch;
+                this.dhCryptocurrency.IsOpen = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
         /// <summary>
         /// Check the state of the window to determine the visibility of the maximize/restore title bar buttons
         /// </summary>
@@ -174,14 +188,28 @@ namespace CryptoBranchTracker.WPF.Windows
                 if (sender is ctrlCrypto crypto) {
                     this.dhCryptocurrency.IsOpen = false;
 
-                    new Branch()
-                    {
-                        Identifier = Guid.NewGuid(),
-                        DateCreated = DateTime.Now.Date,
-                        Cryptocurrency = crypto.CryptoSet.Key.ToString().ToUpper()
-                    }.Save();
+                    this.txtCryptoSearch.Text = "";
 
+                    Branch bSave = new Branch()
+                    {
+                        Cryptocurrency = crypto.CryptoSet.Key.ToString().ToUpper()
+                    };
+
+                    if (this.dhCryptocurrency.DataContext is Branch brnUpdate)
+                    {
+                        bSave = brnUpdate;
+                        bSave.Cryptocurrency = crypto.CryptoSet.Key.ToString().ToUpper();
+                    }
+                    else
+                    {
+                        bSave.Identifier = Guid.NewGuid();
+                        bSave.DateCreated = DateTime.Now.Date;
+                    }
+
+                    bSave.Save();
                     this.LoadBranches();
+
+                    this.dhCryptocurrency.DataContext = null;
                 }
             }
             catch (Exception ex)
@@ -265,7 +293,7 @@ namespace CryptoBranchTracker.WPF.Windows
             }
         }
 
-        private void txtCryptoSearch_KeyUp(object sender, KeyEventArgs e)
+        private void txtCryptoSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
