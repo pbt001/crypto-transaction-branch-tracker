@@ -13,6 +13,8 @@ namespace CryptoBranchTracker.Objects.Classes
 
         public Guid Identifier = new Guid();
 
+        public string Cryptocurrency { get; set; } = "";
+
         public string Notes { get; set; } = "";
 
         public string GetDelimitedValue()
@@ -25,6 +27,7 @@ namespace CryptoBranchTracker.Objects.Classes
                 {
                     { Strings.BranchKeys.BRANCH_NOTES, Globals.Compress(this.Notes) },
                     { Strings.BranchKeys.BRANCH_CREATED, this.DateCreated.HasValue ? this.DateCreated.Value.Ticks : (object)Strings.NULL_VALUE },
+                    { Strings.BranchKeys.BRANCH_CRYPTO, this.Cryptocurrency }
                 };
 
                 //Initial value
@@ -63,6 +66,13 @@ namespace CryptoBranchTracker.Objects.Classes
 
                 if (notesPair.HasValue)
                     this.Notes = Globals.Decompress(notesPair.Value.Value);
+
+                //Crypto
+                KeyValuePair<string, string>? cryptoPair = dictDelimitedValues.
+                    Where(x => x.Key == Strings.BranchKeys.BRANCH_CRYPTO).FirstOrDefault();
+
+                if (cryptoPair.HasValue)
+                    this.Cryptocurrency = cryptoPair.Value.Value;
 
                 //Date Created
                 KeyValuePair<string, string>? createdPair = dictDelimitedValues.

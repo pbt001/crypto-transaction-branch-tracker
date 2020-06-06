@@ -19,9 +19,25 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Image Source="pack://siteoforigin:,,,/Resources/btc.png"
-                   Stretch="None"
-                   HorizontalAlignment="Left"/>
+            <StackPanel
+                Orientation="Horizontal">
+
+                <Image
+                    x:Name="imgCrypto"
+                    Stretch="None"
+                    HorizontalAlignment="Left"
+                    Source="/CryptoBranchTracker.WPF;component/Resources/generic.png"/>
+
+                <TextBlock
+                    x:Name="txtCrypto"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    Margin="5,0,0,0"
+                    FontSize="18"
+                    Opacity="0.5"
+                    Text="Unspecified Crypto">
+                </TextBlock>
+            </StackPanel>
         </Grid>
     </materialDesign:Card>
 </UserControl>

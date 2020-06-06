@@ -33,6 +33,8 @@ namespace CryptoBranchTracker.Objects.Classes
 
         public struct BranchKeys
         {
+            public const string BRANCH_CRYPTO = "BRANCH_CRYPTO";
+
             public const string BRANCH_CREATED = "BRANCH_CREATED";
 
             public const string BRANCH_IDENTIFIER = "BRANCH_IDENTIFIER";
