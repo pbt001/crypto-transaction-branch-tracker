@@ -11,6 +11,8 @@ namespace CryptoBranchTracker.Objects.Classes
     {
         public DateTime? DateCreated { get; set; }
 
+        public TimeSpan? TimeCreated { get; set; }
+
         public Guid Identifier = new Guid();
 
         public string Cryptocurrency { get; set; } = "";
@@ -24,7 +26,8 @@ namespace CryptoBranchTracker.Objects.Classes
                 Dictionary<string, object> dictPairs = new Dictionary<string, object>()
                 {
                     { Strings.BranchKeys.BRANCH_CREATED, this.DateCreated.HasValue ? this.DateCreated.Value.Ticks : (object)Strings.NULL_VALUE },
-                    { Strings.BranchKeys.BRANCH_CRYPTO, this.Cryptocurrency }
+                    { Strings.BranchKeys.BRANCH_CRYPTO, this.Cryptocurrency },
+                    { Strings.BranchKeys.BRANCH_CREATED_TIME, this.TimeCreated.HasValue ? this.TimeCreated.Value.Ticks : (object)Strings.NULL_VALUE }
                 };
 
                 //Initial value
@@ -74,6 +77,18 @@ namespace CryptoBranchTracker.Objects.Classes
 
                     if (createdValue != Strings.NULL_VALUE)
                         this.DateCreated = new DateTime(Convert.ToInt64(createdValue));
+                }
+
+                //Time Created
+                KeyValuePair<string, string>? timePair = dictDelimitedValues.
+                    Where(x => x.Key == Strings.BranchKeys.BRANCH_CREATED_TIME).FirstOrDefault();
+
+                if (timePair.HasValue)
+                {
+                    string timeValue = timePair.Value.Value;
+
+                    if (timeValue != Strings.NULL_VALUE)
+                        this.TimeCreated = new TimeSpan(Convert.ToInt64(timeValue));
                 }
             }
             catch (Exception ex)

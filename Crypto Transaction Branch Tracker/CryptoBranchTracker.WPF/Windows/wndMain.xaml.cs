@@ -38,7 +38,7 @@ namespace CryptoBranchTracker.WPF.Windows
             {
                 this.ugBranches.Children.Clear();
 
-                List<Branch> lstBranches = Branch.GetAllLocalBranches().OrderByDescending (x => x.DateCreated).ToList();
+                List<Branch> lstBranches = Branch.GetAllLocalBranches().OrderByDescending (x => x.DateCreated).ThenByDescending(x => x.TimeCreated).ToList();
                 List<Transaction> lstTransactions = Transaction.GetAllLocalTransactions();
 
                 foreach (Branch branch in lstBranches)
@@ -190,25 +190,27 @@ namespace CryptoBranchTracker.WPF.Windows
 
                     this.txtCryptoSearch.Text = "";
 
-                    Branch bSave = new Branch()
+                    if (this.dhCryptocurrency.DataContext is Branch brBranch)
                     {
-                        Cryptocurrency = crypto.CryptoSet.Key.ToString().ToUpper()
-                    };
-
-                    if (this.dhCryptocurrency.DataContext is Branch brnUpdate)
-                    {
-                        bSave = brnUpdate;
-                        bSave.Cryptocurrency = crypto.CryptoSet.Key.ToString().ToUpper();
+                        brBranch.Cryptocurrency = crypto.CryptoSet.Key.ToString().ToUpper();
+                        brBranch.Save();
                     }
                     else
                     {
-                        bSave.Identifier = Guid.NewGuid();
-                        bSave.DateCreated = DateTime.Now.Date;
+                        DateTime dteNow = DateTime.Now;
+
+                        Branch bSave = new Branch()
+                        {
+                            Cryptocurrency = crypto.CryptoSet.Key.ToString().ToUpper(),
+                            DateCreated = dteNow.Date,
+                            TimeCreated = dteNow.TimeOfDay,
+                            Identifier = Guid.NewGuid()
+                        };
+
+                        bSave.Save();
                     }
 
-                    bSave.Save();
                     this.LoadBranches();
-
                     this.dhCryptocurrency.DataContext = null;
                 }
             }

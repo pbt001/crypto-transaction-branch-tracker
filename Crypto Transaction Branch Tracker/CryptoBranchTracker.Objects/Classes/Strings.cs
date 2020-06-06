@@ -35,6 +35,8 @@ namespace CryptoBranchTracker.Objects.Classes
 
             public const string BRANCH_CREATED = "BRANCH_CREATED";
 
+            public const string BRANCH_CREATED_TIME = "BRANCH_CREATED_TIME";
+
             public const string BRANCH_IDENTIFIER = "BRANCH_IDENTIFIER";
         }
 
