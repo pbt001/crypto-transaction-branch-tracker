@@ -27,6 +27,9 @@ namespace CryptoBranchTracker.WPF.Controls
         public delegate void OnRequestEdit(object sender, EventArgs e);
         public event OnRequestEdit RequestEdit;
 
+        public delegate void OnRequestDelete(object sender, EventArgs e);
+        public event OnRequestDelete RequestDelete;
+
         public Branch Branch { get; set; } = new Branch();
 
         public List<Transaction> Transactions { get; set; } = new List<Transaction>();
@@ -127,6 +130,45 @@ namespace CryptoBranchTracker.WPF.Controls
             try
             {
                 this.RequestEdit?.Invoke(this, e);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.gridMain.Visibility = Visibility.Collapsed;
+                this.gridDelete.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.gridMain.Visibility = Visibility.Visible;
+                this.gridDelete.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //Propagating this event upward so that we can safely refresh the branch list
+                this.RequestDelete?.Invoke(this, e);
             }
             catch (Exception ex)
             {

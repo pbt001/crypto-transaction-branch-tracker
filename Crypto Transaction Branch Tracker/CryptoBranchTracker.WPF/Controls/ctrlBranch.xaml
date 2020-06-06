@@ -22,31 +22,34 @@
         <Grid
             Margin="20">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+            <Grid
+                x:Name="gridMain">
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                <!--StackPanel to manage icon and display text-->
-                <StackPanel
+                    <!--StackPanel to manage icon and display text-->
+                    <StackPanel
                     Orientation="Horizontal">
 
-                    <Image
+                        <Image
                         x:Name="imgCrypto"
                         Stretch="None"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left"
                         Source="/CryptoBranchTracker.WPF;component/Resources/generic.png"/>
-                    
-                    <TextBlock
+
+                        <TextBlock
                         x:Name="txtCrypto"
                         VerticalAlignment="Center"
                         FontWeight="DemiBold"
@@ -54,66 +57,81 @@
                         Margin="5,0,0,0"
                         FontSize="18"
                         Text="Unspecified Crypto">
-                    </TextBlock>
-                </StackPanel>
+                        </TextBlock>
+                    </StackPanel>
 
-                <Button
-                    Grid.Column="1"
-                    Click="Button_Click"
-                    Visibility="{Binding ElementName=cardMain, Path=IsMouseOver, Converter={StaticResource BoolToVis}}"
-                    HorizontalAlignment="Right"
-                    Style="{DynamicResource MaterialDesignToolForegroundButton}">
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Grid.Column="1"
+                        Visibility="{Binding ElementName=cardMain, Path=IsMouseOver, Converter={StaticResource BoolToVis}}"
+                        HorizontalAlignment="Right">
 
-                    <materialDesign:PackIcon
-                        Kind="Pencil"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
-                    </materialDesign:PackIcon>
-                </Button>
-            </Grid>
+                        <Button
+                            Click="Button_Click"
+                            Style="{DynamicResource MaterialDesignToolForegroundButton}">
 
-            <StackPanel
+                            <materialDesign:PackIcon
+                                Kind="Pencil"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+                            </materialDesign:PackIcon>
+                        </Button>
+
+                        <Button
+                            Click="Button_Click_1"
+                            Style="{DynamicResource MaterialDesignToolForegroundButton}">
+
+                            <materialDesign:PackIcon
+                                Kind="Trash"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+                            </materialDesign:PackIcon>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel
                 Grid.Row="1"
                 Margin="3,0,0,0">
 
-                <TextBlock
+                    <TextBlock
                     x:Name="txtTransactionOne"
                     Margin="0,15,0,0"
                     FontSize="16"
                     FontWeight="DemiBold"
                     Foreground="#FF6CCB56">
-                </TextBlock>
+                    </TextBlock>
 
-                <TextBlock
+                    <TextBlock
                     x:Name="txtTransactionTwo"
                     FontWeight="DemiBold"
                     Foreground="#FF6CCB56"
                     Margin="0,5,0,0"
                     FontSize="15"
                     Opacity="0.5">
-                </TextBlock>
+                    </TextBlock>
 
-                <TextBlock
+                    <TextBlock
                     x:Name="txtTransactionThree"
                     FontWeight="DemiBold"
                     Margin="0,5,0,0"
                     Foreground="#FF6CCB56"
                     FontSize="14"
                     Opacity="0.25">
-                </TextBlock>
-            </StackPanel>
+                    </TextBlock>
+                </StackPanel>
 
-            <!--StackPanel for separator and content-->
-            <StackPanel
+                <!--StackPanel for separator and content-->
+                <StackPanel
                 Grid.Row="3">
 
-                <Separator
+                    <Separator
                     Opacity="0.25"
                     Margin="0"
                     Padding="0"
                     Background="{DynamicResource PrimaryHueDarkBrush}"/>
 
-                <TextBlock
+                    <TextBlock
                     x:Name="txtDates"
                     Margin="0,10,0,0"
                     VerticalAlignment="Center"
@@ -122,8 +140,73 @@
                     Opacity="0.5"
                     Foreground="{DynamicResource PrimaryHueMidBrush}"
                     FontWeight="DemiBold">
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+
+            <!--Delete Confirmation Stuff-->
+            <Grid
+                x:Name="gridDelete"
+                Visibility="Collapsed">
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <materialDesign:PackIcon
+                    HorizontalAlignment="Center"
+                    Kind="Trash"
+                    Height="75"
+                    Width="75"
+                    Foreground="#FFF53649">
+                </materialDesign:PackIcon>
+
+                <TextBlock
+                    Grid.Row="1"
+                    Margin="0,15,0,5"
+                    Text="Are you sure?"
+                    HorizontalAlignment="Center"
+                    FontWeight="DemiBold"
+                    FontSize="20">
                 </TextBlock>
-            </StackPanel>
+
+                <TextBlock
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    TextWrapping="Wrap"
+                    Opacity="0.75"
+                    TextAlignment="Center"
+                    Text="Do you really want to delete this branch? This action cannot be undone.">
+                </TextBlock>
+
+                <Grid
+                    Grid.Row="3">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button
+                        Click="Button_Click_2"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
+                        Content="Cancel"
+                        Foreground="Black">
+                    </Button>
+
+                    <Button
+                        Click="Button_Click_3"
+                        Grid.Column="1"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
+                        Content="Delete"
+                        Foreground="#FFF53649">
+                    </Button>
+                </Grid>
+            </Grid>
         </Grid>
     </materialDesign:Card>
 </UserControl>

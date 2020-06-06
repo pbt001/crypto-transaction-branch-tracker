@@ -44,7 +44,9 @@ namespace CryptoBranchTracker.WPF.Windows
                 foreach (Branch branch in lstBranches)
                 {
                     ctrlBranch curBranch = new ctrlBranch(branch);
+
                     curBranch.RequestEdit += CurBranch_RequestEdit;
+                    curBranch.RequestDelete += CurBranch_RequestDelete;
 
                     curBranch.ImportTransactions(
                             lstTransactions.
@@ -57,6 +59,22 @@ namespace CryptoBranchTracker.WPF.Windows
             catch (Exception ex)
             {
                 throw new Exception($"An error occurred loading branches: {ex}");
+            }
+        }
+
+        private void CurBranch_RequestDelete(object sender, EventArgs e)
+        {
+            try
+            {
+                if (sender is ctrlBranch curBranch)
+                {
+                    curBranch.Branch.Delete();
+                    this.LoadBranches();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
             }
         }
 

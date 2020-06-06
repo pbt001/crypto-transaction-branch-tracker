@@ -132,6 +132,32 @@ namespace CryptoBranchTracker.Objects.Classes
             return lstBranches;
         }
 
+        public void Delete()
+        {
+            try
+            {
+                RegistryView platformView = Environment.Is64BitOperatingSystem
+                    ? RegistryView.Registry64
+                    : RegistryView.Registry32;
+
+                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                {
+                    if (registryBase != null)
+                    {
+                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
+                        {
+                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.BRANCH_LIST))
+                                branchList.DeleteValue(this.Identifier.ToString());
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred deleting branch: {ex}");
+            }
+        }
+
         public void Save()
         {
             try
