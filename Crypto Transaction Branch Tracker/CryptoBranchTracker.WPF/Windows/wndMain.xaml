@@ -20,10 +20,6 @@
         <converters:NumericToThicknessConverter x:Key="MenuMarginConverter" DefaultMarginValue="8" ThicknessType="TOP" />
     </Window.Resources>
 
-    <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="34" />
-    </WindowChrome.WindowChrome>
-
     <materialDesign:DialogHost
         x:Name="dhCryptocurrency"
         CloseOnClickAway="True">

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Shell;
 
 /*
  * https://blog.magnusmontin.net/2014/11/30/disabling-or-hiding-the-minimize-maximize-or-close-button-of-a-wpf-window/
@@ -31,6 +32,7 @@ namespace CryptoBranchTracker.WPF.Classes
         {
             try
             {
+                WindowChrome.SetWindowChrome(this, new WindowChrome() { CaptionHeight = 34 });
                 this.SourceInitialized += MainWindow_SourceInitialized;
             }
             catch (Exception ex)
