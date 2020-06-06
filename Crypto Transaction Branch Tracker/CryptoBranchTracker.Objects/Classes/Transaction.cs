@@ -29,6 +29,27 @@ namespace CryptoBranchTracker.Objects.Classes
             SELL
         }
 
+        //Get the text to be displayed for this transaction based on its type and value
+        public string GetDisplayText()
+        {
+            try
+            {
+                switch (this.TransactionType)
+                {
+                    case TransactionTypes.BUY:
+                        return $"Bought for {this.FiatDifference}";
+                    case TransactionTypes.SELL:
+                        return $"Sold for {this.FiatDifference}";
+                    default:
+                        return "";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred getting display text: {ex}");
+            }
+        }
+
         private void PopulateProperties(string base64Value)
         {
             try

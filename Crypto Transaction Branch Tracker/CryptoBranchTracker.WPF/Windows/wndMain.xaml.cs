@@ -33,10 +33,18 @@ namespace CryptoBranchTracker.WPF.Windows
             try
             {
                 List<Branch> lstBranches = Branch.GetAllLocalBranches();
+                List<Transaction> lstTransactions = Transaction.GetAllLocalTransactions();
 
                 foreach (Branch branch in lstBranches)
                 {
-                    this.ugBranches.Children.Add(new ctrlBranch(branch));
+                    ctrlBranch curBranch = new ctrlBranch(branch);
+
+                    curBranch.ImportTransactions(
+                            lstTransactions.
+                                Where(x => x.BranchIdentifier == branch.Identifier).ToList()
+                        );
+
+                    this.ugBranches.Children.Add(curBranch);
                 }
             }
             catch (Exception ex)

@@ -26,9 +26,50 @@ namespace CryptoBranchTracker.WPF.Controls
     {
         public Branch Branch { get; set; } = new Branch();
 
+        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
+
         public ctrlBranch()
         {
             InitializeComponent();
+        }
+
+        private void LoadTransactionData()
+        {
+            try
+            {
+                Transaction firstTransaction = this.Transactions.FirstOrDefault();
+                Transaction secondTransaction = this.Transactions.ElementAtOrDefault(1);
+                Transaction thirdTransaction = this.Transactions.ElementAtOrDefault(2);
+
+                this.txtTransactionOne.Text = firstTransaction != null
+                    ? $"• {firstTransaction.GetDisplayText()}"
+                    : "";
+
+                this.txtTransactionTwo.Text = secondTransaction != null
+                    ? $"• {secondTransaction.GetDisplayText()}"
+                    : "";
+
+                this.txtTransactionThree.Text = thirdTransaction != null
+                    ? $"• {thirdTransaction.GetDisplayText()}"
+                    : "";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred loading transaction data: {ex}");
+            }
+        }
+
+        public void ImportTransactions(List<Transaction> lstTransactions)
+        {
+            try
+            {
+                this.Transactions = lstTransactions;
+                this.LoadTransactionData();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred importing transactions: {ex}");
+            }
         }
 
         public void RefreshDetails()
