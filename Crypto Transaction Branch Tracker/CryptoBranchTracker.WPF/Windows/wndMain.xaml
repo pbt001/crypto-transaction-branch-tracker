@@ -24,8 +24,61 @@
         <WindowChrome CaptionHeight="34" />
     </WindowChrome.WindowChrome>
 
-    <Grid>
-        <Grid.RowDefinitions>
+    <materialDesign:DialogHost
+        x:Name="dhCryptocurrency"
+        CloseOnClickAway="True">
+
+        <materialDesign:DialogHost.DialogContent>
+            <Grid
+                Margin="15">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label
+                        Content="Choose Your Crypotcurrency"
+                        FontWeight="Bold"
+                        FontSize="30"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center">
+                    </Label>
+
+                    <TextBox
+                        x:Name="txtCryptoSearch"
+                        Margin="10,0,0,0"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.Hint="Search"
+                        KeyUp="txtCryptoSearch_KeyUp">
+                    </TextBox>
+                </Grid>
+
+                <ScrollViewer
+                    VerticalScrollBarVisibility="Auto"
+                    Grid.Row="1"
+                    Width="750"
+                    Margin="0,15,0,0"
+                    Height="750">
+
+                    <UniformGrid
+                        x:Name="gridCurrencies"
+                        VerticalAlignment="Top"
+                        Columns="4">
+                    </UniformGrid>
+                </ScrollViewer>
+            </Grid>
+        </materialDesign:DialogHost.DialogContent>
+
+        <Grid>
+            <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -223,6 +276,7 @@
 
                     <Button
                         Margin="8"
+                        Click="Button_Click_6"
                         materialDesign:ShadowAssist.ShadowDepth="Depth0"
                         HorizontalContentAlignment="Left">
 
@@ -357,4 +411,5 @@
             </TabControl>
         </Grid>
     </Grid>
+    </materialDesign:DialogHost>
 </classes:BaseWindow>

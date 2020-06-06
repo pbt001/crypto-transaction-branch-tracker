@@ -75,6 +75,9 @@
     <Compile Include="Controls\ctrlBranch.xaml.cs">
       <DependentUpon>ctrlBranch.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctrlCrypto.xaml.cs">
+      <DependentUpon>ctrlCrypto.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\ButtonTextRelativeXConverter.cs" />
     <Compile Include="Converters\NumericToThicknessConverter.cs" />
     <Compile Include="Windows\wndMain.xaml.cs">
@@ -111,6 +114,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\ctrlBranch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ctrlCrypto.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

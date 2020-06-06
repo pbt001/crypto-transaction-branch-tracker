@@ -1,9 +1,13 @@
 ﻿using CryptoBranchTracker.Objects.Classes;
 using CryptoBranchTracker.WPF.Classes;
 using CryptoBranchTracker.WPF.Controls;
+using MaterialDesignThemes.Wpf;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -32,7 +36,9 @@ namespace CryptoBranchTracker.WPF.Windows
         {
             try
             {
-                List<Branch> lstBranches = Branch.GetAllLocalBranches();
+                this.ugBranches.Children.Clear();
+
+                List<Branch> lstBranches = Branch.GetAllLocalBranches().OrderByDescending (x => x.DateCreated).ToList();
                 List<Transaction> lstTransactions = Transaction.GetAllLocalTransactions();
 
                 foreach (Branch branch in lstBranches)
@@ -143,6 +149,40 @@ namespace CryptoBranchTracker.WPF.Windows
             {
                 this.CheckMaxRestore();
                 this.LoadBranches();
+
+                ResourceManager MyResourceClass = new ResourceManager(typeof(Properties.Resources));
+                ResourceSet resourceSet = MyResourceClass.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
+
+                foreach (DictionaryEntry entry in resourceSet.OfType<DictionaryEntry>().OrderBy(x => x.Key.ToString()))
+                {
+                    ctrlCrypto crypto = new ctrlCrypto(entry);
+                    crypto.MouseLeftButtonUp += Crypto_MouseLeftButtonUp;
+
+                    this.gridCurrencies.Children.Add(crypto);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Crypto_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (sender is ctrlCrypto crypto) {
+                    this.dhCryptocurrency.IsOpen = false;
+
+                    new Branch()
+                    {
+                        Identifier = Guid.NewGuid(),
+                        DateCreated = DateTime.Now.Date,
+                        Cryptocurrency = crypto.CryptoSet.Key.ToString().ToUpper()
+                    }.Save();
+
+                    this.LoadBranches();
+                }
             }
             catch (Exception ex)
             {
@@ -206,6 +246,35 @@ namespace CryptoBranchTracker.WPF.Windows
             {
                 this.tcMain.SelectedItem = this.tiKey;
                 this.tbMenu.IsChecked = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.dhCryptocurrency.IsOpen = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void txtCryptoSearch_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                foreach (ctrlCrypto crypto in this.gridCurrencies.Children)
+                {
+                    crypto.Visibility = (crypto.CryptoSet.Key.ToString().ToUpper().Contains(this.txtCryptoSearch.Text.ToUpper()))
+                        ? Visibility.Visible
+                        : Visibility.Collapsed;
+                }
             }
             catch (Exception ex)
             {
