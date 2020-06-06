@@ -19,8 +19,6 @@ namespace CryptoBranchTracker.Objects.Classes
 
         public double FiatDifference { get; set; } = 0;
 
-        public string Notes { get; set; } = "";
-
         public TransactionTypes TransactionType { get; set; } = TransactionTypes.BUY;
 
         public enum TransactionTypes
@@ -104,13 +102,6 @@ namespace CryptoBranchTracker.Objects.Classes
                 if (fiatDifferencePair.HasValue)
                     this.FiatDifference = Convert.ToDouble(fiatDifferencePair.Value.Value);
 
-                //Notes
-                KeyValuePair<string, string>? notesPair = dictDelimitedValues.
-                    Where(x => x.Key == Strings.TransactionKeys.TRANSACTION_NOTES).FirstOrDefault();
-
-                if (notesPair.HasValue)
-                    this.Notes = Globals.Decompress(notesPair.Value.Value);
-
                 //Transaction Type
                 KeyValuePair<string, string>? typePair = dictDelimitedValues.
                     Where(x => x.Key == Strings.TransactionKeys.TRANSACTION_TYPE).FirstOrDefault();
@@ -171,7 +162,6 @@ namespace CryptoBranchTracker.Objects.Classes
                     { Strings.TransactionKeys.TRANSACTION_DATE, this.DateProcessed.HasValue ? this.DateProcessed.Value.Ticks : (object)Strings.NULL_VALUE },
                     { Strings.TransactionKeys.TRANSACTION_TIME, this.TimeProcessed.HasValue ? this.TimeProcessed.Value.Ticks : (object)Strings.NULL_VALUE },
                     { Strings.TransactionKeys.TRANSACTION_FIAT, this.FiatDifference },
-                    { Strings.TransactionKeys.TRANSACTION_NOTES, Globals.Compress(this.Notes) },
                     { Strings.TransactionKeys.TRANSACTION_TYPE, this.TransactionType }
                 };
 

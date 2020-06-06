@@ -15,8 +15,6 @@ namespace CryptoBranchTracker.Objects.Classes
 
         public string Cryptocurrency { get; set; } = "";
 
-        public string Notes { get; set; } = "";
-
         public string GetDelimitedValue()
         {
             string value;
@@ -25,7 +23,6 @@ namespace CryptoBranchTracker.Objects.Classes
             {
                 Dictionary<string, object> dictPairs = new Dictionary<string, object>()
                 {
-                    { Strings.BranchKeys.BRANCH_NOTES, Globals.Compress(this.Notes) },
                     { Strings.BranchKeys.BRANCH_CREATED, this.DateCreated.HasValue ? this.DateCreated.Value.Ticks : (object)Strings.NULL_VALUE },
                     { Strings.BranchKeys.BRANCH_CRYPTO, this.Cryptocurrency }
                 };
@@ -59,13 +56,6 @@ namespace CryptoBranchTracker.Objects.Classes
 
                 if (identifierPair.HasValue)
                     this.Identifier = new Guid(identifierPair.Value.Value);
-
-                //Notes
-                KeyValuePair<string, string>? notesPair = dictDelimitedValues.
-                    Where(x => x.Key == Strings.BranchKeys.BRANCH_NOTES).FirstOrDefault();
-
-                if (notesPair.HasValue)
-                    this.Notes = Globals.Decompress(notesPair.Value.Value);
 
                 //Crypto
                 KeyValuePair<string, string>? cryptoPair = dictDelimitedValues.

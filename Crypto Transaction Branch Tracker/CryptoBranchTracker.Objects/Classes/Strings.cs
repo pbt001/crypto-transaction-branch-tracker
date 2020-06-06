@@ -27,8 +27,6 @@ namespace CryptoBranchTracker.Objects.Classes
             public const string TRANSACTION_TYPE = "TRANSACTION_TYPE";
 
             public const string TRANSACTION_FIAT = "TRANSACTION_FIAT";
-
-            public const string TRANSACTION_NOTES = "TRANSACTION_NOTES";
         }
 
         public struct BranchKeys
@@ -38,8 +36,6 @@ namespace CryptoBranchTracker.Objects.Classes
             public const string BRANCH_CREATED = "BRANCH_CREATED";
 
             public const string BRANCH_IDENTIFIER = "BRANCH_IDENTIFIER";
-
-            public const string BRANCH_NOTES = "BRANCH_NOTES";
         }
 
         public struct RegistryLocations
