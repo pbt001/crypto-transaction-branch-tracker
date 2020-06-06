@@ -38,7 +38,10 @@ namespace CryptoBranchTracker.WPF.Windows
             {
                 this.ugBranches.Children.Clear();
 
-                List<Branch> lstBranches = Branch.GetAllLocalBranches().OrderByDescending (x => x.DateCreated).ThenByDescending(x => x.TimeCreated).ToList();
+                List<Branch> lstBranches = Branch.GetAllLocalBranches().
+                    OrderByDescending (x => x.DateCreated).
+                    ThenByDescending(x => x.TimeCreated).ToList();
+
                 List<Transaction> lstTransactions = Transaction.GetAllLocalTransactions();
 
                 foreach (Branch branch in lstBranches)

@@ -10,7 +10,7 @@ using System.Windows.Interop;
 /*
  * https://blog.magnusmontin.net/2014/11/30/disabling-or-hiding-the-minimize-maximize-or-close-button-of-a-wpf-window/
  * 
- * That site provided the code to essentially disable the default minimize and maximize buttons on a window, so that I can provide my own without any difficulties
+ * That site provided the code to essentially disable the default minimize button on a window, so that I can provide my own without any difficulties
  * 
  * Without this code, the window title bar acts strange due to the fact that the buttons are still actually functional, just not visible.
  */
@@ -25,8 +25,6 @@ namespace CryptoBranchTracker.WPF.Classes
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
         private const int GWL_STYLE = -16;
-
-        private const int WS_MAXIMIZEBOX = 0x10000;
         private const int WS_MINIMIZEBOX = 0x20000;
 
         public BaseWindow()
@@ -46,15 +44,7 @@ namespace CryptoBranchTracker.WPF.Classes
         {
             _windowHandle = new WindowInteropHelper(this).Handle;
 
-            HideMinimizeAndMaximizeButtons();
-        }
-
-        protected void HideMinimizeAndMaximizeButtons()
-        {
-            if (_windowHandle == null)
-                throw new InvalidOperationException("The window has not yet been completely initialized");
-
-            SetWindowLong(_windowHandle, GWL_STYLE, GetWindowLong(_windowHandle, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX);
+            DisableMinimizeButton();
         }
 
         protected void DisableMinimizeButton()
