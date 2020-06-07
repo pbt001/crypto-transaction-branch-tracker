@@ -1,0 +1,509 @@
+﻿<classes:BaseWindow x:Class="CryptoBranchTracker.WPF.Windows.wndMain"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:classes="clr-namespace:CryptoBranchTracker.WPF.Classes"
+                    xmlns:converters="clr-namespace:CryptoBranchTracker.WPF.Converters"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:local="clr-namespace:CryptoBranchTracker.WPF.Windows"
+                    mc:Ignorable="d"
+                    Title="Crypto Transaction Branch Tracker"
+                    WindowStartupLocation="CenterScreen"
+                    StateChanged="BaseWindow_StateChanged"
+                    Loaded="BaseWindow_Loaded"
+                    Height="900"
+                    Width="1400">
+
+    <Window.Resources>
+        <converters:ButtonTextRelativeXConverter x:Key="ButtonRelativeX" />
+        <converters:NumericToThicknessConverter x:Key="MenuMarginConverter" DefaultMarginValue="8" ThicknessType="TOP" />
+        <converters:BooleanToOpacityConverter x:Key="BoolToOpacity" />
+    </Window.Resources>
+
+    <materialDesign:DialogHost
+        x:Name="dhCryptocurrency"
+        CloseOnClickAway="True">
+
+        <!--Cryptocurrency Dialog Host-->
+        <materialDesign:DialogHost.DialogContent>
+            <Grid
+                Margin="15">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label
+                        Content="Choose Your Crypotcurrency"
+                        FontWeight="Bold"
+                        FontSize="30"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center">
+                    </Label>
+
+                    <TextBox
+                        x:Name="txtCryptoSearch"
+                        Margin="10,0,0,0"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.Hint="Search"
+                        TextChanged="txtCryptoSearch_TextChanged">
+                    </TextBox>
+                </Grid>
+
+                <ScrollViewer
+                    VerticalScrollBarVisibility="Auto"
+                    Grid.Row="1"
+                    Width="750"
+                    Margin="0,15,0,0"
+                    Height="750">
+
+                    <UniformGrid
+                        x:Name="gridCurrencies"
+                        VerticalAlignment="Top"
+                        Columns="4">
+                    </UniformGrid>
+                </ScrollViewer>
+            </Grid>
+        </materialDesign:DialogHost.DialogContent>
+
+        <materialDesign:DialogHost
+            x:Name="dhTransactionDetails"
+            CloseOnClickAway="True">
+            
+            <!--Transaction Dialog Host-->
+            <materialDesign:DialogHost.DialogContent>
+                <Grid
+                    Margin="15">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label
+                        Content="Transaction Details"
+                        FontWeight="Bold"
+                        FontSize="30"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center">
+                    </Label>
+
+                    <StackPanel
+                        Grid.Row="1"
+                        Width="400"
+                        Margin="0,50,0,0">
+
+                        <ComboBox
+                            x:Name="cmbTransactionType"
+                            SelectedIndex="2"
+                            Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.IsFloating="True"
+                            materialDesign:HintAssist.Hint="What kind of transaction was this?">
+                        </ComboBox>
+
+                        <TextBlock
+                            Text="This transaction was:"
+                            Margin="0,25,0,0"
+                            VerticalAlignment="Center">
+                        </TextBlock>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <ComboBox
+                                materialDesign:HintAssist.Hint="From"
+                                materialDesign:HintAssist.IsFloating="True"
+                                Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
+                                VerticalAlignment="Center"
+                                SelectedIndex="0"
+                                x:Name="cmbTransactionFrom"
+                                Margin="0,0,5,0">
+                            </ComboBox>
+
+                            <ComboBox
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                SelectedIndex="2"
+                                VerticalAlignment="Center"
+                                Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
+                                materialDesign:HintAssist.Hint="To"
+                                materialDesign:HintAssist.IsFloating="True"
+                                x:Name="cmbTransactionTo">
+                            </ComboBox>
+                        </Grid>
+
+                        <TextBox
+                            x:Name="txtTransactionFiat"
+                            Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                            Margin="0,25,0,0"
+                            VerticalAlignment="Center"
+                            KeyUp="txtTransactionFiat_KeyUp"
+                            materialDesign:HintAssist.IsFloating="True"
+                            materialDesign:HintAssist.Hint="How much fiat was lost or gained?">
+                        </TextBox>
+
+                        <Grid
+                            Margin="0,50,0,0">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Button
+                                Click="Button_Click_7"
+                                Style="{DynamicResource MaterialDesignFlatButton}"
+                                Content="Cancel"
+                                Foreground="Black">
+                            </Button>
+
+                            <Button
+                                Click="Button_Click_8"
+                                Grid.Column="1"
+                                Style="{DynamicResource MaterialDesignFlatButton}"
+                                Content="Submit"
+                                Foreground="#FF6CCB56">
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <materialDesign:DrawerHost
+                    x:Name="dhMenu"
+                    Grid.RowSpan="2"
+                    IsLeftDrawerOpen="{Binding ElementName=czMenu, Path=IsMouseOver, Mode=OneWay}"
+                    MinWidth="{Binding ElementName=txtBranches, Converter={StaticResource ButtonRelativeX}}"
+                    HorizontalAlignment="Left"
+                    Width="Auto">
+
+                    <materialDesign:DrawerHost.LeftDrawerContent>
+                        <materialDesign:ColorZone
+                            Mode="PrimaryMid"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Stretch"
+                            Width="250">
+                        </materialDesign:ColorZone>
+                    </materialDesign:DrawerHost.LeftDrawerContent>
+                </materialDesign:DrawerHost>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <materialDesign:ColorZone
+                        x:Name="czMenuFiller"
+                        Mode="{Binding ElementName=czMenu, Path=Mode}"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Left"
+                        Width="{Binding ElementName=dhMenu, Path=MinWidth}">
+                    </materialDesign:ColorZone>
+
+                    <!--Close Button-->
+                    <Button
+                        WindowChrome.IsHitTestVisibleInChrome="True"
+                        ToolTip="Close"
+                        Margin="0,5,5,0"
+                        Click="Button_Click_1"
+                        Grid.Column="3"
+                        Style="{DynamicResource MaterialDesignToolButton}"
+                        Background="Transparent"
+                        BorderBrush="Transparent">
+
+                        <materialDesign:PackIcon
+                            Height="Auto"
+                            Width="Auto"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Kind="WindowClose"/>
+                    </Button>
+
+                    <!--Maximize Button-->
+                    <Button
+                        x:Name="btnMaximize"
+                        Margin="0,5,5,0"
+                        Grid.Column="2"
+                        ToolTip="Maximize"
+                        WindowChrome.IsHitTestVisibleInChrome="True"
+                        Click="Button_Click_2"
+                        Style="{DynamicResource MaterialDesignToolButton}"
+                        Background="Transparent"
+                        BorderBrush="Transparent">
+
+                        <materialDesign:PackIcon
+                            Height="Auto"
+                            Width="Auto"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Kind="WindowMaximize"/>
+                    </Button>
+
+                    <!--Restore Button-->
+                    <Button
+                        x:Name="btnRestore"
+                        Margin="0,5,5,0"
+                        ToolTip="Restore Down"
+                        Grid.Column="2"
+                        Visibility="Collapsed"
+                        WindowChrome.IsHitTestVisibleInChrome="True"
+                        Click="Button_Click_3"
+                        Opacity="1"
+                        Style="{DynamicResource MaterialDesignToolButton}"
+                        Background="Transparent"
+                        BorderBrush="Transparent">
+
+                        <materialDesign:PackIcon
+                            Height="Auto"
+                            Width="Auto"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Kind="WindowRestore"/>
+                    </Button>
+
+                    <!--Minimize Button-->
+                    <Button
+                        Grid.Column="1"
+                        ToolTip="Minimize"
+                        Margin="0,5,5,0"
+                        WindowChrome.IsHitTestVisibleInChrome="True"
+                        Click="Button_Click"
+                        Style="{DynamicResource MaterialDesignToolButton}"
+                        Background="Transparent"
+                        BorderBrush="Transparent">
+
+                        <materialDesign:PackIcon
+                            Height="Auto"
+                            Width="Auto"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Kind="WindowMinimize"/>
+                    </Button>
+                </Grid>
+
+                <!--Menu-->
+                <Grid
+                    Grid.Row="2">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <materialDesign:ColorZone
+                        x:Name="czMenu"
+                        Width="{Binding ElementName=dhMenu, Path=ActualWidth}"
+                        Mode="PrimaryMid"
+                        VerticalAlignment="Stretch">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel>
+                                <Button
+                                    x:Name="btnBranches"
+                                    Opacity="{Binding ElementName=tiBranches, Path=IsSelected, Converter={StaticResource BoolToOpacity}}"
+                                    Click="btnBranches_Click"
+                                    Height="Auto"
+                                    Margin="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource MenuMarginConverter}}"
+                                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                    HorizontalContentAlignment="Left">
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <materialDesign:PackIcon
+                                            VerticalAlignment="Center"
+                                            Height="{DynamicResource MenuIconSize}"
+                                            Width="{DynamicResource MenuIconSize}"
+                                            HorizontalAlignment="Left"
+                                            Kind="SourceBranch">
+                                        </materialDesign:PackIcon>
+
+                                        <TextBlock
+                                            x:Name="txtBranches"
+                                            Margin="15,0,0,0"
+                                            Text="Branches"
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center">
+                                        </TextBlock>
+                                    </Grid>
+                                </Button>
+
+                                <Button
+                                    Margin="8"
+                                    Height="Auto"
+                                    Opacity="0.5"
+                                    Click="Button_Click_6"
+                                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                    HorizontalContentAlignment="Left">
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <materialDesign:PackIcon
+                                            VerticalAlignment="Center"
+                                            Height="{DynamicResource MenuIconSize}"
+                                            Width="{DynamicResource MenuIconSize}"
+                                            HorizontalAlignment="Left"
+                                            Kind="Plus">
+                                        </materialDesign:PackIcon>
+
+                                        <TextBlock
+                                            Margin="15,0,0,0"
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            Text="New Branch">
+                                        </TextBlock>
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+
+                            <Grid
+                                Visibility="{Binding ElementName=dhMenu, Path=IsLeftDrawerOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Grid.Row="2"
+                                Margin="0,0,0,8"
+                                VerticalAlignment="Bottom">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Button
+                                    Click="Button_Click_5"
+                                    ToolTip="CTBT GitHub"
+                                    Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Height="32"
+                                    Width="32">
+
+                                    <materialDesign:PackIcon
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Kind="Github"
+                                        Width="Auto"
+                                        Height="Auto">
+                                    </materialDesign:PackIcon>
+                                </Button>
+
+                                <Button
+                                    Click="Button_Click_4"
+                                    ToolTip="Quit"
+                                    Grid.Column="1"
+                                    Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Height="32"
+                                    Width="32">
+
+                                    <materialDesign:PackIcon
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Kind="ExitToApp"
+                                        Width="Auto"
+                                        Height="Auto">
+                                    </materialDesign:PackIcon>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </materialDesign:ColorZone>
+
+                    <TabControl
+                        x:Name="tcMain"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        Grid.Column="1"
+                        Margin="11">
+
+                        <TabItem
+                            Visibility="Collapsed"
+                            x:Name="tiBranches">
+
+                            <UniformGrid
+                                x:Name="ugBranches"
+                                Rows="3"
+                                Columns="3">
+                            </UniformGrid>
+                        </TabItem>
+
+                        <TabItem
+                            x:Name="tiBranchTransactions"
+                            Visibility="Collapsed">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel
+                                    Orientation="Horizontal">
+
+                                    <Image
+                                        x:Name="imgCrypto"
+                                        Stretch="None"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left"
+                                        Source="/CryptoBranchTracker.WPF;component/Resources/generic.png"/>
+
+                                    <TextBlock
+                                        x:Name="txtCrypto"
+                                        VerticalAlignment="Center"
+                                        FontWeight="DemiBold"
+                                        Margin="10,0,0,0"
+                                        FontSize="25"
+                                        Text="Unspecified Crypto">
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <ScrollViewer
+                                    VerticalScrollBarVisibility="Auto"
+                                    Grid.Row="1"
+                                    Margin="0,25,0,0">
+
+                                    <StackPanel
+                                        x:Name="pnlTransactions">
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </Grid>
+        </materialDesign:DialogHost>
+    </materialDesign:DialogHost>
+</classes:BaseWindow>
