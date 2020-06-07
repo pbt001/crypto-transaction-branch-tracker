@@ -42,11 +42,11 @@ namespace CryptoBranchTracker.Objects.Classes
         }
 
         //Get the text to be displayed for this transaction based on its type and value
-        public string GetDisplayText()
+        public string GetBasicDisplayText()
         {
             try
             {
-                return $"{this.Source} -> {this.Destination}";
+                return $"{this.Source.ToString().FirstCharToUpper()} -> {this.Destination.ToString().FirstCharToUpper()}";
             }
             catch (Exception ex)
             {

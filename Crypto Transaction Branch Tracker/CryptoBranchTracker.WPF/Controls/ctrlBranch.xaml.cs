@@ -52,15 +52,15 @@ namespace CryptoBranchTracker.WPF.Controls
                 Transaction thirdTransaction = this.Transactions.ElementAtOrDefault(2);
 
                 this.txtTransactionOne.Text = firstTransaction != null
-                    ? $"• {firstTransaction.GetDisplayText()}"
+                    ? $"• {firstTransaction.GetBasicDisplayText()}"
                     : "";
 
                 this.txtTransactionTwo.Text = secondTransaction != null
-                    ? $"• {secondTransaction.GetDisplayText()}"
+                    ? $"• {secondTransaction.GetBasicDisplayText()}"
                     : "";
 
                 this.txtTransactionThree.Text = thirdTransaction != null
-                    ? $"• {thirdTransaction.GetDisplayText()}"
+                    ? $"• {thirdTransaction.GetBasicDisplayText()}"
                     : "";
             }
             catch (Exception ex)

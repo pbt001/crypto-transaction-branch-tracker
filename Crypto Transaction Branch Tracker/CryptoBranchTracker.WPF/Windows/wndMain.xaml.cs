@@ -55,8 +55,8 @@ namespace CryptoBranchTracker.WPF.Windows
                     curBranch.ImportTransactions(
                             lstTransactions.
                                 Where(x => x.BranchIdentifier == branch.Identifier).
-                                OrderByDescending(x => x.DateProcessed).
-                                ThenByDescending(x => x.TimeProcessed).ToList()
+                                OrderBy(x => x.DateProcessed).
+                                ThenBy(x => x.TimeProcessed).ToList()
                         );
 
                     this.ugBranches.Children.Add(curBranch);
