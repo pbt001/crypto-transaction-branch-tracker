@@ -19,12 +19,26 @@ namespace CryptoBranchTracker.Objects.Classes
 
         public double FiatDifference { get; set; } = 0;
 
-        public TransactionTypes TransactionType { get; set; } = TransactionTypes.BUY;
+        public TransactionTypes TransactionType { get; set; } = TransactionTypes.DEPOSIT;
+
+        public LocationTypes Source { get; set; } = LocationTypes.FIAT;
+
+        public LocationTypes Destination { get; set; } = LocationTypes.CRYPTO;
+
+        public enum LocationTypes
+        {
+            FIAT,
+            BANK,
+            CRYPTO,
+            WALLET
+        }
 
         public enum TransactionTypes
         {
-            BUY,
-            SELL
+            DEPOSIT,
+            WITHDRAWAL,
+            TRADE,
+            TRANSFER
         }
 
         //Get the text to be displayed for this transaction based on its type and value
@@ -32,15 +46,7 @@ namespace CryptoBranchTracker.Objects.Classes
         {
             try
             {
-                switch (this.TransactionType)
-                {
-                    case TransactionTypes.BUY:
-                        return $"Bought for {this.FiatDifference}";
-                    case TransactionTypes.SELL:
-                        return $"Sold for {this.FiatDifference}";
-                    default:
-                        return "";
-                }
+                return $"{this.Source} -> {this.Destination}";
             }
             catch (Exception ex)
             {
@@ -108,6 +114,20 @@ namespace CryptoBranchTracker.Objects.Classes
 
                 if (typePair.HasValue)
                     this.TransactionType = (TransactionTypes)Enum.Parse(typeof(TransactionTypes), typePair.Value.Value);
+
+                //Source
+                KeyValuePair<string, string>? sourcePair = dictDelimitedValues.
+                    Where(x => x.Key == Strings.TransactionKeys.TRANSACTION_SOURCE).FirstOrDefault();
+
+                if (sourcePair.HasValue)
+                    this.Source = (LocationTypes)Enum.Parse(typeof(LocationTypes), sourcePair.Value.Value);
+
+                //Destination
+                KeyValuePair<string, string>? destinationPair = dictDelimitedValues.
+                    Where(x => x.Key == Strings.TransactionKeys.TRANSACTION_DESTINATION).FirstOrDefault();
+
+                if (destinationPair.HasValue)
+                    this.Destination = (LocationTypes)Enum.Parse(typeof(LocationTypes), destinationPair.Value.Value);
             }
             catch (Exception ex)
             {
@@ -162,7 +182,9 @@ namespace CryptoBranchTracker.Objects.Classes
                     { Strings.TransactionKeys.TRANSACTION_DATE, this.DateProcessed.HasValue ? this.DateProcessed.Value.Ticks : (object)Strings.NULL_VALUE },
                     { Strings.TransactionKeys.TRANSACTION_TIME, this.TimeProcessed.HasValue ? this.TimeProcessed.Value.Ticks : (object)Strings.NULL_VALUE },
                     { Strings.TransactionKeys.TRANSACTION_FIAT, this.FiatDifference },
-                    { Strings.TransactionKeys.TRANSACTION_TYPE, this.TransactionType }
+                    { Strings.TransactionKeys.TRANSACTION_TYPE, this.TransactionType },
+                    { Strings.TransactionKeys.TRANSACTION_SOURCE, this.Source },
+                    { Strings.TransactionKeys.TRANSACTION_DESTINATION, this.Destination }
                 };
 
                 //Initial value

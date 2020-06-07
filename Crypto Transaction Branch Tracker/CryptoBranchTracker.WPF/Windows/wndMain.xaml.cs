@@ -50,10 +50,13 @@ namespace CryptoBranchTracker.WPF.Windows
 
                     curBranch.RequestEdit += CurBranch_RequestEdit;
                     curBranch.RequestDelete += CurBranch_RequestDelete;
+                    curBranch.RequestAddTransaction += CurBranch_RequestAddTransaction;
 
                     curBranch.ImportTransactions(
                             lstTransactions.
-                                Where(x => x.BranchIdentifier == branch.Identifier).ToList()
+                                Where(x => x.BranchIdentifier == branch.Identifier).
+                                OrderByDescending(x => x.DateProcessed).
+                                ThenByDescending(x => x.TimeProcessed).ToList()
                         );
 
                     this.ugBranches.Children.Add(curBranch);
@@ -62,6 +65,60 @@ namespace CryptoBranchTracker.WPF.Windows
             catch (Exception ex)
             {
                 throw new Exception($"An error occurred loading branches: {ex}");
+            }
+        }
+
+        private void SubmitCurrentTransaction()
+        {
+            try
+            {
+                if (this.dhTransactionDetails.DataContext is Branch curBranch)
+                {
+                    DateTime dteNow = DateTime.Now;
+
+                    Transaction transaction = new Transaction()
+                    {
+                        DateProcessed = dteNow.Date,
+                        TimeProcessed = dteNow.TimeOfDay,
+                        BranchIdentifier = curBranch.Identifier,
+                        Identifier = Guid.NewGuid()
+                    };
+
+                    transaction.FiatDifference = double.TryParse(this.txtTransactionFiat.Text, out double dblFiat)
+                        ? dblFiat
+                        : -1;
+
+                    if (this.cmbTransactionType.SelectedItem is ComboBoxItem curType)
+                        transaction.TransactionType = (Transaction.TransactionTypes)curType.DataContext;
+
+                    if (this.cmbTransactionFrom.SelectedItem is ComboBoxItem curSource)
+                        transaction.Source = (Transaction.LocationTypes)curSource.DataContext;
+
+                    if (this.cmbTransactionTo.SelectedItem is ComboBoxItem curDestination)
+                        transaction.Destination = (Transaction.LocationTypes)curDestination.DataContext;
+
+                    transaction.Save();
+                    this.LoadBranches();
+                }
+
+                this.dhTransactionDetails.IsOpen = false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred submitting transaction: {ex}");
+            }
+        }
+
+        private void CurBranch_RequestAddTransaction(object sender, EventArgs e)
+        {
+            try
+            {
+                this.dhTransactionDetails.DataContext = (sender as ctrlBranch).Branch;
+                this.dhTransactionDetails.IsOpen = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
             }
         }
 
@@ -182,6 +239,10 @@ namespace CryptoBranchTracker.WPF.Windows
         {
             try
             {
+                this.cmbTransactionType.Items.Clear();
+                this.cmbTransactionFrom.Items.Clear();
+                this.cmbTransactionTo.Items.Clear();
+
                 this.CheckMaxRestore();
                 this.LoadBranches();
 
@@ -194,6 +255,38 @@ namespace CryptoBranchTracker.WPF.Windows
                     crypto.MouseLeftButtonUp += Crypto_MouseLeftButtonUp;
 
                     this.gridCurrencies.Children.Add(crypto);
+                }
+
+                foreach (Transaction.TransactionTypes type in Enum.GetValues(typeof(Transaction.TransactionTypes)))
+                {
+                    this.cmbTransactionType.Items.Add(
+                            new ComboBoxItem()
+                            {
+                                DataContext = type,
+                                Content = type.ToString().FirstCharToUpper()
+                            }
+                        );
+                }
+
+                foreach (Transaction.LocationTypes type in Enum.GetValues(typeof(Transaction.LocationTypes)))
+                {
+                    string strDisplayName = type.ToString().FirstCharToUpper();
+
+                    this.cmbTransactionFrom.Items.Add(
+                            new ComboBoxItem()
+                            {
+                                DataContext = type,
+                                Content = strDisplayName
+                            }
+                        );
+
+                    this.cmbTransactionTo.Items.Add(
+                            new ComboBoxItem()
+                            {
+                                DataContext = type,
+                                Content = strDisplayName
+                            }
+                        );
                 }
             }
             catch (Exception ex)
@@ -326,6 +419,43 @@ namespace CryptoBranchTracker.WPF.Windows
                         ? Visibility.Visible
                         : Visibility.Collapsed;
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.dhTransactionDetails.IsOpen = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.SubmitCurrentTransaction();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void txtTransactionFiat_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Key == Key.Return)
+                    this.SubmitCurrentTransaction();
             }
             catch (Exception ex)
             {

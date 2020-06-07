@@ -1,6 +1,7 @@
 ﻿using CryptoBranchTracker.Objects.Classes;
 using CryptoBranchTracker.WPF.Classes;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -29,6 +30,9 @@ namespace CryptoBranchTracker.WPF.Controls
 
         public delegate void OnRequestDelete(object sender, EventArgs e);
         public event OnRequestDelete RequestDelete;
+
+        public delegate void OnRequestAddTransaction(object sender, EventArgs e);
+        public event OnRequestAddTransaction RequestAddTransaction;
 
         public Branch Branch { get; set; } = new Branch();
 
@@ -169,6 +173,18 @@ namespace CryptoBranchTracker.WPF.Controls
             {
                 //Propagating this event upward so that we can safely refresh the branch list
                 this.RequestDelete?.Invoke(this, e);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.RequestAddTransaction?.Invoke(this, e);
             }
             catch (Exception ex)
             {

@@ -16,6 +16,10 @@ namespace CryptoBranchTracker.Objects.Classes
 
         public struct TransactionKeys
         {
+            public const string TRANSACTION_SOURCE = "TRANSACTION_SOURCE";
+
+            public const string TRANSACTION_DESTINATION = "TRANSACTION_DESTINATION";
+
             public const string TRANSACTION_IDENTIFIER = "TRANSACTION_IDENTIFIER";
 
             public const string TRANSACTION_BRANCH = "TRANSACTION_BRANCH";
