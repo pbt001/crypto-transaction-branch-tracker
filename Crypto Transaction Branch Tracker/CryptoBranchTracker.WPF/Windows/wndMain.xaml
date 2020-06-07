@@ -18,6 +18,7 @@
     <Window.Resources>
         <converters:ButtonTextRelativeXConverter x:Key="ButtonRelativeX" />
         <converters:NumericToThicknessConverter x:Key="MenuMarginConverter" DefaultMarginValue="8" ThicknessType="TOP" />
+        <converters:BooleanToOpacityConverter x:Key="BoolToOpacity" />
     </Window.Resources>
 
     <materialDesign:DialogHost
@@ -327,6 +328,7 @@
                             <StackPanel>
                                 <Button
                                     x:Name="btnBranches"
+                                    Opacity="{Binding ElementName=tiBranches, Path=IsSelected, Converter={StaticResource BoolToOpacity}}"
                                     Click="btnBranches_Click"
                                     Height="Auto"
                                     Margin="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource MenuMarginConverter}}"
@@ -360,6 +362,7 @@
                                 <Button
                                     Margin="8"
                                     Height="Auto"
+                                    Opacity="0.5"
                                     Click="Button_Click_6"
                                     materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                     HorizontalContentAlignment="Left">

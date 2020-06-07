@@ -9,11 +9,11 @@ using System.Windows.Data;
 
 namespace CryptoBranchTracker.WPF.Converters
 {
-    public sealed class BooleanToVisibilityConverter : IValueConverter
+    public sealed class BooleanToOpacityConverter : IValueConverter
     {
-        public Visibility TrueValue { get; set; } = Visibility.Visible;
+        public double TrueValue { get; set; } = 1;
 
-        public Visibility FalseValue { get; set; } = Visibility.Collapsed;
+        public double FalseValue { get; set; } = 0.5;
 
         public object Convert(object value, Type type, object parameter, CultureInfo culture)
         {
@@ -30,7 +30,7 @@ namespace CryptoBranchTracker.WPF.Converters
             }
             catch (Exception ex)
             {
-                throw new Exception($"An error occurred converting to visibility: {ex}");
+                throw new Exception($"An error occurred converting to opacity: {ex}");
             }
         }
 
@@ -38,8 +38,8 @@ namespace CryptoBranchTracker.WPF.Converters
         {
             try
             {
-                return value is Visibility visValue
-                    ? visValue == this.TrueValue
+                return value is double dblValue
+                    ? dblValue == this.TrueValue
                     : false;
             }
             catch (Exception ex)

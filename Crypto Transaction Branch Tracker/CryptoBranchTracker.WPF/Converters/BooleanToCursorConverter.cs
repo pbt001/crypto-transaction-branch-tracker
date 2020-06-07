@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace CryptoBranchTracker.WPF.Converters
 {
-    public class BooleanToCursorConverter : IValueConverter
+    public sealed class BooleanToCursorConverter : IValueConverter
     {
         public Cursor TrueValue { get; set; } = Cursors.Arrow;
 
