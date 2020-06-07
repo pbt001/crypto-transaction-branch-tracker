@@ -418,6 +418,7 @@
                                 </Button>
 
                                 <Button
+                                    Click="Button_Click_5"
                                     ToolTip="CTBT GitHub"
                                     Grid.Column="1"
                                     Style="{DynamicResource MaterialDesignToolForegroundButton}"

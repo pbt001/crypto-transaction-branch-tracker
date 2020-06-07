@@ -5,6 +5,7 @@ using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Resources;
@@ -473,6 +474,18 @@ namespace CryptoBranchTracker.WPF.Windows
             try
             {
                 Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start(Strings.GITHUB_URL);
             }
             catch (Exception ex)
             {
