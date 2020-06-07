@@ -390,36 +390,11 @@ namespace CryptoBranchTracker.WPF.Windows
             }
         }
 
-        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.dhMenu.IsLeftDrawerOpen = true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
-        private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.dhMenu.IsLeftDrawerOpen = false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
         private void btnBranches_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 this.tcMain.SelectedItem = this.tiBranches;
-                this.tbMenu.IsChecked = false;
             }
             catch (Exception ex)
             {
