@@ -427,19 +427,6 @@ namespace CryptoBranchTracker.WPF.Windows
             }
         }
 
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.tcMain.SelectedItem = this.tiTransactions;
-                this.tbMenu.IsChecked = false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
             try

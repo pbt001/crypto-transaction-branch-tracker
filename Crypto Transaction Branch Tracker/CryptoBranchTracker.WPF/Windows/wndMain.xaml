@@ -408,37 +408,6 @@
                                     </TextBlock>
                                 </Grid>
                             </Button>
-
-                            <Button
-                        Margin="8"
-                        Click="Button_Click_4"
-                        materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                        HorizontalContentAlignment="Left">
-
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <materialDesign:PackIcon
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Margin="0"
-                                Padding="0"
-                                Height="{DynamicResource MenuIconSize}"
-                                Width="{DynamicResource MenuIconSize}"
-                                Kind="Receipt">
-                                    </materialDesign:PackIcon>
-
-                                    <TextBlock
-                                Margin="15,0,0,0"
-                                VerticalAlignment="Center"
-                                Grid.Column="1"
-                                Text="Transactions">
-                                    </TextBlock>
-                                </Grid>
-                            </Button>
                         </StackPanel>
                     </materialDesign:ColorZone>
 
@@ -458,15 +427,6 @@
                                 Rows="3"
                                 Columns="3">
                             </UniformGrid>
-                        </TabItem>
-
-                        <TabItem
-                            Visibility="Collapsed"
-                            x:Name="tiTransactions">
-
-                            <Label
-                                Content="transactions">
-                            </Label>
                         </TabItem>
 
                         <TabItem
