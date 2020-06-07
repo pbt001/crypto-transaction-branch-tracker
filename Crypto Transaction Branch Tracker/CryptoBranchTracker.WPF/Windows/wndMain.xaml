@@ -400,30 +400,11 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-
-                                <Button
-                                    ToolTip="Settings"
-                                    Style="{DynamicResource MaterialDesignToolForegroundButton}"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"
-                                    Height="32"
-                                    Width="32">
-                                    
-                                    <materialDesign:PackIcon
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
-                                        Kind="Settings"
-                                        Width="Auto"
-                                        Height="Auto">
-                                    </materialDesign:PackIcon>
-                                </Button>
 
                                 <Button
                                     Click="Button_Click_5"
                                     ToolTip="CTBT GitHub"
-                                    Grid.Column="1"
                                     Style="{DynamicResource MaterialDesignToolForegroundButton}"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
@@ -442,7 +423,7 @@
                                 <Button
                                     Click="Button_Click_4"
                                     ToolTip="Quit"
-                                    Grid.Column="2"
+                                    Grid.Column="1"
                                     Style="{DynamicResource MaterialDesignToolForegroundButton}"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
