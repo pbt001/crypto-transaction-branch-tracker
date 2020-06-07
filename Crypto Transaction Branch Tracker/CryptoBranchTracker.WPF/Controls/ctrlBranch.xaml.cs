@@ -25,6 +25,8 @@ namespace CryptoBranchTracker.WPF.Controls
     /// </summary>
     public partial class ctrlBranch : UserControl
     {
+        public static DependencyProperty HasTransactionsProperty = DependencyProperty.Register("HasTransactions", typeof(bool), typeof(ctrlBranch), new PropertyMetadata(false));
+
         public delegate void OnRequestEdit(object sender, EventArgs e);
         public event OnRequestEdit RequestEdit;
 
@@ -35,6 +37,12 @@ namespace CryptoBranchTracker.WPF.Controls
         public event OnRequestAddTransaction RequestAddTransaction;
 
         public Branch Branch { get; set; } = new Branch();
+
+        public bool HasTransactions
+        {
+            get { return (bool)GetValue(HasTransactionsProperty); }
+            set { SetValue(HasTransactionsProperty, value); }
+        }
 
         public List<Transaction> Transactions { get; set; } = new List<Transaction>();
 
@@ -73,6 +81,8 @@ namespace CryptoBranchTracker.WPF.Controls
         {
             try
             {
+                this.HasTransactions = lstTransactions.Any();
+
                 this.Transactions = lstTransactions;
                 this.LoadTransactionData();
             }
