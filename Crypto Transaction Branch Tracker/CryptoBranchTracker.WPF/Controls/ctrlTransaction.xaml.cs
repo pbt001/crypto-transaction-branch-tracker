@@ -3,6 +3,7 @@ using CryptoBranchTracker.WPF.Classes;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -108,7 +109,7 @@ namespace CryptoBranchTracker.WPF.Controls
                     case Transaction.LocationTypes.FIAT:
                         this.piSourceIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Money;
 
-                        this.txtSource.Text = $"- {this.Transaction.FiatDifference}";
+                        this.txtSource.Text = $"- {NumberFormatInfo.CurrentInfo.CurrencySymbol}{this.Transaction.FiatDifference}";
                         break;
                     case Transaction.LocationTypes.WALLET:
                         this.piSourceIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Wallet;
@@ -133,7 +134,7 @@ namespace CryptoBranchTracker.WPF.Controls
                     case Transaction.LocationTypes.FIAT:
                         this.piDestinationIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Money;
 
-                        this.txtDestination.Text = $"+ {this.Transaction.FiatDifference}";
+                        this.txtDestination.Text = $"+ {NumberFormatInfo.CurrentInfo.CurrencySymbol}{this.Transaction.FiatDifference}";
                         break;
                     case Transaction.LocationTypes.WALLET:
                         this.piDestinationIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Wallet;
