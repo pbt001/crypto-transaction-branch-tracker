@@ -439,41 +439,6 @@
                                     </TextBlock>
                                 </Grid>
                             </Button>
-
-                            <Separator
-                        Margin="8"
-                        Background="{Binding ElementName=btnBranches, Path=Foreground}"/>
-
-                            <Button
-                        Margin="8"
-                        Click="Button_Click_5"
-                        materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                        HorizontalContentAlignment="Left">
-
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <materialDesign:PackIcon
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Margin="0"
-                                Padding="0"
-                                Height="{DynamicResource MenuIconSize}"
-                                Width="{DynamicResource MenuIconSize}"
-                                Kind="KeyLink">
-                                    </materialDesign:PackIcon>
-
-                                    <TextBlock
-                                Margin="15,0,0,0"
-                                VerticalAlignment="Center"
-                                Grid.Column="1"
-                                Text="CTBT Key">
-                                    </TextBlock>
-                                </Grid>
-                            </Button>
                         </StackPanel>
                     </materialDesign:ColorZone>
 
@@ -501,15 +466,6 @@
 
                             <Label
                                 Content="transactions">
-                            </Label>
-                        </TabItem>
-
-                        <TabItem
-                            Visibility="Collapsed"
-                            x:Name="tiKey">
-
-                            <Label
-                                Content="key">
                             </Label>
                         </TabItem>
 
