@@ -317,71 +317,144 @@
                         Mode="PrimaryMid"
                         VerticalAlignment="Stretch">
 
-                        <StackPanel
-                            x:Name="pnlMenu">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                            <Button
-                                x:Name="btnBranches"
-                                Click="btnBranches_Click"
-                                Height="Auto"
-                                Margin="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource MenuMarginConverter}}"
-                                materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                                HorizontalContentAlignment="Left">
+                            <StackPanel>
+                                <Button
+                                    x:Name="btnBranches"
+                                    Click="btnBranches_Click"
+                                    Height="Auto"
+                                    Margin="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource MenuMarginConverter}}"
+                                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                    HorizontalContentAlignment="Left">
 
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <materialDesign:PackIcon
+                                            VerticalAlignment="Center"
+                                            Height="{DynamicResource MenuIconSize}"
+                                            Width="{DynamicResource MenuIconSize}"
+                                            HorizontalAlignment="Left"
+                                            Kind="SourceBranch">
+                                        </materialDesign:PackIcon>
+
+                                        <TextBlock
+                                            x:Name="txtBranches"
+                                            Margin="15,0,0,0"
+                                            Text="Branches"
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center">
+                                        </TextBlock>
+                                    </Grid>
+                                </Button>
+
+                                <Button
+                                    Margin="8"
+                                    Height="Auto"
+                                    Click="Button_Click_6"
+                                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                    HorizontalContentAlignment="Left">
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <materialDesign:PackIcon
+                                            VerticalAlignment="Center"
+                                            Height="{DynamicResource MenuIconSize}"
+                                            Width="{DynamicResource MenuIconSize}"
+                                            HorizontalAlignment="Left"
+                                            Kind="Plus">
+                                        </materialDesign:PackIcon>
+
+                                        <TextBlock
+                                            Margin="15,0,0,0"
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            Text="New Branch">
+                                        </TextBlock>
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+
+                            <Grid
+                                Visibility="{Binding ElementName=dhMenu, Path=IsLeftDrawerOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Grid.Row="2"
+                                Margin="0,0,0,8"
+                                VerticalAlignment="Bottom">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Button
+                                    ToolTip="Settings"
+                                    Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Height="32"
+                                    Width="32">
+                                    
+                                    <materialDesign:PackIcon
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Kind="Settings"
+                                        Width="Auto"
+                                        Height="Auto">
+                                    </materialDesign:PackIcon>
+                                </Button>
+
+                                <Button
+                                    ToolTip="CTBT GitHub"
+                                    Grid.Column="1"
+                                    Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Height="32"
+                                    Width="32">
 
                                     <materialDesign:PackIcon
                                         VerticalAlignment="Center"
-                                        Height="{DynamicResource MenuIconSize}"
-                                        Width="{DynamicResource MenuIconSize}"
-                                        HorizontalAlignment="Left"
-                                        Kind="SourceBranch">
+                                        HorizontalAlignment="Center"
+                                        Kind="Github"
+                                        Width="Auto"
+                                        Height="Auto">
                                     </materialDesign:PackIcon>
+                                </Button>
 
-                                    <TextBlock
-                                        x:Name="txtBranches"
-                                        Margin="15,0,0,0"
-                                        Text="Branches"
-                                        Grid.Column="1"
-                                        VerticalAlignment="Center">
-                                    </TextBlock>
-                                </Grid>
-                            </Button>
-
-                            <Button
-                                Margin="8"
-                                Height="Auto"
-                                Click="Button_Click_6"
-                                materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                                HorizontalContentAlignment="Left">
-
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
+                                <Button
+                                    Click="Button_Click_4"
+                                    ToolTip="Quit"
+                                    Grid.Column="2"
+                                    Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Height="32"
+                                    Width="32">
 
                                     <materialDesign:PackIcon
                                         VerticalAlignment="Center"
-                                        Height="{DynamicResource MenuIconSize}"
-                                        Width="{DynamicResource MenuIconSize}"
-                                        HorizontalAlignment="Left"
-                                        Kind="Plus">
+                                        HorizontalAlignment="Center"
+                                        Kind="ExitToApp"
+                                        Width="Auto"
+                                        Height="Auto">
                                     </materialDesign:PackIcon>
-
-                                    <TextBlock
-                                        Margin="15,0,0,0"
-                                        Grid.Column="1"
-                                        VerticalAlignment="Center"
-                                        Text="New Branch">
-                                    </TextBlock>
-                                </Grid>
-                            </Button>
-                        </StackPanel>
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </materialDesign:ColorZone>
 
                     <TabControl

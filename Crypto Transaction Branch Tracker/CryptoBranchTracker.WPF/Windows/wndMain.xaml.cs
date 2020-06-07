@@ -467,5 +467,17 @@ namespace CryptoBranchTracker.WPF.Windows
                 MessageBox.Show(ex.ToString());
             }
         }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
     }
 }
