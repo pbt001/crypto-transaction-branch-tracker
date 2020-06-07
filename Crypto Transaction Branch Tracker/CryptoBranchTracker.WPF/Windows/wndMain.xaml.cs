@@ -51,6 +51,7 @@ namespace CryptoBranchTracker.WPF.Windows
                     curBranch.RequestEdit += CurBranch_RequestEdit;
                     curBranch.RequestDelete += CurBranch_RequestDelete;
                     curBranch.RequestAddTransaction += CurBranch_RequestAddTransaction;
+                    curBranch.RequestTransactionView += CurBranch_RequestTransactionView;
 
                     curBranch.ImportTransactions(
                             lstTransactions.
@@ -65,6 +66,33 @@ namespace CryptoBranchTracker.WPF.Windows
             catch (Exception ex)
             {
                 throw new Exception($"An error occurred loading branches: {ex}");
+            }
+        }
+
+        private void CurBranch_RequestTransactionView(object sender, EventArgs e)
+        {
+            try
+            {
+                if (sender is ctrlBranch curBranchControl)
+                {
+                    this.pnlTransactions.Children.Clear();
+
+                    this.tiBranchTransactions.DataContext = curBranchControl;
+                    this.tcMain.SelectedItem = this.tiBranchTransactions;
+
+                    this.txtCrypto.Text = curBranchControl.DisplayName;
+                    this.imgCrypto.Source = curBranchControl.Resource;
+
+                    if (curBranchControl.Branch.DateCreated.HasValue)
+                        this.txtCrypto.Text += $" - {curBranchControl.Branch.DateCreated.Value.ToShortDateString()}";
+
+                    foreach (Transaction transaction in curBranchControl.Transactions)
+                        this.pnlTransactions.Children.Add(new ctrlTransaction(transaction, curBranchControl.Resource, curBranchControl.Branch.Cryptocurrency));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
             }
         }
 

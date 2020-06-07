@@ -69,6 +69,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Classes\BaseWindow.cs" />
+    <Compile Include="Classes\Constants.cs" />
     <Compile Include="Classes\ExtensionMethods.cs" />
     <Compile Include="Classes\Globals.cs" />
     <Compile Include="Classes\Strings.cs" />
@@ -77,6 +78,9 @@
     </Compile>
     <Compile Include="Controls\ctrlCrypto.xaml.cs">
       <DependentUpon>ctrlCrypto.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ctrlTransaction.xaml.cs">
+      <DependentUpon>ctrlTransaction.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ButtonTextRelativeXConverter.cs" />
@@ -119,6 +123,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ctrlCrypto.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ctrlTransaction.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -478,39 +478,81 @@
                     </materialDesign:ColorZone>
 
                     <TabControl
-                x:Name="tcMain"
-                BorderBrush="Transparent"
-                BorderThickness="0"
-                Grid.Column="1"
-                Margin="11">
+                        x:Name="tcMain"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        Grid.Column="1"
+                        Margin="11">
 
                         <TabItem
-                    Visibility="Collapsed"
-                    x:Name="tiBranches">
+                            Visibility="Collapsed"
+                            x:Name="tiBranches">
 
                             <UniformGrid
-                        x:Name="ugBranches"
-                        Rows="3"
-                        Columns="3">
+                                x:Name="ugBranches"
+                                Rows="3"
+                                Columns="3">
                             </UniformGrid>
                         </TabItem>
 
                         <TabItem
-                    Visibility="Collapsed"
-                    x:Name="tiTransactions">
+                            Visibility="Collapsed"
+                            x:Name="tiTransactions">
 
                             <Label
-                        Content="transactions">
+                                Content="transactions">
                             </Label>
                         </TabItem>
 
                         <TabItem
-                    Visibility="Collapsed"
-                    x:Name="tiKey">
+                            Visibility="Collapsed"
+                            x:Name="tiKey">
 
                             <Label
-                        Content="key">
+                                Content="key">
                             </Label>
+                        </TabItem>
+
+                        <TabItem
+                            x:Name="tiBranchTransactions"
+                            Visibility="Collapsed">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel
+                                    Orientation="Horizontal">
+
+                                    <Image
+                                        x:Name="imgCrypto"
+                                        Stretch="None"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left"
+                                        Source="/CryptoBranchTracker.WPF;component/Resources/generic.png"/>
+
+                                    <TextBlock
+                                        x:Name="txtCrypto"
+                                        VerticalAlignment="Center"
+                                        FontWeight="DemiBold"
+                                        Margin="10,0,0,0"
+                                        FontSize="25"
+                                        Text="Unspecified Crypto">
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <ScrollViewer
+                                    VerticalScrollBarVisibility="Auto"
+                                    Grid.Row="1"
+                                    Margin="0,25,0,0">
+
+                                    <StackPanel
+                                        x:Name="pnlTransactions">
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Grid>
                         </TabItem>
                     </TabControl>
                 </Grid>

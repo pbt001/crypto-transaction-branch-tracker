@@ -36,7 +36,14 @@ namespace CryptoBranchTracker.WPF.Controls
         public delegate void OnRequestAddTransaction(object sender, EventArgs e);
         public event OnRequestAddTransaction RequestAddTransaction;
 
+        public delegate void OnRequestTransactionView(object sender, EventArgs e);
+        public event OnRequestTransactionView RequestTransactionView;
+
         public Branch Branch { get; set; } = new Branch();
+
+        public ImageSource Resource { get; set; }
+
+        public string DisplayName { get; set; } = "";
 
         public bool HasTransactions
         {
@@ -113,6 +120,9 @@ namespace CryptoBranchTracker.WPF.Controls
 
                 this.txtCrypto.Text = displayName;
                 this.imgCrypto.Source = Globals.GetResourceImage(resourceName);
+
+                this.DisplayName = displayName;
+                this.Resource = this.imgCrypto.Source;
 
                 this.txtDates.Text = this.Branch.DateCreated.HasValue
                     ? $"{this.Branch.DateCreated.Value.ToShortDateString()} - Present"
@@ -195,6 +205,18 @@ namespace CryptoBranchTracker.WPF.Controls
             try
             {
                 this.RequestAddTransaction?.Invoke(this, e);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.RequestTransactionView?.Invoke(this, e);
             }
             catch (Exception ex)
             {

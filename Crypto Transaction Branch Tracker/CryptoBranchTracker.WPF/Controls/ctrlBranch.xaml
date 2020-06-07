@@ -136,6 +136,7 @@
                 </StackPanel>
 
                 <Button
+                    Click="Button_Click_5"
                     Grid.Row="2"
                     Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=local:ctrlBranch}, Path=HasTransactions, Converter={StaticResource BoolToVis}}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
