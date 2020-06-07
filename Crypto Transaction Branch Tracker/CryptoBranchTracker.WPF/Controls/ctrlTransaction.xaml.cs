@@ -1,6 +1,7 @@
 ﻿using CryptoBranchTracker.Objects.Classes;
 using CryptoBranchTracker.WPF.Classes;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,9 @@ namespace CryptoBranchTracker.WPF.Controls
     /// </summary>
     public partial class ctrlTransaction : UserControl
     {
+        public delegate void OnRequestDelete(object sender, EventArgs e);
+        public event OnRequestDelete RequestDelete;
+
         public Transaction Transaction { get; set; } = new Transaction();
 
         public ImageSource CryptoResource { get; set; }
@@ -139,6 +143,44 @@ namespace CryptoBranchTracker.WPF.Controls
             catch (Exception ex)
             {
                 throw new Exception($"An error occurred refreshing details: {ex}");
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.puDelete.IsOpen = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.puDelete.IsOpen = false;
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.puDelete.IsOpen = false;
+                this.RequestDelete?.Invoke(this, e);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
             }
         }
     }

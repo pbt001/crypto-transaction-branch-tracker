@@ -82,6 +82,7 @@
     <Compile Include="Controls\ctrlTransaction.xaml.cs">
       <DependentUpon>ctrlTransaction.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BooleanToCursorConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ButtonTextRelativeXConverter.cs" />
     <Compile Include="Converters\NumericToThicknessConverter.cs" />

@@ -5,9 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CryptoBranchTracker.WPF.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:CryptoBranchTracker.WPF.Converters"
              mc:Ignorable="d" 
              Height="75"
              Margin="10,5,10,5">
+
+    <UserControl.Resources>
+        <converters:BooleanToCursorConverter x:Key="BoolToCursor" />
+    </UserControl.Resources>
 
     <materialDesign:Card
         UniformCornerRadius="5">
@@ -144,18 +149,99 @@
             </StackPanel>
 
             <Button
-                ToolTip="Delete Transaction"
+                x:Name="btnDelete"
+                Click="Button_Click"
                 Grid.Column="3"
+                Cursor="{Binding ElementName=puDelete, Path=IsOpen, Converter={StaticResource BoolToCursor}}"
                 HorizontalAlignment="Right"
                 Style="{DynamicResource MaterialDesignToolForegroundButton}">
 
-                <materialDesign:PackIcon
-                    Kind="Trash"
-                    Height="Auto"
-                    Width="Auto"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center">
-                </materialDesign:PackIcon>
+                <Grid>
+                    <materialDesign:PackIcon
+                        Kind="Trash"
+                        Height="Auto"
+                        Width="Auto"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                    </materialDesign:PackIcon>
+
+                    <Popup
+                        x:Name="puDelete"
+                        IsOpen="False"
+                        StaysOpen="False"
+                        AllowsTransparency="True"
+                        PlacementTarget="{Binding ElementName=btnDelete}"
+                        Placement="Top">
+
+                        <materialDesign:Card
+                            Margin="5"
+                            Width="350">
+                            
+                            <Grid
+                                Margin="20">
+                                
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <materialDesign:PackIcon
+                                    HorizontalAlignment="Center"
+                                    Kind="Trash"
+                                    Height="75"
+                                    Width="75"
+                                    Foreground="#FFF53649">
+                                </materialDesign:PackIcon>
+
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Margin="0,15,0,5"
+                                    Text="Are you sure?"
+                                    HorizontalAlignment="Center"
+                                    FontWeight="DemiBold"
+                                    FontSize="20">
+                                </TextBlock>
+
+                                <TextBlock
+                                    Grid.Row="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Top"
+                                    TextWrapping="Wrap"
+                                    Opacity="0.75"
+                                    TextAlignment="Center"
+                                    Text="Do you really want to delete this transaction? This action cannot be undone.">
+                                </TextBlock>
+
+                                <Grid
+                                    Grid.Row="3"
+                                    Margin="0,15,0,0">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button
+                                        Click="Button_Click_1"
+                                        Style="{DynamicResource MaterialDesignFlatButton}"
+                                        Content="Cancel"
+                                        Foreground="Black">
+                                    </Button>
+
+                                    <Button
+                                        Click="Button_Click_2"
+                                        Grid.Column="1"
+                                        Style="{DynamicResource MaterialDesignFlatButton}"
+                                        Content="Delete"
+                                        Foreground="#FFF53649">
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </materialDesign:Card>
+                    </Popup>
+                </Grid>
             </Button>
         </Grid>
     </materialDesign:Card>

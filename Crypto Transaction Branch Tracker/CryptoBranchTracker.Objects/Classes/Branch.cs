@@ -182,7 +182,7 @@ namespace CryptoBranchTracker.Objects.Classes
                         using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
                         {
                             using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.BRANCH_LIST))
-                                branchList.SetValue($"{this.Identifier}", saveValue, RegistryValueKind.String);
+                                branchList.SetValue(this.Identifier.ToString(), saveValue, RegistryValueKind.String);
                         }
                     }
                 }

@@ -135,6 +135,34 @@ namespace CryptoBranchTracker.Objects.Classes
             }
         }
 
+        public void Delete()
+        {
+            try
+            {
+                Globals.FixRegistry();
+
+                RegistryView platformView = Environment.Is64BitOperatingSystem
+                    ? RegistryView.Registry64
+                    : RegistryView.Registry32;
+
+                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                {
+                    if (registryBase != null)
+                    {
+                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
+                        {
+                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.TRANSACTION_LIST))
+                                branchList.DeleteValue(this.Identifier.ToString());
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred deleting transaction: {ex}");
+            }
+        }
+
         public void Save()
         {
             try
@@ -159,7 +187,7 @@ namespace CryptoBranchTracker.Objects.Classes
                         using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
                         {
                             using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.TRANSACTION_LIST))
-                                branchList.SetValue($"{this.Identifier}", saveValue, RegistryValueKind.String);
+                                branchList.SetValue(this.Identifier.ToString(), saveValue, RegistryValueKind.String);
                         }
                     }
                 }

@@ -69,26 +69,54 @@ namespace CryptoBranchTracker.WPF.Windows
             }
         }
 
+        private void ReadInTransactions(ctrlBranch branch)
+        {
+            try
+            {
+                this.pnlTransactions.Children.Clear();
+
+                this.tiBranchTransactions.DataContext = branch;
+                this.tcMain.SelectedItem = this.tiBranchTransactions;
+
+                this.txtCrypto.Text = branch.DisplayName;
+                this.imgCrypto.Source = branch.Resource;
+
+                if (branch.Branch.DateCreated.HasValue)
+                    this.txtCrypto.Text += $" - {branch.Branch.DateCreated.Value.ToShortDateString()}";
+
+                foreach (Transaction transaction in branch.Transactions)
+                {
+                    ctrlTransaction curTransaction = new ctrlTransaction(transaction, branch.Resource, branch.Branch.Cryptocurrency);
+
+                    curTransaction.RequestDelete += (origin, ev) =>
+                    {
+                        Transaction localTransaction = (origin as ctrlTransaction).Transaction;
+                        localTransaction.Delete();
+
+                        branch.Transactions.Remove(
+                                branch.Transactions.
+                                    Where(x => x.Identifier == localTransaction.Identifier).FirstOrDefault()
+                            );
+
+                        this.LoadBranches();
+                        this.ReadInTransactions(branch);
+                    };
+
+                    this.pnlTransactions.Children.Add(curTransaction);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred reading in transactions: {ex}");
+            }
+        }
+
         private void CurBranch_RequestTransactionView(object sender, EventArgs e)
         {
             try
             {
                 if (sender is ctrlBranch curBranchControl)
-                {
-                    this.pnlTransactions.Children.Clear();
-
-                    this.tiBranchTransactions.DataContext = curBranchControl;
-                    this.tcMain.SelectedItem = this.tiBranchTransactions;
-
-                    this.txtCrypto.Text = curBranchControl.DisplayName;
-                    this.imgCrypto.Source = curBranchControl.Resource;
-
-                    if (curBranchControl.Branch.DateCreated.HasValue)
-                        this.txtCrypto.Text += $" - {curBranchControl.Branch.DateCreated.Value.ToShortDateString()}";
-
-                    foreach (Transaction transaction in curBranchControl.Transactions)
-                        this.pnlTransactions.Children.Add(new ctrlTransaction(transaction, curBranchControl.Resource, curBranchControl.Branch.Cryptocurrency));
-                }
+                    this.ReadInTransactions(curBranchControl);
             }
             catch (Exception ex)
             {
