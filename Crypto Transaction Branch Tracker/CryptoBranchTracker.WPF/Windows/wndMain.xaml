@@ -28,7 +28,6 @@
 
         <DataTemplate DataType="{x:Type Color}" x:Key="SwatchColorTemplate">
             <Button Height="40" Width="40" Background="{Binding Converter={StaticResource ColorToBrushConverter}}" 
-                        CommandParameter="{Binding}"
                     Click="Button_Click_11">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
