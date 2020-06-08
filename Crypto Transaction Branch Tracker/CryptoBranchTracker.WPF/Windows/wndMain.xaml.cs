@@ -47,6 +47,17 @@ namespace CryptoBranchTracker.WPF.Windows
                     OrderByDescending (x => x.DateCreated).
                     ThenByDescending(x => x.TimeCreated).ToList();
 
+                if (lstBranches.Any())
+                {
+                    this.gridEmpty.Visibility = Visibility.Collapsed;
+                    this.ugBranches.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    this.gridEmpty.Visibility = Visibility.Visible;
+                    this.ugBranches.Visibility = Visibility.Collapsed;
+                }
+
                 List<Transaction> lstTransactions = Transaction.GetAllLocalTransactions();
 
                 foreach (Branch branch in lstBranches)
@@ -579,6 +590,18 @@ namespace CryptoBranchTracker.WPF.Windows
 
                     this.dhColours.IsOpen = false;
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_12(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.dhCryptocurrency.IsOpen = true;
             }
             catch (Exception ex)
             {

@@ -104,7 +104,7 @@
 
                 <Grid
                     Background="Transparent">
-                    
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -152,7 +152,7 @@
             x:Name="dhTransactionDetails"
             DialogTheme="Inherit"
             CloseOnClickAway="True">
-            
+
             <!--Transaction Dialog Host-->
             <materialDesign:DialogHost.DialogContent>
                 <Grid
@@ -274,7 +274,7 @@
                         <DockPanel Margin="16">
                             <ScrollViewer
                                 VerticalScrollBarVisibility="Auto">
-                                
+
                                 <StackPanel>
                                     <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=local:wndMain}, Path=Swatches}">
                                         <ItemsControl.ItemTemplate>
@@ -330,97 +330,97 @@
                         </Grid.ColumnDefinitions>
 
                         <materialDesign:ColorZone
-                        x:Name="czMenuFiller"
-                        Mode="{Binding ElementName=czMenu, Path=Mode}"
-                        VerticalAlignment="Stretch"
-                        HorizontalAlignment="Left"
-                        Width="{Binding ElementName=dhMenu, Path=MinWidth}">
+                            x:Name="czMenuFiller"
+                            Mode="{Binding ElementName=czMenu, Path=Mode}"
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Left"
+                            Width="{Binding ElementName=dhMenu, Path=MinWidth}">
                         </materialDesign:ColorZone>
 
                         <!--Close Button-->
                         <Button
-                        WindowChrome.IsHitTestVisibleInChrome="True"
-                        ToolTip="Close"
-                        Margin="0,5,5,0"
-                        Click="Button_Click_1"
-                        Grid.Column="3"
-                        Style="{DynamicResource MaterialDesignToolButton}"
-                        Background="Transparent"
-                        BorderBrush="Transparent">
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            ToolTip="Close"
+                            Margin="0,5,5,0"
+                            Click="Button_Click_1"
+                            Grid.Column="3"
+                            Style="{DynamicResource MaterialDesignToolButton}"
+                            Background="Transparent"
+                            BorderBrush="Transparent">
 
                             <materialDesign:PackIcon
-                            Height="Auto"
-                            Width="Auto"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Kind="WindowClose"/>
+                                Height="Auto"
+                                Width="Auto"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Kind="WindowClose"/>
                         </Button>
 
                         <!--Maximize Button-->
                         <Button
-                        x:Name="btnMaximize"
-                        Margin="0,5,5,0"
-                        Grid.Column="2"
-                        ToolTip="Maximize"
-                        WindowChrome.IsHitTestVisibleInChrome="True"
-                        Click="Button_Click_2"
-                        Style="{DynamicResource MaterialDesignToolButton}"
-                        Background="Transparent"
-                        BorderBrush="Transparent">
+                            x:Name="btnMaximize"
+                            Margin="0,5,5,0"
+                            Grid.Column="2"
+                            ToolTip="Maximize"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            Click="Button_Click_2"
+                            Style="{DynamicResource MaterialDesignToolButton}"
+                            Background="Transparent"
+                            BorderBrush="Transparent">
 
                             <materialDesign:PackIcon
-                            Height="Auto"
-                            Width="Auto"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Kind="WindowMaximize"/>
+                                Height="Auto"
+                                Width="Auto"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Kind="WindowMaximize"/>
                         </Button>
 
                         <!--Restore Button-->
                         <Button
-                        x:Name="btnRestore"
-                        Margin="0,5,5,0"
-                        ToolTip="Restore Down"
-                        Grid.Column="2"
-                        Visibility="Collapsed"
-                        WindowChrome.IsHitTestVisibleInChrome="True"
-                        Click="Button_Click_3"
-                        Opacity="1"
-                        Style="{DynamicResource MaterialDesignToolButton}"
-                        Background="Transparent"
-                        BorderBrush="Transparent">
+                            x:Name="btnRestore"
+                            Margin="0,5,5,0"
+                            ToolTip="Restore Down"
+                            Grid.Column="2"
+                            Visibility="Collapsed"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            Click="Button_Click_3"
+                            Opacity="1"
+                            Style="{DynamicResource MaterialDesignToolButton}"
+                            Background="Transparent"
+                            BorderBrush="Transparent">
 
                             <materialDesign:PackIcon
-                            Height="Auto"
-                            Width="Auto"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Kind="WindowRestore"/>
+                                Height="Auto"
+                                Width="Auto"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Kind="WindowRestore"/>
                         </Button>
 
                         <!--Minimize Button-->
                         <Button
-                        Grid.Column="1"
-                        ToolTip="Minimize"
-                        Margin="0,5,5,0"
-                        WindowChrome.IsHitTestVisibleInChrome="True"
-                        Click="Button_Click"
-                        Style="{DynamicResource MaterialDesignToolButton}"
-                        Background="Transparent"
-                        BorderBrush="Transparent">
+                            Grid.Column="1"
+                            ToolTip="Minimize"
+                            Margin="0,5,5,0"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            Click="Button_Click"
+                            Style="{DynamicResource MaterialDesignToolButton}"
+                            Background="Transparent"
+                            BorderBrush="Transparent">
 
                             <materialDesign:PackIcon
-                            Height="Auto"
-                            Width="Auto"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Kind="WindowMinimize"/>
+                                Height="Auto"
+                                Width="Auto"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Kind="WindowMinimize"/>
                         </Button>
                     </Grid>
 
                     <!--Menu-->
                     <Grid
-                    Grid.Row="2">
+                        Grid.Row="2">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -428,10 +428,10 @@
                         </Grid.ColumnDefinitions>
 
                         <materialDesign:ColorZone
-                        x:Name="czMenu"
-                        Width="{Binding ElementName=dhMenu, Path=ActualWidth}"
-                        Mode="PrimaryMid"
-                        VerticalAlignment="Stretch">
+                            x:Name="czMenu"
+                            Width="{Binding ElementName=dhMenu, Path=ActualWidth}"
+                            Mode="PrimaryMid"
+                            VerticalAlignment="Stretch">
 
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -442,13 +442,13 @@
 
                                 <StackPanel>
                                     <Button
-                                    x:Name="btnBranches"
-                                    Opacity="{Binding ElementName=tiBranches, Path=IsSelected, Converter={StaticResource BoolToOpacity}}"
-                                    Click="btnBranches_Click"
-                                    Height="Auto"
-                                    Margin="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource MenuMarginConverter}}"
-                                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                                    HorizontalContentAlignment="Left">
+                                        x:Name="btnBranches"
+                                        Opacity="{Binding ElementName=tiBranches, Path=IsSelected, Converter={StaticResource BoolToOpacity}}"
+                                        Click="btnBranches_Click"
+                                        Height="Auto"
+                                        Margin="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource MenuMarginConverter}}"
+                                        materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                        HorizontalContentAlignment="Left">
 
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -457,30 +457,30 @@
                                             </Grid.ColumnDefinitions>
 
                                             <materialDesign:PackIcon
-                                            VerticalAlignment="Center"
-                                            Height="{DynamicResource MenuIconSize}"
-                                            Width="{DynamicResource MenuIconSize}"
-                                            HorizontalAlignment="Left"
-                                            Kind="SourceBranch">
+                                                VerticalAlignment="Center"
+                                                Height="{DynamicResource MenuIconSize}"
+                                                Width="{DynamicResource MenuIconSize}"
+                                                HorizontalAlignment="Left"
+                                                Kind="SourceBranch">
                                             </materialDesign:PackIcon>
 
                                             <TextBlock
-                                            x:Name="txtBranches"
-                                            Margin="15,0,0,0"
-                                            Text="Branches"
-                                            Grid.Column="1"
-                                            VerticalAlignment="Center">
+                                                x:Name="txtBranches"
+                                                Margin="15,0,0,0"
+                                                Text="Branches"
+                                                Grid.Column="1"
+                                                VerticalAlignment="Center">
                                             </TextBlock>
                                         </Grid>
                                     </Button>
 
                                     <Button
-                                    Margin="8"
-                                    Height="Auto"
-                                    Opacity="0.5"
-                                    Click="Button_Click_6"
-                                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                                    HorizontalContentAlignment="Left">
+                                        Margin="8"
+                                        Height="Auto"
+                                        Opacity="0.5"
+                                        Click="Button_Click_6"
+                                        materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                        HorizontalContentAlignment="Left">
 
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -489,34 +489,34 @@
                                             </Grid.ColumnDefinitions>
 
                                             <materialDesign:PackIcon
-                                            VerticalAlignment="Center"
-                                            Height="{DynamicResource MenuIconSize}"
-                                            Width="{DynamicResource MenuIconSize}"
-                                            HorizontalAlignment="Left"
-                                            Kind="Plus">
+                                                VerticalAlignment="Center"
+                                                Height="{DynamicResource MenuIconSize}"
+                                                Width="{DynamicResource MenuIconSize}"
+                                                HorizontalAlignment="Left"
+                                                Kind="Plus">
                                             </materialDesign:PackIcon>
 
                                             <TextBlock
-                                            Margin="15,0,0,0"
-                                            Grid.Column="1"
-                                            VerticalAlignment="Center"
-                                            Text="New Branch">
+                                                Margin="15,0,0,0"
+                                                Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                Text="New Branch">
                                             </TextBlock>
                                         </Grid>
                                     </Button>
 
                                     <Separator
-                                    Foreground="{Binding ElementName=btnBranches, Path=Foreground}"
-                                    Opacity="0.5"
-                                    Margin="8"/>
+                                        Foreground="{Binding ElementName=btnBranches, Path=Foreground}"
+                                        Opacity="0.5"
+                                        Margin="8"/>
 
                                     <Button
-                                    Click="Button_Click_9"
-                                    Margin="8"
-                                    Height="Auto"
-                                    Opacity="{Binding ElementName=tiSettings, Path=IsSelected, Converter={StaticResource BoolToOpacity}}"
-                                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                                    HorizontalContentAlignment="Left">
+                                        Click="Button_Click_9"
+                                        Margin="8"
+                                        Height="Auto"
+                                        Opacity="{Binding ElementName=tiSettings, Path=IsSelected, Converter={StaticResource BoolToOpacity}}"
+                                        materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                        HorizontalContentAlignment="Left">
 
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -525,28 +525,28 @@
                                             </Grid.ColumnDefinitions>
 
                                             <materialDesign:PackIcon
-                                            VerticalAlignment="Center"
-                                            Height="{DynamicResource MenuIconSize}"
-                                            Width="{DynamicResource MenuIconSize}"
-                                            HorizontalAlignment="Left"
-                                            Kind="Settings">
+                                                VerticalAlignment="Center"
+                                                Height="{DynamicResource MenuIconSize}"
+                                                Width="{DynamicResource MenuIconSize}"
+                                                HorizontalAlignment="Left"
+                                                Kind="Settings">
                                             </materialDesign:PackIcon>
 
                                             <TextBlock
-                                            Margin="15,0,0,0"
-                                            Grid.Column="1"
-                                            VerticalAlignment="Center"
-                                            Text="Settings">
+                                                Margin="15,0,0,0"
+                                                Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                Text="Settings">
                                             </TextBlock>
                                         </Grid>
                                     </Button>
                                 </StackPanel>
 
                                 <Grid
-                                Visibility="{Binding ElementName=dhMenu, Path=IsLeftDrawerOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Grid.Row="2"
-                                Margin="0,0,0,8"
-                                VerticalAlignment="Bottom">
+                                    Visibility="{Binding ElementName=dhMenu, Path=IsLeftDrawerOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Grid.Row="2"
+                                    Margin="0,0,0,8"
+                                    VerticalAlignment="Bottom">
 
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -554,39 +554,39 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Button
-                                    Click="Button_Click_5"
-                                    ToolTip="CTBT GitHub"
-                                    Style="{DynamicResource MaterialDesignToolForegroundButton}"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"
-                                    Height="32"
-                                    Width="32">
-
-                                        <materialDesign:PackIcon
+                                        Click="Button_Click_5"
+                                        ToolTip="CTBT GitHub"
+                                        Style="{DynamicResource MaterialDesignToolForegroundButton}"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"
-                                        Kind="Github"
-                                        Width="Auto"
-                                        Height="Auto">
+                                        Height="32"
+                                        Width="32">
+
+                                        <materialDesign:PackIcon
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Kind="Github"
+                                            Width="Auto"
+                                            Height="Auto">
                                         </materialDesign:PackIcon>
                                     </Button>
 
                                     <Button
-                                    Click="Button_Click_4"
-                                    ToolTip="Quit"
-                                    Grid.Column="1"
-                                    Style="{DynamicResource MaterialDesignToolForegroundButton}"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"
-                                    Height="32"
-                                    Width="32">
-
-                                        <materialDesign:PackIcon
+                                        Click="Button_Click_4"
+                                        ToolTip="Quit"
+                                        Grid.Column="1"
+                                        Style="{DynamicResource MaterialDesignToolForegroundButton}"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"
-                                        Kind="ExitToApp"
-                                        Width="Auto"
-                                        Height="Auto">
+                                        Height="32"
+                                        Width="32">
+
+                                        <materialDesign:PackIcon
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Kind="ExitToApp"
+                                            Width="Auto"
+                                            Height="Auto">
                                         </materialDesign:PackIcon>
                                     </Button>
                                 </Grid>
@@ -594,30 +594,97 @@
                         </materialDesign:ColorZone>
 
                         <TabControl
-                        x:Name="tcMain"
-                        Background="{DynamicResource MaterialDesignPaper}"
-                        SelectionChanged="tcMain_SelectionChanged"
-                        BorderBrush="Transparent"
-                        BorderThickness="0"
-                        Grid.Column="1"
-                        Margin="11">
+                            x:Name="tcMain"
+                            Background="{DynamicResource MaterialDesignPaper}"
+                            SelectionChanged="tcMain_SelectionChanged"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Grid.Column="1"
+                            Margin="11">
 
                             <!--Branches Page-->
                             <TabItem
-                            Visibility="Collapsed"
-                            x:Name="tiBranches">
+                                Visibility="Collapsed"
+                                x:Name="tiBranches">
 
-                                <UniformGrid
-                                x:Name="ugBranches"
-                                Rows="3"
-                                Columns="3">
-                                </UniformGrid>
+                                <Grid>
+                                    <UniformGrid
+                                        x:Name="ugBranches"
+                                        Visibility="Collapsed"
+                                        Rows="3"
+                                        Columns="3">
+                                    </UniformGrid>
+
+                                    <Grid
+                                        x:Name="gridEmpty"
+                                        HorizontalAlignment="Center">
+                                        
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <materialDesign:PackIcon
+                                            VerticalAlignment="Center"
+                                            Foreground="{DynamicResource MaterialDesignBody}"
+                                            HorizontalAlignment="Center"
+                                            Kind="SourceBranch"
+                                            Height="90"
+                                            Width="90">
+                                        </materialDesign:PackIcon>
+
+                                        <TextBlock
+                                            Grid.Row="1"
+                                            Margin="0,15,0,5"
+                                            Text="Nothing to see here"
+                                            Foreground="{DynamicResource MaterialDesignBody}"
+                                            HorizontalAlignment="Center"
+                                            FontWeight="DemiBold"
+                                            Style="{DynamicResource MaterialDesignHeadline4TextBlock}">
+                                        </TextBlock>
+
+                                        <TextBlock
+                                            Grid.Row="2"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Top"
+                                            TextWrapping="Wrap"
+                                            Foreground="{DynamicResource MaterialDesignBody}"
+                                            Opacity="0.75"
+                                            Width="750"
+                                            Style="{DynamicResource MaterialDesignHeadline6TextBlock}"
+                                            TextAlignment="Center"
+                                            Text="It doesn't look like you've created any branches yet. Don't worry, use the button below to create your first one.">
+                                        </TextBlock>
+
+                                        <Button
+                                            Click="Button_Click_12"
+                                            Margin="0,50,0,0"
+                                            Grid.Row="3"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Height="Auto"
+                                            Width="Auto"
+                                            Style="{DynamicResource MaterialDesignFloatingActionButton}">
+
+                                            <materialDesign:PackIcon
+                                                VerticalAlignment="Center"
+                                                Margin="5"
+                                                HorizontalAlignment="Center"
+                                                Kind="Plus"
+                                                Height="48"
+                                                Width="48">
+                                            </materialDesign:PackIcon>
+                                        </Button>
+                                    </Grid>
+                                </Grid>
                             </TabItem>
 
                             <!--Settings Page-->
                             <TabItem
-                            Visibility="Collapsed"
-                            x:Name="tiSettings">
+                                Visibility="Collapsed"
+                                x:Name="tiSettings">
 
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -627,29 +694,29 @@
                                     </Grid.ColumnDefinitions>
 
                                     <ScrollViewer
-                                    VerticalScrollBarVisibility="Auto"
-                                    Grid.Column="1">
+                                        VerticalScrollBarVisibility="Auto"
+                                        Grid.Column="1">
 
                                         <StackPanel
-                                        Margin="5,0,5,5">
+                                            Margin="5,0,5,5">
 
                                             <TextBlock
-                                            Text="Appearance"
-                                            Foreground="{DynamicResource MaterialDesignBody}"
-                                            Style="{DynamicResource MaterialDesignSubtitle2TextBlock}">
+                                                Text="Appearance"
+                                                Foreground="{DynamicResource MaterialDesignBody}"
+                                                Style="{DynamicResource MaterialDesignSubtitle2TextBlock}">
                                             </TextBlock>
 
                                             <materialDesign:Card
-                                            Margin="0,10,0,0"
-                                            Foreground="{DynamicResource MaterialDesignBody}">
+                                                Margin="0,10,0,0"
+                                                Foreground="{DynamicResource MaterialDesignBody}">
 
                                                 <StackPanel>
 
                                                     <!--Dark Mode Option-->
                                                     <Border
-                                                    Padding="15"
-                                                    BorderThickness="0,0,0,1"
-                                                    BorderBrush="LightGray">
+                                                        Padding="15"
+                                                        BorderThickness="0,0,0,1"
+                                                        BorderBrush="LightGray">
 
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
@@ -664,30 +731,30 @@
                                                                 </Grid.RowDefinitions>
 
                                                                 <TextBlock
-                                                                Style="{DynamicResource MaterialDesignTextBlock}"
-                                                                Text="Dark Mode"
-                                                                Padding="0"
-                                                                VerticalAlignment="Center"
-                                                                FontWeight="DemiBold">
+                                                                    Style="{DynamicResource MaterialDesignTextBlock}"
+                                                                    Text="Dark Mode"
+                                                                    Padding="0"
+                                                                    VerticalAlignment="Center"
+                                                                    FontWeight="DemiBold">
                                                                 </TextBlock>
 
                                                                 <TextBlock
-                                                                Grid.Row="1"
-                                                                Padding="0,5,0,0"
-                                                                VerticalAlignment="Center"
-                                                                Style="{DynamicResource MaterialDesignCaptionTextBlock}"
-                                                                Text="Off">
+                                                                    Grid.Row="1"
+                                                                    Padding="0,5,0,0"
+                                                                    VerticalAlignment="Center"
+                                                                    Style="{DynamicResource MaterialDesignCaptionTextBlock}"
+                                                                    Text="Off">
                                                                 </TextBlock>
                                                             </Grid>
 
                                                             <ToggleButton
-                                                            x:Name="btnDarkMode"
-                                                            Grid.Column="1"
-                                                            Checked="btnDarkMode_Checked"
-                                                            Unchecked="btnDarkMode_Checked"
-                                                            VerticalAlignment="Center"
-                                                            HorizontalAlignment="Right"
-                                                            Style="{DynamicResource MaterialDesignSwitchToggleButton}">
+                                                                x:Name="btnDarkMode"
+                                                                Grid.Column="1"
+                                                                Checked="btnDarkMode_Checked"
+                                                                Unchecked="btnDarkMode_Checked"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Right"
+                                                                Style="{DynamicResource MaterialDesignSwitchToggleButton}">
                                                             </ToggleButton>
                                                         </Grid>
                                                     </Border>
