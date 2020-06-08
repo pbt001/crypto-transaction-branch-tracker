@@ -4,10 +4,10 @@ using CryptoBranchTracker.WPF.Controls;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using System;
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Resources;
@@ -34,6 +34,8 @@ namespace CryptoBranchTracker.WPF.Windows
         {
             InitializeComponent();
         }
+
+        public IEnumerable<ISwatch> Swatches { get; } = SwatchHelper.Swatches;
 
         private void LoadBranches()
         {
@@ -544,6 +546,38 @@ namespace CryptoBranchTracker.WPF.Windows
                     Constants.Settings.Save();
 
                     Globals.RefreshSettings();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_10(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.dhColours.IsOpen = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_11(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Button btnCurrent && btnCurrent.DataContext is Color clrCurrent)
+                {
+                    Constants.Settings.ColourScheme = Color.FromArgb(clrCurrent.A, clrCurrent.R, clrCurrent.G, clrCurrent.B);
+                    Constants.Settings.Save();
+
+                    Globals.RefreshSettings();
+
+                    this.dhColours.IsOpen = false;
                 }
             }
             catch (Exception ex)

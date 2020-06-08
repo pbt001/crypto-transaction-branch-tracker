@@ -69,6 +69,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Classes\BaseWindow.cs" />
+    <Compile Include="Classes\ButtonAssist.cs" />
     <Compile Include="Classes\Constants.cs" />
     <Compile Include="Classes\ExtensionMethods.cs" />
     <Compile Include="Classes\Globals.cs" />
@@ -86,6 +87,8 @@
     <Compile Include="Converters\BooleanToOpacityConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ButtonTextRelativeXConverter.cs" />
+    <Compile Include="Converters\ColorToBrushConverter.cs" />
+    <Compile Include="Converters\MultiValueEqualityConverter.cs" />
     <Compile Include="Converters\NumericToThicknessConverter.cs" />
     <Compile Include="Windows\wndMain.xaml.cs">
       <DependentUpon>wndMain.xaml</DependentUpon>

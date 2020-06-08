@@ -5,9 +5,11 @@
                     xmlns:converters="clr-namespace:CryptoBranchTracker.WPF.Converters"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:materialDesignColors="clr-namespace:MaterialDesignColors;assembly=MaterialDesignColors"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:local="clr-namespace:CryptoBranchTracker.WPF.Windows"
                     mc:Ignorable="d"
+                    xmlns:test="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
                     Background="{DynamicResource MaterialDesignPaper}"
                     Foreground="{DynamicResource MaterialDesignBody}"
                     Title="Crypto Transaction Branch Tracker"
@@ -21,6 +23,69 @@
         <converters:ButtonTextRelativeXConverter x:Key="ButtonRelativeX" />
         <converters:NumericToThicknessConverter x:Key="MenuMarginConverter" DefaultMarginValue="8" ThicknessType="TOP" />
         <converters:BooleanToOpacityConverter x:Key="BoolToOpacity" />
+        <converters:MultiValueEqualityConverter x:Key="MultiValueEqualityConverter"/>
+        <converters:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+
+        <DataTemplate DataType="{x:Type Color}" x:Key="SwatchColorTemplate">
+            <Button Height="40" Width="40" Background="{Binding Converter={StaticResource ColorToBrushConverter}}" 
+                        CommandParameter="{Binding}"
+                    Click="Button_Click_11">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                        <Setter Property="classes:ButtonAssist.UniformCornerRadius" Value="0" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Margin" Value="1 1 0 0" />
+                        <Setter Property="materialDesign:RippleAssist.IsDisabled" Value="True" />
+                        <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0" />
+                        <Setter Property="Tag" Value="0" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(classes:ButtonAssist.UniformCornerRadius)" 
+                                                                 To="8" Duration="0:0:0.18" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(classes:ButtonAssist.UniformCornerRadius)" 
+                                                                 From="8" Duration="0:0:0.18" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <DataTrigger Value="True">
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource MultiValueEqualityConverter}">
+                                        <Binding RelativeSource="{RelativeSource AncestorType=local:wndMain}" Path="DataContext.SelectedColor" Mode="OneWay" />
+                                        <Binding Mode="OneWay"/>
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(classes:ButtonAssist.UniformCornerRadius)" 
+                                                                 To="20" Duration="0:0:0.18" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(classes:ButtonAssist.UniformCornerRadius)" 
+                                                                 From="20" Duration="0:0:0.18" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </DataTemplate>
     </Window.Resources>
 
     <materialDesign:DialogHost
@@ -198,48 +263,83 @@
                 </Grid>
             </materialDesign:DialogHost.DialogContent>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+            <materialDesign:DialogHost
+                x:Name="dhColours"
+                DialogTheme="Inherit"
+                CloseOnClickAway="True">
 
-                <materialDesign:DrawerHost
-                    x:Name="dhMenu"
-                    Grid.RowSpan="2"
-                    IsLeftDrawerOpen="{Binding ElementName=czMenu, Path=IsMouseOver, Mode=OneWay}"
-                    MinWidth="{Binding ElementName=txtBranches, Converter={StaticResource ButtonRelativeX}}"
-                    HorizontalAlignment="Left"
-                    Width="Auto">
+                <materialDesign:DialogHost.DialogContent>
+                    <Grid
+                        Margin="15">
 
-                    <materialDesign:DrawerHost.LeftDrawerContent>
-                        <materialDesign:ColorZone
-                            Mode="PrimaryMid"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Stretch"
-                            Width="250">
-                        </materialDesign:ColorZone>
-                    </materialDesign:DrawerHost.LeftDrawerContent>
-                </materialDesign:DrawerHost>
+                        <DockPanel Margin="16">
+                            <ScrollViewer
+                                VerticalScrollBarVisibility="Auto">
+                                
+                                <StackPanel>
+                                    <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=local:wndMain}, Path=Swatches}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type materialDesignColors:ISwatch}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <ItemsControl ItemsSource="{Binding Hues}" ItemTemplate="{StaticResource SwatchColorTemplate}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <VirtualizingStackPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </DockPanel>
+                    </Grid>
+                </materialDesign:DialogHost.DialogContent>
 
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                    <materialDesign:ColorZone
+                    <materialDesign:DrawerHost
+                        x:Name="dhMenu"
+                        Grid.RowSpan="2"
+                        IsLeftDrawerOpen="{Binding ElementName=czMenu, Path=IsMouseOver, Mode=OneWay}"
+                        MinWidth="{Binding ElementName=txtBranches, Converter={StaticResource ButtonRelativeX}}"
+                        HorizontalAlignment="Left"
+                        Width="Auto">
+
+                        <materialDesign:DrawerHost.LeftDrawerContent>
+                            <materialDesign:ColorZone
+                                Mode="PrimaryMid"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Stretch"
+                                Width="250">
+                            </materialDesign:ColorZone>
+                        </materialDesign:DrawerHost.LeftDrawerContent>
+                    </materialDesign:DrawerHost>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <materialDesign:ColorZone
                         x:Name="czMenuFiller"
                         Mode="{Binding ElementName=czMenu, Path=Mode}"
                         VerticalAlignment="Stretch"
                         HorizontalAlignment="Left"
                         Width="{Binding ElementName=dhMenu, Path=MinWidth}">
-                    </materialDesign:ColorZone>
+                        </materialDesign:ColorZone>
 
-                    <!--Close Button-->
-                    <Button
+                        <!--Close Button-->
+                        <Button
                         WindowChrome.IsHitTestVisibleInChrome="True"
                         ToolTip="Close"
                         Margin="0,5,5,0"
@@ -249,16 +349,16 @@
                         Background="Transparent"
                         BorderBrush="Transparent">
 
-                        <materialDesign:PackIcon
+                            <materialDesign:PackIcon
                             Height="Auto"
                             Width="Auto"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Kind="WindowClose"/>
-                    </Button>
+                        </Button>
 
-                    <!--Maximize Button-->
-                    <Button
+                        <!--Maximize Button-->
+                        <Button
                         x:Name="btnMaximize"
                         Margin="0,5,5,0"
                         Grid.Column="2"
@@ -269,16 +369,16 @@
                         Background="Transparent"
                         BorderBrush="Transparent">
 
-                        <materialDesign:PackIcon
+                            <materialDesign:PackIcon
                             Height="Auto"
                             Width="Auto"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Kind="WindowMaximize"/>
-                    </Button>
+                        </Button>
 
-                    <!--Restore Button-->
-                    <Button
+                        <!--Restore Button-->
+                        <Button
                         x:Name="btnRestore"
                         Margin="0,5,5,0"
                         ToolTip="Restore Down"
@@ -291,16 +391,16 @@
                         Background="Transparent"
                         BorderBrush="Transparent">
 
-                        <materialDesign:PackIcon
+                            <materialDesign:PackIcon
                             Height="Auto"
                             Width="Auto"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Kind="WindowRestore"/>
-                    </Button>
+                        </Button>
 
-                    <!--Minimize Button-->
-                    <Button
+                        <!--Minimize Button-->
+                        <Button
                         Grid.Column="1"
                         ToolTip="Minimize"
                         Margin="0,5,5,0"
@@ -310,39 +410,39 @@
                         Background="Transparent"
                         BorderBrush="Transparent">
 
-                        <materialDesign:PackIcon
+                            <materialDesign:PackIcon
                             Height="Auto"
                             Width="Auto"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Kind="WindowMinimize"/>
-                    </Button>
-                </Grid>
+                        </Button>
+                    </Grid>
 
-                <!--Menu-->
-                <Grid
+                    <!--Menu-->
+                    <Grid
                     Grid.Row="2">
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                    <materialDesign:ColorZone
+                        <materialDesign:ColorZone
                         x:Name="czMenu"
                         Width="{Binding ElementName=dhMenu, Path=ActualWidth}"
                         Mode="PrimaryMid"
                         VerticalAlignment="Stretch">
 
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
-                            <StackPanel>
-                                <Button
+                                <StackPanel>
+                                    <Button
                                     x:Name="btnBranches"
                                     Opacity="{Binding ElementName=tiBranches, Path=IsSelected, Converter={StaticResource BoolToOpacity}}"
                                     Click="btnBranches_Click"
@@ -351,31 +451,31 @@
                                     materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                     HorizontalContentAlignment="Left">
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
 
-                                        <materialDesign:PackIcon
+                                            <materialDesign:PackIcon
                                             VerticalAlignment="Center"
                                             Height="{DynamicResource MenuIconSize}"
                                             Width="{DynamicResource MenuIconSize}"
                                             HorizontalAlignment="Left"
                                             Kind="SourceBranch">
-                                        </materialDesign:PackIcon>
+                                            </materialDesign:PackIcon>
 
-                                        <TextBlock
+                                            <TextBlock
                                             x:Name="txtBranches"
                                             Margin="15,0,0,0"
                                             Text="Branches"
                                             Grid.Column="1"
                                             VerticalAlignment="Center">
-                                        </TextBlock>
-                                    </Grid>
-                                </Button>
+                                            </TextBlock>
+                                        </Grid>
+                                    </Button>
 
-                                <Button
+                                    <Button
                                     Margin="8"
                                     Height="Auto"
                                     Opacity="0.5"
@@ -383,35 +483,35 @@
                                     materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                     HorizontalContentAlignment="Left">
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
 
-                                        <materialDesign:PackIcon
+                                            <materialDesign:PackIcon
                                             VerticalAlignment="Center"
                                             Height="{DynamicResource MenuIconSize}"
                                             Width="{DynamicResource MenuIconSize}"
                                             HorizontalAlignment="Left"
                                             Kind="Plus">
-                                        </materialDesign:PackIcon>
+                                            </materialDesign:PackIcon>
 
-                                        <TextBlock
+                                            <TextBlock
                                             Margin="15,0,0,0"
                                             Grid.Column="1"
                                             VerticalAlignment="Center"
                                             Text="New Branch">
-                                        </TextBlock>
-                                    </Grid>
-                                </Button>
+                                            </TextBlock>
+                                        </Grid>
+                                    </Button>
 
-                                <Separator
+                                    <Separator
                                     Foreground="{Binding ElementName=btnBranches, Path=Foreground}"
                                     Opacity="0.5"
                                     Margin="8"/>
 
-                                <Button
+                                    <Button
                                     Click="Button_Click_9"
                                     Margin="8"
                                     Height="Auto"
@@ -419,42 +519,42 @@
                                     materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                     HorizontalContentAlignment="Left">
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
 
-                                        <materialDesign:PackIcon
+                                            <materialDesign:PackIcon
                                             VerticalAlignment="Center"
                                             Height="{DynamicResource MenuIconSize}"
                                             Width="{DynamicResource MenuIconSize}"
                                             HorizontalAlignment="Left"
                                             Kind="Settings">
-                                        </materialDesign:PackIcon>
+                                            </materialDesign:PackIcon>
 
-                                        <TextBlock
+                                            <TextBlock
                                             Margin="15,0,0,0"
                                             Grid.Column="1"
                                             VerticalAlignment="Center"
                                             Text="Settings">
-                                        </TextBlock>
-                                    </Grid>
-                                </Button>
-                            </StackPanel>
+                                            </TextBlock>
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
 
-                            <Grid
+                                <Grid
                                 Visibility="{Binding ElementName=dhMenu, Path=IsLeftDrawerOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
                                 Grid.Row="2"
                                 Margin="0,0,0,8"
                                 VerticalAlignment="Bottom">
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                <Button
+                                    <Button
                                     Click="Button_Click_5"
                                     ToolTip="CTBT GitHub"
                                     Style="{DynamicResource MaterialDesignToolForegroundButton}"
@@ -463,16 +563,16 @@
                                     Height="32"
                                     Width="32">
 
-                                    <materialDesign:PackIcon
+                                        <materialDesign:PackIcon
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"
                                         Kind="Github"
                                         Width="Auto"
                                         Height="Auto">
-                                    </materialDesign:PackIcon>
-                                </Button>
+                                        </materialDesign:PackIcon>
+                                    </Button>
 
-                                <Button
+                                    <Button
                                     Click="Button_Click_4"
                                     ToolTip="Quit"
                                     Grid.Column="1"
@@ -482,19 +582,19 @@
                                     Height="32"
                                     Width="32">
 
-                                    <materialDesign:PackIcon
+                                        <materialDesign:PackIcon
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"
                                         Kind="ExitToApp"
                                         Width="Auto"
                                         Height="Auto">
-                                    </materialDesign:PackIcon>
-                                </Button>
+                                        </materialDesign:PackIcon>
+                                    </Button>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </materialDesign:ColorZone>
+                        </materialDesign:ColorZone>
 
-                    <TabControl
+                        <TabControl
                         x:Name="tcMain"
                         Background="{DynamicResource MaterialDesignPaper}"
                         SelectionChanged="tcMain_SelectionChanged"
@@ -503,85 +603,85 @@
                         Grid.Column="1"
                         Margin="11">
 
-                        <!--Branches Page-->
-                        <TabItem
+                            <!--Branches Page-->
+                            <TabItem
                             Visibility="Collapsed"
                             x:Name="tiBranches">
 
-                            <UniformGrid
+                                <UniformGrid
                                 x:Name="ugBranches"
                                 Rows="3"
                                 Columns="3">
-                            </UniformGrid>
-                        </TabItem>
+                                </UniformGrid>
+                            </TabItem>
 
-                        <!--Settings Page-->
-                        <TabItem
+                            <!--Settings Page-->
+                            <TabItem
                             Visibility="Collapsed"
                             x:Name="tiSettings">
 
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.2*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="0.2*" />
-                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.2*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="0.2*" />
+                                    </Grid.ColumnDefinitions>
 
-                                <ScrollViewer
+                                    <ScrollViewer
                                     VerticalScrollBarVisibility="Auto"
                                     Grid.Column="1">
 
-                                    <StackPanel
+                                        <StackPanel
                                         Margin="5,0,5,5">
-                                        
-                                        <TextBlock
+
+                                            <TextBlock
                                             Text="Appearance"
                                             Foreground="{DynamicResource MaterialDesignBody}"
                                             Style="{DynamicResource MaterialDesignSubtitle2TextBlock}">
-                                        </TextBlock>
+                                            </TextBlock>
 
-                                        <materialDesign:Card
+                                            <materialDesign:Card
                                             Margin="0,10,0,0"
                                             Foreground="{DynamicResource MaterialDesignBody}">
 
-                                            <StackPanel>
-                                                
-                                                <!--Dark Mode Option-->
-                                                <Border
+                                                <StackPanel>
+
+                                                    <!--Dark Mode Option-->
+                                                    <Border
                                                     Padding="15"
                                                     BorderThickness="0,0,0,1"
                                                     BorderBrush="LightGray">
-                                                    
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*" />
-                                                            <ColumnDefinition Width="*" />
-                                                        </Grid.ColumnDefinitions>
 
                                                         <Grid>
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition Height="*" />
-                                                                <RowDefinition Height="*" />
-                                                            </Grid.RowDefinitions>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
 
-                                                            <TextBlock
+                                                            <Grid>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="*" />
+                                                                    <RowDefinition Height="*" />
+                                                                </Grid.RowDefinitions>
+
+                                                                <TextBlock
                                                                 Style="{DynamicResource MaterialDesignTextBlock}"
                                                                 Text="Dark Mode"
                                                                 Padding="0"
                                                                 VerticalAlignment="Center"
                                                                 FontWeight="DemiBold">
-                                                            </TextBlock>
+                                                                </TextBlock>
 
-                                                            <TextBlock
+                                                                <TextBlock
                                                                 Grid.Row="1"
                                                                 Padding="0,5,0,0"
                                                                 VerticalAlignment="Center"
                                                                 Style="{DynamicResource MaterialDesignCaptionTextBlock}"
                                                                 Text="Off">
-                                                            </TextBlock>
-                                                        </Grid>
+                                                                </TextBlock>
+                                                            </Grid>
 
-                                                        <ToggleButton
+                                                            <ToggleButton
                                                             x:Name="btnDarkMode"
                                                             Grid.Column="1"
                                                             Checked="btnDarkMode_Checked"
@@ -589,115 +689,117 @@
                                                             VerticalAlignment="Center"
                                                             HorizontalAlignment="Right"
                                                             Style="{DynamicResource MaterialDesignSwitchToggleButton}">
-                                                        </ToggleButton>
-                                                    </Grid>
-                                                </Border>
+                                                            </ToggleButton>
+                                                        </Grid>
+                                                    </Border>
 
-                                                <!--Colour Scheme Option-->
-                                                <Border
-                                                    Padding="15">
-                                                    
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*" />
-                                                            <ColumnDefinition Width="*" />
-                                                        </Grid.ColumnDefinitions>
+                                                    <!--Colour Scheme Option-->
+                                                    <Border
+                                                        Padding="15">
 
                                                         <Grid>
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition Height="*" />
-                                                                <RowDefinition Height="*" />
-                                                            </Grid.RowDefinitions>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
 
-                                                            <TextBlock
-                                                                Style="{DynamicResource MaterialDesignTextBlock}"
-                                                                Text="Colour Scheme"
-                                                                Padding="0"
-                                                                VerticalAlignment="Center"
-                                                                FontWeight="DemiBold">
-                                                            </TextBlock>
+                                                            <Grid>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="*" />
+                                                                    <RowDefinition Height="*" />
+                                                                </Grid.RowDefinitions>
 
-                                                            <TextBlock
-                                                                Grid.Row="1"
-                                                                Padding="0,5,0,0"
+                                                                <TextBlock
+                                                                    Style="{DynamicResource MaterialDesignTextBlock}"
+                                                                    Text="Colour Scheme"
+                                                                    Padding="0"
+                                                                    VerticalAlignment="Center"
+                                                                    FontWeight="DemiBold">
+                                                                </TextBlock>
+
+                                                                <TextBlock
+                                                                    Grid.Row="1"
+                                                                    Padding="0,5,0,0"
+                                                                    VerticalAlignment="Center"
+                                                                    Style="{DynamicResource MaterialDesignCaptionTextBlock}"
+                                                                    Text="Select the colour scheme for the application">
+                                                                </TextBlock>
+                                                            </Grid>
+
+                                                            <Button
+                                                                Click="Button_Click_10"
+                                                                Grid.Column="1"
+                                                                Height="Auto"
+                                                                Width="Auto"
                                                                 VerticalAlignment="Center"
-                                                                Style="{DynamicResource MaterialDesignCaptionTextBlock}"
-                                                                Text="Select the colour scheme for the application">
-                                                            </TextBlock>
+                                                                HorizontalContentAlignment="Right"
+                                                                Foreground="{DynamicResource MaterialDesignBody}"
+                                                                Style="{DynamicResource MaterialDesignToolButton}">
+
+                                                                <materialDesign:PackIcon
+                                                                    VerticalAlignment="Center"
+                                                                    HorizontalAlignment="Center"
+                                                                    Kind="OpenInApp"
+                                                                    Height="24"
+                                                                    Width="24">
+                                                                </materialDesign:PackIcon>
+                                                            </Button>
                                                         </Grid>
+                                                    </Border>
+                                                </StackPanel>
+                                            </materialDesign:Card>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </Grid>
+                            </TabItem>
 
-                                                        <Button
-                                                            Grid.Column="1"
-                                                            Height="Auto"
-                                                            Width="Auto"
-                                                            VerticalAlignment="Center"
-                                                            HorizontalContentAlignment="Right"
-                                                            Foreground="{DynamicResource MaterialDesignBody}"
-                                                            Style="{DynamicResource MaterialDesignToolButton}">
+                            <!--Transaction Page-->
+                            <TabItem
+                                x:Name="tiBranchTransactions"
+                                Visibility="Collapsed">
 
-                                                            <materialDesign:PackIcon
-                                                                VerticalAlignment="Center"
-                                                                HorizontalAlignment="Center"
-                                                                Kind="OpenInApp"
-                                                                Height="24"
-                                                                Width="24">
-                                                            </materialDesign:PackIcon>
-                                                        </Button>
-                                                    </Grid>
-                                                </Border>
-                                            </StackPanel>
-                                        </materialDesign:Card>
-                                    </StackPanel>
-                                </ScrollViewer>
-                            </Grid>
-                        </TabItem>
-
-                        <!--Transaction Page-->
-                        <TabItem
-                            x:Name="tiBranchTransactions"
-                            Visibility="Collapsed">
-
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-
-                                <StackPanel
-                                    Orientation="Horizontal">
-
-                                    <Image
-                                        x:Name="imgCrypto"
-                                        Stretch="None"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Left"
-                                        Source="/CryptoBranchTracker.WPF;component/Resources/generic.png"/>
-
-                                    <TextBlock
-                                        x:Name="txtCrypto"
-                                        Foreground="{DynamicResource MaterialDesignBody}"
-                                        VerticalAlignment="Center"
-                                        FontWeight="DemiBold"
-                                        Margin="10,0,0,0"
-                                        FontSize="25"
-                                        Text="Unspecified Crypto">
-                                    </TextBlock>
-                                </StackPanel>
-
-                                <ScrollViewer
-                                    VerticalScrollBarVisibility="Auto"
-                                    Grid.Row="1"
-                                    Margin="0,25,0,0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
 
                                     <StackPanel
-                                        x:Name="pnlTransactions">
+                                        Orientation="Horizontal">
+
+                                        <Image
+                                            x:Name="imgCrypto"
+                                            Stretch="None"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Left"
+                                            Source="/CryptoBranchTracker.WPF;component/Resources/generic.png"/>
+
+                                        <TextBlock
+                                            x:Name="txtCrypto"
+                                            Foreground="{DynamicResource MaterialDesignBody}"
+                                            VerticalAlignment="Center"
+                                            FontWeight="DemiBold"
+                                            Margin="10,0,0,0"
+                                            FontSize="25"
+                                            Text="Unspecified Crypto">
+                                        </TextBlock>
                                     </StackPanel>
-                                </ScrollViewer>
-                            </Grid>
-                        </TabItem>
-                    </TabControl>
+
+                                    <ScrollViewer
+                                        VerticalScrollBarVisibility="Auto"
+                                        Grid.Row="1"
+                                        Margin="0,25,0,0">
+
+                                        <StackPanel
+                                            x:Name="pnlTransactions">
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </materialDesign:DialogHost>
         </materialDesign:DialogHost>
     </materialDesign:DialogHost>
 </classes:BaseWindow>
