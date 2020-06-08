@@ -7,6 +7,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CryptoBranchTracker.WPF.Controls"
              mc:Ignorable="d"
+             Foreground="{DynamicResource MaterialDesignBody}"
              d:DesignHeight="300"
              Margin="10"
              d:DesignWidth="300">
@@ -53,7 +54,6 @@
                             x:Name="txtCrypto"
                             VerticalAlignment="Center"
                             FontWeight="DemiBold"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
                             Margin="5,0,0,0"
                             FontSize="18"
                             Text="Unspecified Crypto">
@@ -140,6 +140,7 @@
                     Grid.Row="2"
                     Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=local:ctrlBranch}, Path=HasTransactions, Converter={StaticResource BoolToVis}}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
+                    Foreground="{DynamicResource MaterialDesignBody}"
                     Content="View all transactions..."
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
@@ -163,7 +164,6 @@
                         FontSize="15"
                         Text="N/A"
                         Opacity="0.5"
-                        Foreground="{DynamicResource PrimaryHueMidBrush}"
                         FontWeight="DemiBold">
                     </TextBlock>
                 </StackPanel>
@@ -220,7 +220,7 @@
                         Click="Button_Click_2"
                         Style="{DynamicResource MaterialDesignFlatButton}"
                         Content="Cancel"
-                        Foreground="Black">
+                        Foreground="{DynamicResource MaterialDesignBody}">
                     </Button>
 
                     <Button

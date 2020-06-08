@@ -9,6 +9,7 @@
                     xmlns:local="clr-namespace:CryptoBranchTracker.WPF.Windows"
                     mc:Ignorable="d"
                     Background="{DynamicResource MaterialDesignPaper}"
+                    Foreground="{DynamicResource MaterialDesignBody}"
                     Title="Crypto Transaction Branch Tracker"
                     WindowStartupLocation="CenterScreen"
                     StateChanged="BaseWindow_StateChanged"
@@ -24,6 +25,7 @@
 
     <materialDesign:DialogHost
         x:Name="dhCryptocurrency"
+        DialogTheme="Inherit"
         CloseOnClickAway="True">
 
         <!--Cryptocurrency Dialog Host-->
@@ -36,7 +38,9 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Grid>
+                <Grid
+                    Background="Transparent">
+                    
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -44,6 +48,7 @@
 
                     <Label
                         Content="Choose Your Crypotcurrency"
+                        Foreground="{DynamicResource MaterialDesignBody}"
                         FontWeight="Bold"
                         FontSize="30"
                         HorizontalAlignment="Left"
@@ -54,6 +59,7 @@
                         x:Name="txtCryptoSearch"
                         Margin="10,0,0,0"
                         Grid.Column="1"
+                        Foreground="{DynamicResource MaterialDesignBody}"
                         VerticalAlignment="Center"
                         materialDesign:HintAssist.Hint="Search"
                         TextChanged="txtCryptoSearch_TextChanged">
@@ -62,6 +68,7 @@
 
                 <ScrollViewer
                     VerticalScrollBarVisibility="Auto"
+                    Background="Transparent"
                     Grid.Row="1"
                     Width="750"
                     Margin="0,15,0,0"
@@ -69,6 +76,7 @@
 
                     <UniformGrid
                         x:Name="gridCurrencies"
+                        Background="Transparent"
                         VerticalAlignment="Top"
                         Columns="4">
                     </UniformGrid>
@@ -78,6 +86,7 @@
 
         <materialDesign:DialogHost
             x:Name="dhTransactionDetails"
+            DialogTheme="Inherit"
             CloseOnClickAway="True">
             
             <!--Transaction Dialog Host-->
@@ -93,6 +102,7 @@
                     <Label
                         Content="Transaction Details"
                         FontWeight="Bold"
+                        Foreground="{DynamicResource MaterialDesignBody}"
                         FontSize="30"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center">
@@ -105,6 +115,7 @@
 
                         <ComboBox
                             x:Name="cmbTransactionType"
+                            Foreground="{DynamicResource MaterialDesignBody}"
                             SelectedIndex="2"
                             Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
                             VerticalAlignment="Center"
@@ -114,6 +125,7 @@
 
                         <TextBlock
                             Text="This transaction was:"
+                            Foreground="{DynamicResource MaterialDesignBody}"
                             Margin="0,25,0,0"
                             VerticalAlignment="Center">
                         </TextBlock>
@@ -126,6 +138,7 @@
 
                             <ComboBox
                                 materialDesign:HintAssist.Hint="From"
+                                Foreground="{DynamicResource MaterialDesignBody}"
                                 materialDesign:HintAssist.IsFloating="True"
                                 Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
                                 VerticalAlignment="Center"
@@ -136,6 +149,7 @@
 
                             <ComboBox
                                 Grid.Column="1"
+                                Foreground="{DynamicResource MaterialDesignBody}"
                                 Margin="5,0,0,0"
                                 SelectedIndex="2"
                                 VerticalAlignment="Center"
@@ -151,6 +165,7 @@
                             Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
                             Margin="0,25,0,0"
                             VerticalAlignment="Center"
+                            Foreground="{DynamicResource MaterialDesignBody}"
                             KeyUp="txtTransactionFiat_KeyUp"
                             materialDesign:HintAssist.IsFloating="True"
                             materialDesign:HintAssist.Hint="How much fiat was lost or gained?">
@@ -166,9 +181,9 @@
 
                             <Button
                                 Click="Button_Click_7"
+                                Foreground="{DynamicResource MaterialDesignBody}"
                                 Style="{DynamicResource MaterialDesignFlatButton}"
-                                Content="Cancel"
-                                Foreground="Black">
+                                Content="Cancel">
                             </Button>
 
                             <Button
@@ -521,12 +536,13 @@
                                         
                                         <TextBlock
                                             Text="Appearance"
-                                            Opacity="0.75"
+                                            Foreground="{DynamicResource MaterialDesignBody}"
                                             Style="{DynamicResource MaterialDesignSubtitle2TextBlock}">
                                         </TextBlock>
 
                                         <materialDesign:Card
-                                            Margin="0,10,0,0">
+                                            Margin="0,10,0,0"
+                                            Foreground="{DynamicResource MaterialDesignBody}">
 
                                             <StackPanel>
                                                 
@@ -616,6 +632,7 @@
                                                             Width="Auto"
                                                             VerticalAlignment="Center"
                                                             HorizontalContentAlignment="Right"
+                                                            Foreground="{DynamicResource MaterialDesignBody}"
                                                             Style="{DynamicResource MaterialDesignToolButton}">
 
                                                             <materialDesign:PackIcon
@@ -658,6 +675,7 @@
 
                                     <TextBlock
                                         x:Name="txtCrypto"
+                                        Foreground="{DynamicResource MaterialDesignBody}"
                                         VerticalAlignment="Center"
                                         FontWeight="DemiBold"
                                         Margin="10,0,0,0"
