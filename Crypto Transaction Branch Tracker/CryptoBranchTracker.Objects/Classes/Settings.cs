@@ -35,6 +35,42 @@ namespace CryptoBranchTracker.Objects.Classes
             }
         }
 
+        public void Save()
+        {
+            try
+            {
+                Globals.FixRegistry();
+
+                RegistryView platformView = Environment.Is64BitOperatingSystem
+                    ? RegistryView.Registry64
+                    : RegistryView.Registry32;
+
+                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                {
+                    if (registryBase != null)
+                    {
+                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
+                        {
+                            using (RegistryKey settingsValues = applicationKey.CreateSubKey(Strings.RegistryLocations.SETTINGS_VALUES))
+                            {
+                                settingsValues.SetValue(Strings.SettingsNames.DARK_MODE, this.DarkMode, RegistryValueKind.DWord);
+
+                                //Colour scheme
+                                settingsValues.SetValue(Strings.SettingsNames.SCHEME_A, this.ColourScheme.A, RegistryValueKind.DWord);
+                                settingsValues.SetValue(Strings.SettingsNames.SCHEME_R, this.ColourScheme.R, RegistryValueKind.DWord);
+                                settingsValues.SetValue(Strings.SettingsNames.SCHEME_G, this.ColourScheme.G, RegistryValueKind.DWord);
+                                settingsValues.SetValue(Strings.SettingsNames.SCHEME_B, this.ColourScheme.B, RegistryValueKind.DWord);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred saving settings: {ex}");
+            }
+        }
+
         public static Settings GetSettings()
         {
             Settings settings = new Settings();

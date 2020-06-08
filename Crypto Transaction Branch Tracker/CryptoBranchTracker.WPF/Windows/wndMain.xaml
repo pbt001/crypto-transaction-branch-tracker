@@ -8,6 +8,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:local="clr-namespace:CryptoBranchTracker.WPF.Windows"
                     mc:Ignorable="d"
+                    Background="{DynamicResource MaterialDesignPaper}"
                     Title="Crypto Transaction Branch Tracker"
                     WindowStartupLocation="CenterScreen"
                     StateChanged="BaseWindow_StateChanged"
@@ -480,6 +481,8 @@
 
                     <TabControl
                         x:Name="tcMain"
+                        Background="{DynamicResource MaterialDesignPaper}"
+                        SelectionChanged="tcMain_SelectionChanged"
                         BorderBrush="Transparent"
                         BorderThickness="0"
                         Grid.Column="1"
@@ -563,7 +566,10 @@
                                                         </Grid>
 
                                                         <ToggleButton
+                                                            x:Name="btnDarkMode"
                                                             Grid.Column="1"
+                                                            Checked="btnDarkMode_Checked"
+                                                            Unchecked="btnDarkMode_Checked"
                                                             VerticalAlignment="Center"
                                                             HorizontalAlignment="Right"
                                                             Style="{DynamicResource MaterialDesignSwitchToggleButton}">

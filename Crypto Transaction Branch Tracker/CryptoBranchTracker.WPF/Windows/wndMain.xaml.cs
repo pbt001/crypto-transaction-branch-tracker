@@ -114,6 +114,18 @@ namespace CryptoBranchTracker.WPF.Windows
             }
         }
 
+        private void ReloadSettings()
+        {
+            try
+            {
+                this.btnDarkMode.IsChecked = Constants.Settings.DarkMode;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred reloading settings: {ex}");
+            }
+        }
+
         private void CurBranch_RequestTransactionView(object sender, EventArgs e)
         {
             try
@@ -500,6 +512,39 @@ namespace CryptoBranchTracker.WPF.Windows
             try
             {
                 this.tcMain.SelectedItem = this.tiSettings;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void tcMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (this.tcMain.SelectedItem == this.tiSettings)
+                    this.ReloadSettings();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void btnDarkMode_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                bool btnChecked = this.btnDarkMode.IsChecked.Value;
+
+                if (Constants.Settings.DarkMode != btnChecked)
+                {
+                    Constants.Settings.DarkMode = btnChecked;
+                    Constants.Settings.Save();
+
+                    Globals.RefreshSettings();
+                }
             }
             catch (Exception ex)
             {
