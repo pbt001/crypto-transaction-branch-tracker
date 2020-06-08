@@ -30,6 +30,7 @@ namespace CryptoBranchTracker.Objects.Classes
                         {
                             applicationKey.CreateSubKey(Strings.RegistryLocations.BRANCH_LIST).Close();
                             applicationKey.CreateSubKey(Strings.RegistryLocations.TRANSACTION_LIST).Close();
+                            applicationKey.CreateSubKey(Strings.RegistryLocations.SETTINGS_VALUES).Close();
                         }
                     }
                 }

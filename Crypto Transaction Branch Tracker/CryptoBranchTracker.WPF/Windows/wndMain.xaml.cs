@@ -1,8 +1,10 @@
 ﻿using CryptoBranchTracker.Objects.Classes;
 using CryptoBranchTracker.WPF.Classes;
 using CryptoBranchTracker.WPF.Controls;
+using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using System;
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -32,6 +34,8 @@ namespace CryptoBranchTracker.WPF.Windows
         {
             InitializeComponent();
         }
+
+        public IEnumerable<ISwatch> Swatches { get; } = SwatchHelper.Swatches;
 
         private void LoadBranches()
         {
@@ -109,6 +113,18 @@ namespace CryptoBranchTracker.WPF.Windows
             catch (Exception ex)
             {
                 throw new Exception($"An error occurred reading in transactions: {ex}");
+            }
+        }
+
+        private void ReloadSettings()
+        {
+            try
+            {
+                this.btnDarkMode.IsChecked = Constants.Settings.DarkMode;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred reloading settings: {ex}");
             }
         }
 
@@ -486,6 +502,83 @@ namespace CryptoBranchTracker.WPF.Windows
             try
             {
                 Process.Start(Strings.GITHUB_URL);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_9(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.tcMain.SelectedItem = this.tiSettings;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void tcMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (this.tcMain.SelectedItem == this.tiSettings)
+                    this.ReloadSettings();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void btnDarkMode_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                bool btnChecked = this.btnDarkMode.IsChecked.Value;
+
+                if (Constants.Settings.DarkMode != btnChecked)
+                {
+                    Constants.Settings.DarkMode = btnChecked;
+                    Constants.Settings.Save();
+
+                    Globals.RefreshSettings();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_10(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.dhColours.IsOpen = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Button_Click_11(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Button btnCurrent && btnCurrent.DataContext is Color clrCurrent)
+                {
+                    Constants.Settings.ColourScheme = Color.FromArgb(clrCurrent.A, clrCurrent.R, clrCurrent.G, clrCurrent.B);
+                    Constants.Settings.Save();
+
+                    Globals.RefreshSettings();
+
+                    this.dhColours.IsOpen = false;
+                }
             }
             catch (Exception ex)
             {

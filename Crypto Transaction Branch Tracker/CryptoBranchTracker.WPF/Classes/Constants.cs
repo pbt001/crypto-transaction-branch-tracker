@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CryptoBranchTracker.Objects.Classes;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +11,8 @@ namespace CryptoBranchTracker.WPF.Classes
 {
     public class Constants
     {
+        public static Settings Settings { get; set; } = new Settings();
+
         public struct TransactionColours
         {
             public static SolidColorBrush DepositBrush = new SolidColorBrush(Color.FromRgb(108, 203, 86));

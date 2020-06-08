@@ -29,6 +29,7 @@
             <Label
                 x:Name="lblCurrency"
                 Grid.Column="1"
+                Foreground="{DynamicResource MaterialDesignBody}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Margin="5,0,0,0"
@@ -38,11 +39,11 @@
 
         <Border.Style>
             <Style>
-                <Setter Property="Border.Background" Value="Transparent"/>
+                <Setter Property="Border.Opacity" Value="1.0"/>
                 
                 <Style.Triggers>
                     <Trigger Property="Border.IsMouseOver" Value="True">
-                        <Setter Property="Border.Background" Value="LightGray" />
+                        <Setter Property="Border.Opacity" Value="0.5" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
