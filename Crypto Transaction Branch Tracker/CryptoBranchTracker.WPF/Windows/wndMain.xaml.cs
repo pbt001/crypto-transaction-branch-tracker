@@ -1,11 +1,13 @@
 ﻿using CryptoBranchTracker.Objects.Classes;
 using CryptoBranchTracker.WPF.Classes;
 using CryptoBranchTracker.WPF.Controls;
+using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Resources;

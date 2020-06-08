@@ -14,6 +14,19 @@ namespace CryptoBranchTracker.Objects.Classes
 
         public const string VALUE_DELIMITER = ";";
 
+        public struct SettingsNames
+        {
+            public const string DARK_MODE = "DARK_MODE";
+
+            public const string SCHEME_A = "SCHEME_A";
+
+            public const string SCHEME_R = "SCHEME_R";
+
+            public const string SCHEME_G = "SCHEME_G";
+
+            public const string SCHEME_B = "SCHEME_B";
+        }
+
         public struct TransactionKeys
         {
             public const string TRANSACTION_SOURCE = "TRANSACTION_SOURCE";
@@ -51,6 +64,8 @@ namespace CryptoBranchTracker.Objects.Classes
             public const string TRANSACTION_LIST = "Transactions";
 
             public const string BRANCH_LIST = "Branches";
+
+            public const string SETTINGS_VALUES = "Settings";
         }
     }
 }
