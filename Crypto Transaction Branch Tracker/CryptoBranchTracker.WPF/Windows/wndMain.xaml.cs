@@ -492,5 +492,17 @@ namespace CryptoBranchTracker.WPF.Windows
                 MessageBox.Show(ex.ToString());
             }
         }
+
+        private void Button_Click_9(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.tcMain.SelectedItem = this.tiSettings;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
     }
 }
