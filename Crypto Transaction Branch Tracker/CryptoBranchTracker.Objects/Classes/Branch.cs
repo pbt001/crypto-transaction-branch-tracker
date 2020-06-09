@@ -151,6 +151,12 @@ namespace CryptoBranchTracker.Objects.Classes
                         }
                     }
                 }
+
+                List<Transaction> lstTransactions = Transaction.GetAllLocalTransactions().
+                    Where(x => x.BranchIdentifier == this.Identifier).ToList();
+
+                foreach (Transaction transaction in lstTransactions)
+                    transaction.Delete();
             }
             catch (Exception ex)
             {
