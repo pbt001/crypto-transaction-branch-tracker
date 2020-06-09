@@ -5,7 +5,9 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
+using System.Windows.Shell;
 
 namespace CryptoBranchTracker.WPF.Classes
 {
@@ -23,5 +25,12 @@ namespace CryptoBranchTracker.WPF.Classes
 
             public static SolidColorBrush TransferBrush = new SolidColorBrush(Color.FromRgb(133, 97, 197));
         }
+
+        public static WindowChrome BaseWindowChrome = new WindowChrome()
+        {
+            CaptionHeight = 34,
+            ResizeBorderThickness = SystemParameters.WindowResizeBorderThickness,
+            CornerRadius = SystemParameters.WindowCornerRadius
+        };
     }
 }
