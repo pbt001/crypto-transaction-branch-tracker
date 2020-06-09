@@ -32,7 +32,7 @@ namespace CryptoBranchTracker.WPF.Classes
         {
             try
             {
-                WindowChrome.SetWindowChrome(this, new WindowChrome() { CaptionHeight = 34 });
+                WindowChrome.SetWindowChrome(this, Constants.BaseWindowChrome);
                 this.SourceInitialized += MainWindow_SourceInitialized;
             }
             catch (Exception ex)

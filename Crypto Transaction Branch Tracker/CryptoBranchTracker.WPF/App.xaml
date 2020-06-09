@@ -17,6 +17,7 @@
                 
                 <!--Custom-->
                 <ResourceDictionary Source="Resource Dictionaries/Constants.xaml" />
+                <ResourceDictionary Source="Resource Dictionaries/Templates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
