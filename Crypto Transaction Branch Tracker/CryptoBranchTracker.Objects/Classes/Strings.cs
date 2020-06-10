@@ -14,6 +14,11 @@ namespace CryptoBranchTracker.Objects.Classes
 
         public const string VALUE_DELIMITER = ";";
 
+        public struct JSONStrings
+        {
+            public const string DEFAULT_DATA = "{ \"Branches\": [	], }";
+        }
+
         public struct SettingsNames
         {
             public const string DARK_MODE = "DARK_MODE";
