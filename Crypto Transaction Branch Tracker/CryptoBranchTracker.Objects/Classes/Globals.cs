@@ -14,37 +14,6 @@ namespace CryptoBranchTracker.Objects.Classes
 {
     internal class Globals
     {
-        [Obsolete]
-        /// <summary>
-        /// Sort out the registry directory, fix any tampering that may have been done
-        /// </summary>
-        public static void FixRegistry()
-        {
-            try
-            {
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
-
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
-                {
-                    if (registryBase != null)
-                    {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
-                        {
-                            applicationKey.CreateSubKey(Strings.RegistryLocations.BRANCH_LIST).Close();
-                            applicationKey.CreateSubKey(Strings.RegistryLocations.TRANSACTION_LIST).Close();
-                            applicationKey.CreateSubKey(Strings.RegistryLocations.SETTINGS_VALUES).Close();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"An error occurred fixing the registry: {ex}");
-            }
-        }
-
         //I know it's usually bad to have a method with one line, but this actually saves a bunch of time
         public static void UpdateDataFile(string data)
         {

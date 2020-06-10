@@ -241,42 +241,6 @@ namespace CryptoBranchTracker.Objects.Classes
             return value;
         }
 
-        [Obsolete]
-        public static List<Transaction> GetAllLocalTransactions()
-        {
-            List<Transaction> lstTransactions = new List<Transaction>();
-
-            try
-            {
-                Globals.FixRegistry();
-
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
-
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
-                {
-                    if (registryBase != null)
-                    {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
-                        {
-                            using (RegistryKey transactionList = applicationKey.CreateSubKey(Strings.RegistryLocations.TRANSACTION_LIST))
-                            {
-                                lstTransactions = transactionList.GetValueNames().
-                                    Select(valueName => new Transaction(transactionList.GetValue(valueName).ToString())).ToList();
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"An error occurred getting all local transactions: {ex}");
-            }
-
-            return lstTransactions;
-        }
-
         public Transaction() { }
 
         public Transaction(string base64Value)

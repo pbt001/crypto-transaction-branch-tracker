@@ -142,7 +142,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="CryptoBranchTracker.WPF_TemporaryKey.pfx" />
-    <EmbeddedResource Include="data.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

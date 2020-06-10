@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Animation;
 
 namespace CryptoBranchTracker.Objects.Classes
 {
@@ -103,6 +104,33 @@ namespace CryptoBranchTracker.Objects.Classes
             }
         }
 
+        public void ReloadTransactions()
+        {
+            try
+            {
+                this.Transactions.Clear();
+                JObject objBranch = Globals.GetRawBranchData(this.Identifier);
+
+                if (objBranch != null)
+                {
+                    JEnumerable<JObject> enTransactions = Globals.GetTransactionArray(objBranch).Children<JObject>();
+
+                    foreach (JObject transactionData in enTransactions)
+                    {
+                        JProperty propData = transactionData.Children<JProperty>().
+                            Where(x => x.Name == Strings.JSONStrings.TRANSACTION_DATA).FirstOrDefault();
+
+                        if (propData != null)
+                            this.Transactions.Add(new Transaction(propData.Value.ToString()));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred reloading transactions: {ex}");
+            }
+        }
+
         public static List<Branch> GetAllLocalBranches()
         {
             List<Branch> lstBranches = new List<Branch>();
@@ -130,7 +158,7 @@ namespace CryptoBranchTracker.Objects.Classes
                             {
                                 JProperty propData = transactionData.Children<JProperty>().
                                     Where(x => x.Name == Strings.JSONStrings.TRANSACTION_DATA).FirstOrDefault();
-
+                                    
                                 if (propData != null)
                                     branch.Transactions.Add(new Transaction(propData.Value.ToString()));
                             }
