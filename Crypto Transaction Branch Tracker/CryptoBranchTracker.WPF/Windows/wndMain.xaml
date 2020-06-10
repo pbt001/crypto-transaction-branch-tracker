@@ -180,7 +180,6 @@
                         <ComboBox
                             x:Name="cmbTransactionType"
                             Foreground="{DynamicResource MaterialDesignBody}"
-                            SelectedIndex="2"
                             Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.IsFloating="True"
@@ -206,7 +205,6 @@
                                 materialDesign:HintAssist.IsFloating="True"
                                 Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
                                 VerticalAlignment="Center"
-                                SelectedIndex="0"
                                 x:Name="cmbTransactionFrom"
                                 Margin="0,0,5,0">
                             </ComboBox>
@@ -215,7 +213,6 @@
                                 Grid.Column="1"
                                 Foreground="{DynamicResource MaterialDesignBody}"
                                 Margin="5,0,0,0"
-                                SelectedIndex="2"
                                 VerticalAlignment="Center"
                                 Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
                                 materialDesign:HintAssist.Hint="To"
