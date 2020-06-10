@@ -113,7 +113,7 @@ namespace CryptoBranchTracker.Objects.Classes
 
                 try
                 {
-                    JEnumerable<JObject> enBranches = Globals.GetBranchList();
+                    JEnumerable<JObject> enBranches = Globals.GetBranchArray().Children<JObject>();
 
                     foreach (JObject branchData in enBranches)
                     {
@@ -182,22 +182,35 @@ namespace CryptoBranchTracker.Objects.Classes
 
                 string saveValue = Globals.Compress(this.GetDelimitedValue());
 
-                Globals.FixRegistry();
+                Globals.FixJSONFile();
 
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
+                JObject objBranch = Globals.GetRawBranchData(this.Identifier);
 
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                if (objBranch != null)
                 {
-                    if (registryBase != null)
+                    JProperty propData = objBranch.Children<JProperty>().
+                        Where(x => x.Name == Strings.JSONStrings.BRANCH_DATA).FirstOrDefault();
+
+                    if (propData != null)
                     {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
-                        {
-                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.BRANCH_LIST))
-                                branchList.SetValue(this.Identifier.ToString(), saveValue, RegistryValueKind.String);
-                        }
+                        propData.Value = saveValue;
+                        Globals.UpdateDataFile(propData.Root.ToString());
                     }
+                }
+                else
+                {
+                    JArray arrBranches = Globals.GetBranchArray();
+
+                    JObject objNewBranch = new JObject
+                    {
+                        new JProperty(Strings.JSONStrings.IDENTIFIER, this.Identifier.ToString()),
+                        new JProperty(Strings.JSONStrings.BRANCH_DATA, Globals.Compress(this.GetDelimitedValue())),
+                        new JProperty(Strings.JSONStrings.BRANCH_TRANSACTIONS, new JArray())
+                    };
+
+                    arrBranches.Add(objNewBranch);
+
+                    Globals.UpdateDataFile(objNewBranch.Root.ToString());
                 }
             }
             catch (Exception ex)

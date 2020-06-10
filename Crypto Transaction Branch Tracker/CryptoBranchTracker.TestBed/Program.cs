@@ -14,6 +14,12 @@ namespace CryptoBranchTracker.TestBed
         [STAThread]
         static void Main(string[] args)
         {
+            new Branch()
+            {
+                Identifier = Guid.NewGuid(),
+                Cryptocurrency = "BCH"
+            }.Save();
+
             Console.ReadLine();
         }
     }

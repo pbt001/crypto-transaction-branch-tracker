@@ -124,7 +124,7 @@ namespace CryptoBranchTracker.Objects.Classes
 
             try
             {
-                JEnumerable<JObject> enBranches = Globals.GetBranchList();
+                JEnumerable<JObject> enBranches = GetBranchArray().Children<JObject>();
 
                 foreach (JObject branch in enBranches)
                 {
@@ -143,9 +143,9 @@ namespace CryptoBranchTracker.Objects.Classes
             return obj;
         }
 
-        public static JEnumerable<JObject> GetBranchList()
+        public static JArray GetBranchArray()
         {
-            JEnumerable<JObject> enBranches = new JEnumerable<JObject>();
+            JArray arrBranches = null;
 
             try
             {
@@ -155,20 +155,15 @@ namespace CryptoBranchTracker.Objects.Classes
                     JProperty propBranches = mainData.Children<JProperty>().FirstOrDefault();
 
                     if (propBranches != null)
-                    {
-                        JArray arrBranches = propBranches.Values<JArray>().FirstOrDefault();
-
-                        if (arrBranches != null)
-                            enBranches = arrBranches.Children<JObject>();
-                    }
+                        arrBranches = propBranches.Values<JArray>().FirstOrDefault();
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception($"An error occurred getting branches: {ex}");
+                throw new Exception($"An error occurred getting branch array: {ex}");
             }
 
-            return enBranches;
+            return arrBranches;
         }
 
         public static void FixJSONFile()
