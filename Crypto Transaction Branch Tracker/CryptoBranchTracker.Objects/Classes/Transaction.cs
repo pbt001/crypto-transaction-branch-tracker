@@ -163,6 +163,7 @@ namespace CryptoBranchTracker.Objects.Classes
             }
         }
 
+        [Obsolete]
         public void Save()
         {
             try

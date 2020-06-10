@@ -4,11 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace CryptoBranchTracker.Objects.Classes
 {
     public class Branch
     {
+        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
+
         public DateTime? DateCreated { get; set; }
 
         public TimeSpan? TimeCreated { get; set; }
@@ -103,26 +108,62 @@ namespace CryptoBranchTracker.Objects.Classes
 
             try
             {
-                Globals.FixRegistry();
+                Globals.FixJSONFile();
 
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
-
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                try
                 {
-                    if (registryBase != null)
+                    using (StreamReader reader = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), $"{Strings.JSONStrings.FILE_NAME}.json")))
                     {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
+                        JObject mainData = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+                        JProperty propBranches = mainData.Children<JProperty>().FirstOrDefault();
+
+                        if (propBranches != null)
                         {
-                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.BRANCH_LIST))
+                            JArray arrBranches = propBranches.Values<JArray>().FirstOrDefault();
+
+                            if (arrBranches != null)
                             {
-                                lstBranches = branchList.GetValueNames().
-                                    Select(valueName => new Branch(branchList.GetValue(valueName).ToString())).ToList();
+                                JEnumerable<JObject> enBranches = arrBranches.Children<JObject>();
+
+                                foreach (JObject branchData in enBranches)
+                                {
+                                    JProperty branchCode = branchData.Children<JProperty>().
+                                        Where(x => x.Name == Strings.JSONStrings.BRANCH_DATA).FirstOrDefault();
+
+                                    if (branchCode != null)
+                                    {
+                                        Branch branch = new Branch(branchCode.Value.ToString());
+
+                                        JProperty propTransactions = branchData.Children<JProperty>().
+                                            Where(x => x.Name == Strings.JSONStrings.BRANCH_TRANSACTIONS).FirstOrDefault();
+
+                                        if (propTransactions != null)
+                                        {
+                                            JArray arrTransactions = propTransactions.Children<JArray>().FirstOrDefault();
+
+                                            if (arrTransactions != null)
+                                            {
+                                                JEnumerable<JObject> enTransactions = arrTransactions.Children<JObject>();
+
+                                                foreach (JObject transactionData in enTransactions)
+                                                {
+                                                    JProperty propData = transactionData.Children<JProperty>().
+                                                        Where(x => x.Name == Strings.JSONStrings.TRANSACTION_DATA).FirstOrDefault();
+
+                                                    if (propData != null)
+                                                        branch.Transactions.Add(new Transaction(propData.Value.ToString()));
+                                                }
+                                            }
+                                        }
+
+                                        lstBranches.Add(branch);
+                                    }
+                                }
                             }
                         }
                     }
                 }
+                catch (Exception) { }
             }
             catch (Exception ex)
             {

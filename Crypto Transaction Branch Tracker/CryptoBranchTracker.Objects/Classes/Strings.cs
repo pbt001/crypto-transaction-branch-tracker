@@ -16,7 +16,15 @@ namespace CryptoBranchTracker.Objects.Classes
 
         public struct JSONStrings
         {
+            public const string FILE_NAME = "data";
+
             public const string DEFAULT_DATA = "{ \"Branches\": [	], }";
+
+            public const string BRANCH_DATA = "DATA";
+
+            public const string TRANSACTION_DATA = "TRANSACTION_DATA";
+
+            public const string BRANCH_TRANSACTIONS = "TRANSACTIONS";
         }
 
         public struct SettingsNames

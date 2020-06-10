@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace CryptoBranchTracker.Objects.Classes
 {
-    internal class Globals
+    public class Globals
     {
+        [Obsolete]
         /// <summary>
         /// Sort out the registry directory, fix any tampering that may have been done
         /// </summary>
@@ -38,6 +39,27 @@ namespace CryptoBranchTracker.Objects.Classes
             catch (Exception ex)
             {
                 throw new Exception($"An error occurred fixing the registry: {ex}");
+            }
+        }
+
+        public static void FixJSONFile()
+        {
+            try
+            {
+                string strExpectedLocation = Path.Combine(Directory.GetCurrentDirectory(), $"{Strings.JSONStrings.FILE_NAME}.json");
+
+                if (!File.Exists(strExpectedLocation))
+                {
+                    using (FileStream stream = File.Create(strExpectedLocation))
+                    {
+                        byte[] arrData = ASCIIEncoding.ASCII.GetBytes(Strings.JSONStrings.DEFAULT_DATA);
+                        stream.Write(arrData, 0, arrData.Length);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred fixing JSON file: {ex}");
             }
         }
 
