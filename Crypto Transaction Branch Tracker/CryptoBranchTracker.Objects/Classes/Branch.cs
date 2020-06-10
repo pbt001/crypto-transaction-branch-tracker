@@ -155,22 +155,14 @@ namespace CryptoBranchTracker.Objects.Classes
             {
                 Globals.FixJSONFile();
 
-                JEnumerable<JObject> enBranches = Globals.GetBranchList();
+                JObject tarBranch = Globals.GetRawBranchData(this.Identifier);
 
-                foreach (JObject obj in enBranches)
+                if (tarBranch != null)
                 {
-                    JProperty propIdentifier = obj.Children<JProperty>().
-                        Where(x => x.Name == Strings.JSONStrings.IDENTIFIER).FirstOrDefault();
+                    JArray arrParent = tarBranch.Parent as JArray;
+                    arrParent.Remove(tarBranch);
 
-                    if (propIdentifier != null && propIdentifier.Value.ToString() == this.Identifier.ToString())
-                    {
-                        JArray arrParent = obj.Parent as JArray;
-                        arrParent.Remove(obj);
-
-                        Globals.UpdateDataFile(arrParent.Root.ToString());
-
-                        return;
-                    }
+                    Globals.UpdateDataFile(arrParent.Root.ToString());
                 }
             }
             catch (Exception ex)

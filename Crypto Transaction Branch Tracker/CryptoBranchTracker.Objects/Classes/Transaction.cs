@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -139,22 +140,16 @@ namespace CryptoBranchTracker.Objects.Classes
         {
             try
             {
-                Globals.FixRegistry();
+                Globals.FixJSONFile();
 
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
+                JObject objTransaction = Globals.GetRawTransactionData(this.Identifier, this.BranchIdentifier);
 
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                if (objTransaction != null)
                 {
-                    if (registryBase != null)
-                    {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
-                        {
-                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.TRANSACTION_LIST))
-                                branchList.DeleteValue(this.Identifier.ToString());
-                        }
-                    }
+                    JArray arrParent = objTransaction.Parent as JArray;
+                    arrParent.Remove(objTransaction);
+
+                    Globals.UpdateDataFile(arrParent.Root.ToString());
                 }
             }
             catch (Exception ex)

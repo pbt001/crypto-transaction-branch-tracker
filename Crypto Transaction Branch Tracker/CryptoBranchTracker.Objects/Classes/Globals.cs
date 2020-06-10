@@ -88,6 +88,61 @@ namespace CryptoBranchTracker.Objects.Classes
             return enTransactions;
         }
 
+        public static JObject GetRawTransactionData(Guid identifier, Guid branchIdentifier)
+        {
+            JObject obj = null;
+
+            try
+            {
+                JObject tarBranch = Globals.GetRawBranchData(branchIdentifier);
+
+                if (tarBranch != null)
+                {
+                    JEnumerable<JObject> enTransactions = Globals.GetTransactionList(tarBranch);
+
+                    foreach (JObject transaction in enTransactions)
+                    {
+                        JProperty propIdentifier = transaction.Children<JProperty>().
+                            Where(x => x.Name == Strings.JSONStrings.IDENTIFIER).FirstOrDefault();
+
+                        if (propIdentifier != null && propIdentifier.Value.ToString() == identifier.ToString())
+                            return transaction;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred getting raw transaction data: {ex}");
+            }
+
+            return obj;
+        }
+
+        public static JObject GetRawBranchData(Guid identifier)
+        {
+            JObject obj = null;
+
+            try
+            {
+                JEnumerable<JObject> enBranches = Globals.GetBranchList();
+
+                foreach (JObject branch in enBranches)
+                {
+                    JProperty propIdentifier = branch.Children<JProperty>().
+                        Where(x => x.Name == Strings.JSONStrings.IDENTIFIER).FirstOrDefault();
+
+                    if (propIdentifier != null && propIdentifier.Value.ToString() == identifier.ToString())
+                        return branch;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred getting raw branch data: {ex}");
+            }
+
+            return obj;
+        }
+
         public static JEnumerable<JObject> GetBranchList()
         {
             JEnumerable<JObject> enBranches = new JEnumerable<JObject>();
