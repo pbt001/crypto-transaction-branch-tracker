@@ -446,6 +446,10 @@ namespace CryptoBranchTracker.WPF.Windows
         {
             try
             {
+                //Without this layout update, a weird bug occurrs where a phantom selection is made, preventing any focus on the textbox
+                if (string.IsNullOrWhiteSpace(this.txtCryptoSearch.Text))
+                    this.txtCryptoSearch.UpdateLayout();
+
                 foreach (ctrlCrypto crypto in this.gridCurrencies.Children)
                 {
                     crypto.Visibility = (crypto.CryptoSet.Key.ToString().ToUpper().Contains(this.txtCryptoSearch.Text.ToUpper()))
