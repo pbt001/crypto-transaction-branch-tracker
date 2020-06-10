@@ -165,7 +165,9 @@ namespace CryptoBranchTracker.Objects.Classes
                 using (StreamReader reader = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), $"{Strings.JSONStrings.FILE_NAME}.json")))
                 {
                     JObject mainData = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
-                    JProperty propBranches = mainData.Children<JProperty>().FirstOrDefault();
+
+                    JProperty propBranches = mainData.Children<JProperty>().
+                        Where(x => x.Name == Strings.JSONStrings.BRANCHES_OBJECT).FirstOrDefault();
 
                     if (propBranches != null)
                         arrBranches = propBranches.Values<JArray>().FirstOrDefault();
@@ -177,6 +179,31 @@ namespace CryptoBranchTracker.Objects.Classes
             }
 
             return arrBranches;
+        }
+
+        public static JObject GetRawSettingsData()
+        {
+            JObject objSettings = null;
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), $"{Strings.JSONStrings.FILE_NAME}.json")))
+                {
+                    JObject mainData = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+
+                    JProperty propSettings = mainData.Children<JProperty>().
+                        Where(x => x.Name == Strings.JSONStrings.SETTINGS_OBJECT).FirstOrDefault();
+
+                    if (propSettings != null)
+                        objSettings = propSettings.Values<JObject>().FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred getting raw settings data: {ex}");
+            }
+
+            return objSettings;
         }
 
         public static void FixJSONFile()

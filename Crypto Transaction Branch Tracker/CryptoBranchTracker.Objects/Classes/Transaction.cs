@@ -241,6 +241,7 @@ namespace CryptoBranchTracker.Objects.Classes
             return value;
         }
 
+        [Obsolete]
         public static List<Transaction> GetAllLocalTransactions()
         {
             List<Transaction> lstTransactions = new List<Transaction>();

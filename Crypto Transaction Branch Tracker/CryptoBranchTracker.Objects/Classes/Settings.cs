@@ -1,8 +1,10 @@
 ﻿using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,53 +18,54 @@ namespace CryptoBranchTracker.Objects.Classes
 
         public Color ColourScheme { get; set; } = Color.FromArgb(255, 103, 58, 183);
 
-        /// <summary>
-        /// Set the default registry values for the user's colour scheme settings
-        /// </summary>
-        /// <param name="settingsKey"></param>
-        private static void SetDefaultLocals(RegistryKey settingsKey)
-        {
-            try
-            {
-                settingsKey.SetValue(Strings.SettingsNames.SCHEME_A, 255, RegistryValueKind.DWord);
-                settingsKey.SetValue(Strings.SettingsNames.SCHEME_R, 103, RegistryValueKind.DWord);
-                settingsKey.SetValue(Strings.SettingsNames.SCHEME_G, 58, RegistryValueKind.DWord);
-                settingsKey.SetValue(Strings.SettingsNames.SCHEME_B, 183, RegistryValueKind.DWord);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"An error occurred setting default locals: {ex}");
-            }
-        }
-
         public void Save()
         {
             try
             {
-                Globals.FixRegistry();
+                Globals.FixJSONFile();
 
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
+                JObject objSettings = Globals.GetRawSettingsData();
 
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                if (objSettings != null)
                 {
-                    if (registryBase != null)
-                    {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
-                        {
-                            using (RegistryKey settingsValues = applicationKey.CreateSubKey(Strings.RegistryLocations.SETTINGS_VALUES))
-                            {
-                                settingsValues.SetValue(Strings.SettingsNames.DARK_MODE, this.DarkMode, RegistryValueKind.DWord);
+                    JEnumerable<JProperty> enProperties = objSettings.Children<JProperty>();
 
-                                //Colour scheme
-                                settingsValues.SetValue(Strings.SettingsNames.SCHEME_A, this.ColourScheme.A, RegistryValueKind.DWord);
-                                settingsValues.SetValue(Strings.SettingsNames.SCHEME_R, this.ColourScheme.R, RegistryValueKind.DWord);
-                                settingsValues.SetValue(Strings.SettingsNames.SCHEME_G, this.ColourScheme.G, RegistryValueKind.DWord);
-                                settingsValues.SetValue(Strings.SettingsNames.SCHEME_B, this.ColourScheme.B, RegistryValueKind.DWord);
-                            }
-                        }
-                    }
+                    //Dark Mode
+                    JProperty propDarkMode = enProperties.
+                        Where(x => x.Name == Strings.SettingsNames.DARK_MODE).FirstOrDefault();
+
+                    if (propDarkMode != null)
+                        propDarkMode.Value = this.DarkMode;
+
+                    //Scheme A
+                    JProperty propSchemeA = enProperties.
+                        Where(x => x.Name == Strings.SettingsNames.SCHEME_A).FirstOrDefault();
+
+                    if (propSchemeA != null)
+                        propSchemeA.Value = Convert.ToInt32(this.ColourScheme.A);
+
+                    //Scheme R
+                    JProperty propSchemeR = enProperties.
+                        Where(x => x.Name == Strings.SettingsNames.SCHEME_R).FirstOrDefault();
+
+                    if (propSchemeR != null)
+                        propSchemeR.Value = Convert.ToInt32(this.ColourScheme.R);
+
+                    //Scheme G
+                    JProperty propSchemeG = enProperties.
+                        Where(x => x.Name == Strings.SettingsNames.SCHEME_G).FirstOrDefault();
+
+                    if (propSchemeG != null)
+                        propSchemeG.Value = Convert.ToInt32(this.ColourScheme.G);
+
+                    //Scheme B
+                    JProperty propSchemeB = enProperties.
+                        Where(x => x.Name == Strings.SettingsNames.SCHEME_B).FirstOrDefault();
+
+                    if (propSchemeB != null)
+                        propSchemeB.Value = Convert.ToInt32(this.ColourScheme.B);
+
+                    Globals.UpdateDataFile(objSettings.Root.ToString());
                 }
             }
             catch (Exception ex)
@@ -77,67 +80,55 @@ namespace CryptoBranchTracker.Objects.Classes
 
             try
             {
-                Globals.FixRegistry();
+                Globals.FixJSONFile();
 
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
+                JObject objSettings = Globals.GetRawSettingsData();
 
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                if (objSettings != null)
                 {
-                    if (registryBase != null)
-                    {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
-                        {
-                            using (RegistryKey settingsValues = applicationKey.CreateSubKey(Strings.RegistryLocations.SETTINGS_VALUES))
-                            {
-                                object darkMode = settingsValues.GetValue(Strings.SettingsNames.DARK_MODE);
+                    JEnumerable<JProperty> enProperties = objSettings.Children<JProperty>();
 
-                                if (darkMode != null)
-                                    settings.DarkMode = Convert.ToBoolean((int)darkMode);
-                                else
-                                    settingsValues.SetValue(Strings.SettingsNames.DARK_MODE, false, RegistryValueKind.DWord);
+                    //Dark Mode
+                    JProperty propDarkMode = enProperties.
+                        Where(x => x.Name == Strings.SettingsNames.DARK_MODE).FirstOrDefault();
 
-                                object schemeA = settingsValues.GetValue(Strings.SettingsNames.SCHEME_A);
+                    settings.DarkMode = propDarkMode == null
+                        ? false
+                        : Convert.ToBoolean(propDarkMode.Value);
 
-                                if (schemeA != null)
-                                {
-                                    Color clrScheme = new Color
-                                    {
-                                        A = Convert.ToByte((int)schemeA)
-                                    };
+                    //Scheme A
+                    JProperty propSchemeA = enProperties.
+                        Where(x => x.Name == Strings.SettingsNames.SCHEME_A).FirstOrDefault();
 
-                                    object schemeR = settingsValues.GetValue(Strings.SettingsNames.SCHEME_R);
+                    int schemeA = propSchemeA == null
+                        ? 255
+                        : Convert.ToInt32(propSchemeA.Value);
 
-                                    if (schemeR != null)
-                                    {
-                                        clrScheme.R = Convert.ToByte((int)schemeR);
-                                        object schemeG = settingsValues.GetValue(Strings.SettingsNames.SCHEME_G);
+                    //Scheme R
+                    JProperty propSchemeR = enProperties.
+                        Where(x => x.Name == Strings.SettingsNames.SCHEME_R).FirstOrDefault();
 
-                                        if (schemeG != null)
-                                        {
-                                            clrScheme.G = Convert.ToByte((int)schemeG);
-                                            object schemeB = settingsValues.GetValue(Strings.SettingsNames.SCHEME_B);
+                    int schemeR = propSchemeR == null
+                        ? 103
+                        : Convert.ToInt32(propSchemeR.Value);
 
-                                            if (schemeB != null)
-                                            {
-                                                clrScheme.B = Convert.ToByte((int)schemeB);
-                                                settings.ColourScheme = clrScheme;
-                                            }
-                                            else
-                                                Settings.SetDefaultLocals(settingsValues);
-                                        }
-                                        else
-                                            Settings.SetDefaultLocals(settingsValues);
-                                    }
-                                    else
-                                        Settings.SetDefaultLocals(settingsValues);
-                                }
-                                else
-                                    Settings.SetDefaultLocals(settingsValues);
-                            }
-                        }
-                    }
+                    //Scheme G
+                    JProperty propSchemeG = enProperties.
+                        Where(x => x.Name == Strings.SettingsNames.SCHEME_G).FirstOrDefault();
+
+                    int schemeG = propSchemeG == null
+                        ? 58
+                        : Convert.ToInt32(propSchemeG.Value);
+
+                    //Scheme B
+                    JProperty propSchemeB = enProperties.
+                        Where(x => x.Name == Strings.SettingsNames.SCHEME_B).FirstOrDefault();
+
+                    int schemeB = propSchemeB == null
+                        ? 183
+                        : Convert.ToInt32(propSchemeB.Value);
+
+                    settings.ColourScheme = Color.FromArgb(Convert.ToByte(schemeA), Convert.ToByte(schemeR), Convert.ToByte(schemeG), Convert.ToByte(schemeB));
                 }
             }
             catch (Exception ex)

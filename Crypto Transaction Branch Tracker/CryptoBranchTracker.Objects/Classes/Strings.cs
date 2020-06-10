@@ -18,7 +18,7 @@ namespace CryptoBranchTracker.Objects.Classes
         {
             public const string FILE_NAME = "data";
 
-            public const string DEFAULT_DATA = "{ \"Branches\": [	], }";
+            public const string DEFAULT_DATA = "{ \"Branches\": [], \"Settings\": {	\"DARK_MODE\": false, \"SCHEME_A\": 255, \"SCHEME_R\": 103, \"SCHEME_G\": 58, \"SCHEME_B\": 183 } }";
 
             public const string BRANCH_DATA = "DATA";
 
@@ -27,6 +27,10 @@ namespace CryptoBranchTracker.Objects.Classes
             public const string BRANCH_TRANSACTIONS = "TRANSACTIONS";
 
             public const string IDENTIFIER = "IDENTIFIER";
+
+            public const string BRANCHES_OBJECT = "Branches";
+
+            public const string SETTINGS_OBJECT = "Settings";
         }
 
         public struct SettingsNames
