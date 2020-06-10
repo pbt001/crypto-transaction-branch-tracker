@@ -198,7 +198,7 @@ namespace CryptoBranchTracker.WPF.Windows
             try
             {
                 this.dhTransactionDetails.DataContext = (sender as ctrlBranch).Branch;
-                this.dhTransactionDetails.IsOpen = true;
+                this.OpenTransactionDialog();
             }
             catch (Exception ex)
             {
@@ -227,7 +227,7 @@ namespace CryptoBranchTracker.WPF.Windows
             try
             {
                 this.dhCryptocurrency.DataContext = (sender as ctrlBranch).Branch;
-                this.dhCryptocurrency.IsOpen = true;
+                this.OpenCryptoSearchDialog();
             }
             catch (Exception ex)
             {
@@ -256,6 +256,37 @@ namespace CryptoBranchTracker.WPF.Windows
             catch (Exception ex)
             {
                 throw new Exception($"An error occurred checking max/restore state: {ex}");
+            }
+        }
+
+        private void OpenTransactionDialog()
+        {
+            try
+            {
+                this.cmbTransactionType.Text = Transaction.TransactionTypes.TRADE.ToString().FirstCharToUpper();
+                this.cmbTransactionFrom.Text = Transaction.LocationTypes.FIAT.ToString().FirstCharToUpper();
+                this.cmbTransactionTo.Text = Transaction.LocationTypes.CRYPTO.ToString().FirstCharToUpper();
+
+                this.txtTransactionFiat.Clear();
+
+                this.dhTransactionDetails.IsOpen = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred opening the transaction dialog: {ex}");
+            }
+        }
+
+        private void OpenCryptoSearchDialog()
+        {
+            try
+            {
+                this.txtCryptoSearch.Text = "";
+                this.dhCryptocurrency.IsOpen = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred opening the crypto search dialog: {ex}");
             }
         }
 
@@ -434,7 +465,7 @@ namespace CryptoBranchTracker.WPF.Windows
         {
             try
             {
-                this.dhCryptocurrency.IsOpen = true;
+                this.OpenCryptoSearchDialog();
             }
             catch (Exception ex)
             {
@@ -605,7 +636,7 @@ namespace CryptoBranchTracker.WPF.Windows
         {
             try
             {
-                this.dhCryptocurrency.IsOpen = true;
+                this.OpenCryptoSearchDialog();
             }
             catch (Exception ex)
             {
