@@ -124,7 +124,7 @@ namespace CryptoBranchTracker.Objects.Classes
                         {
                             Branch branch = new Branch(branchCode.Value.ToString());
 
-                            JEnumerable<JObject> enTransactions = Globals.GetTransactionList(branchData);
+                            JEnumerable<JObject> enTransactions = Globals.GetTransactionArray(branchData).Children<JObject>();
 
                             foreach (JObject transactionData in enTransactions)
                             {

@@ -58,9 +58,14 @@ namespace CryptoBranchTracker.Objects.Classes
             }
         }
 
-        public static JEnumerable<JObject> GetTransactionList(JObject branch)
+        /// <summary>
+        /// Get the list of transactions in a branch that can be edited
+        /// </summary>
+        /// <param name="branch"></param>
+        /// <returns></returns>
+        public static JArray GetTransactionArray(JObject branch)
         {
-            JEnumerable<JObject> enTransactions = new JEnumerable<JObject>();
+            JArray arrTransactions = null;
 
             try
             {
@@ -70,24 +75,23 @@ namespace CryptoBranchTracker.Objects.Classes
                         Where(x => x.Name == Strings.JSONStrings.BRANCH_TRANSACTIONS).FirstOrDefault();
 
                     if (propTransactions != null)
-                    {
-                        JArray arrTransactions = propTransactions.Children<JArray>().FirstOrDefault();
-
-                        if (arrTransactions != null)
-                        {
-                            enTransactions = arrTransactions.Children<JObject>();
-                        }
-                    }
+                        arrTransactions = propTransactions.Children<JArray>().FirstOrDefault();
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception($"An error occurred getting transaction list: {ex}");
+                throw new Exception($"An error occurred retrieving transaction array: {ex}");
             }
 
-            return enTransactions;
+            return arrTransactions;
         }
 
+        /// <summary>
+        /// Get the JSON data associated with a specific transaction
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <param name="branchIdentifier"></param>
+        /// <returns></returns>
         public static JObject GetRawTransactionData(Guid identifier, Guid branchIdentifier)
         {
             JObject obj = null;
@@ -98,7 +102,7 @@ namespace CryptoBranchTracker.Objects.Classes
 
                 if (tarBranch != null)
                 {
-                    JEnumerable<JObject> enTransactions = Globals.GetTransactionList(tarBranch);
+                    JEnumerable<JObject> enTransactions = Globals.GetTransactionArray(tarBranch).Children<JObject>();
 
                     foreach (JObject transaction in enTransactions)
                     {
@@ -118,6 +122,11 @@ namespace CryptoBranchTracker.Objects.Classes
             return obj;
         }
 
+        /// <summary>
+        /// Get the JSON data associated with a specific branch
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
         public static JObject GetRawBranchData(Guid identifier)
         {
             JObject obj = null;
@@ -143,6 +152,10 @@ namespace CryptoBranchTracker.Objects.Classes
             return obj;
         }
 
+        /// <summary>
+        /// Get the list of branches in the base data file that can be edited
+        /// </summary>
+        /// <returns></returns>
         public static JArray GetBranchArray()
         {
             JArray arrBranches = null;
