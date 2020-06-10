@@ -206,7 +206,7 @@ namespace CryptoBranchTracker.WPF.Windows
                 if (sender is ctrlBranch curBranch)
                 {
                     curBranch.Branch.Delete();
-                    this.LoadBranches();
+                    this.ugBranches.Children.Remove(curBranch);
                 }
             }
             catch (Exception ex)
