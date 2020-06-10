@@ -51,8 +51,6 @@ namespace CryptoBranchTracker.WPF.Controls
             set { SetValue(HasTransactionsProperty, value); }
         }
 
-        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
-
         public ctrlBranch()
         {
             InitializeComponent();
@@ -62,9 +60,9 @@ namespace CryptoBranchTracker.WPF.Controls
         {
             try
             {
-                Transaction firstTransaction = this.Transactions.FirstOrDefault();
-                Transaction secondTransaction = this.Transactions.ElementAtOrDefault(1);
-                Transaction thirdTransaction = this.Transactions.ElementAtOrDefault(2);
+                Transaction firstTransaction = this.Branch.Transactions.FirstOrDefault();
+                Transaction secondTransaction = this.Branch.Transactions.ElementAtOrDefault(1);
+                Transaction thirdTransaction = this.Branch.Transactions.ElementAtOrDefault(2);
 
                 this.txtTransactionOne.Text = firstTransaction != null
                     ? $"• {firstTransaction.GetBasicDisplayText()}"
@@ -84,25 +82,13 @@ namespace CryptoBranchTracker.WPF.Controls
             }
         }
 
-        public void ImportTransactions(List<Transaction> lstTransactions)
-        {
-            try
-            {
-                this.HasTransactions = lstTransactions.Any();
-
-                this.Transactions = lstTransactions;
-                this.LoadTransactionData();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"An error occurred importing transactions: {ex}");
-            }
-        }
-
         public void RefreshDetails()
         {
             try
             {
+                this.HasTransactions = this.Branch.Transactions.Any();
+                this.LoadTransactionData();
+
                 string resourceName;
                 string displayName;
 

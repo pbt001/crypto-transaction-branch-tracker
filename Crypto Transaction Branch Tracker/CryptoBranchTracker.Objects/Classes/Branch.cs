@@ -1,14 +1,20 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows.Media.Animation;
 
 namespace CryptoBranchTracker.Objects.Classes
 {
     public class Branch
     {
+        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
+
         public DateTime? DateCreated { get; set; }
 
         public TimeSpan? TimeCreated { get; set; }
@@ -97,32 +103,70 @@ namespace CryptoBranchTracker.Objects.Classes
             }
         }
 
+        public void ReloadTransactions()
+        {
+            try
+            {
+                this.Transactions.Clear();
+                JObject objBranch = Globals.GetRawBranchData(this.Identifier);
+
+                if (objBranch != null)
+                {
+                    JEnumerable<JObject> enTransactions = Globals.GetTransactionArray(objBranch).Children<JObject>();
+
+                    foreach (JObject transactionData in enTransactions)
+                    {
+                        JProperty propData = transactionData.Children<JProperty>().
+                            Where(x => x.Name == Strings.JSONStrings.TRANSACTION_DATA).FirstOrDefault();
+
+                        if (propData != null)
+                            this.Transactions.Add(new Transaction(propData.Value.ToString()));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred reloading transactions: {ex}");
+            }
+        }
+
         public static List<Branch> GetAllLocalBranches()
         {
             List<Branch> lstBranches = new List<Branch>();
 
             try
             {
-                Globals.FixRegistry();
+                Globals.FixJSONFile();
 
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
-
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                try
                 {
-                    if (registryBase != null)
+                    JEnumerable<JObject> enBranches = Globals.GetBranchArray().Children<JObject>();
+
+                    foreach (JObject branchData in enBranches)
                     {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
+                        JProperty branchCode = branchData.Children<JProperty>().
+                            Where(x => x.Name == Strings.JSONStrings.BRANCH_DATA).FirstOrDefault();
+
+                        if (branchCode != null)
                         {
-                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.BRANCH_LIST))
+                            Branch branch = new Branch(branchCode.Value.ToString());
+
+                            JEnumerable<JObject> enTransactions = Globals.GetTransactionArray(branchData).Children<JObject>();
+
+                            foreach (JObject transactionData in enTransactions)
                             {
-                                lstBranches = branchList.GetValueNames().
-                                    Select(valueName => new Branch(branchList.GetValue(valueName).ToString())).ToList();
+                                JProperty propData = transactionData.Children<JProperty>().
+                                    Where(x => x.Name == Strings.JSONStrings.TRANSACTION_DATA).FirstOrDefault();
+                                    
+                                if (propData != null)
+                                    branch.Transactions.Add(new Transaction(propData.Value.ToString()));
                             }
+
+                            lstBranches.Add(branch);
                         }
                     }
                 }
+                catch (Exception) { }
             }
             catch (Exception ex)
             {
@@ -136,27 +180,17 @@ namespace CryptoBranchTracker.Objects.Classes
         {
             try
             {
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
+                Globals.FixJSONFile();
 
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                JObject tarBranch = Globals.GetRawBranchData(this.Identifier);
+
+                if (tarBranch != null)
                 {
-                    if (registryBase != null)
-                    {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
-                        {
-                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.BRANCH_LIST))
-                                branchList.DeleteValue(this.Identifier.ToString());
-                        }
-                    }
+                    JArray arrParent = tarBranch.Parent as JArray;
+                    arrParent.Remove(tarBranch);
+
+                    Globals.UpdateDataFile(arrParent.Root.ToString());
                 }
-
-                List<Transaction> lstTransactions = Transaction.GetAllLocalTransactions().
-                    Where(x => x.BranchIdentifier == this.Identifier).ToList();
-
-                foreach (Transaction transaction in lstTransactions)
-                    transaction.Delete();
             }
             catch (Exception ex)
             {
@@ -175,22 +209,35 @@ namespace CryptoBranchTracker.Objects.Classes
 
                 string saveValue = Globals.Compress(this.GetDelimitedValue());
 
-                Globals.FixRegistry();
+                Globals.FixJSONFile();
 
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
+                JObject objBranch = Globals.GetRawBranchData(this.Identifier);
 
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                if (objBranch != null)
                 {
-                    if (registryBase != null)
+                    JProperty propData = objBranch.Children<JProperty>().
+                        Where(x => x.Name == Strings.JSONStrings.BRANCH_DATA).FirstOrDefault();
+
+                    if (propData != null)
                     {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
-                        {
-                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.BRANCH_LIST))
-                                branchList.SetValue(this.Identifier.ToString(), saveValue, RegistryValueKind.String);
-                        }
+                        propData.Value = saveValue;
+                        Globals.UpdateDataFile(propData.Root.ToString());
                     }
+                }
+                else
+                {
+                    JArray arrBranches = Globals.GetBranchArray();
+
+                    JObject objNewBranch = new JObject
+                    {
+                        new JProperty(Strings.JSONStrings.IDENTIFIER, this.Identifier.ToString()),
+                        new JProperty(Strings.JSONStrings.BRANCH_DATA, Globals.Compress(this.GetDelimitedValue())),
+                        new JProperty(Strings.JSONStrings.BRANCH_TRANSACTIONS, new JArray())
+                    };
+
+                    arrBranches.Add(objNewBranch);
+
+                    Globals.UpdateDataFile(objNewBranch.Root.ToString());
                 }
             }
             catch (Exception ex)

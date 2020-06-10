@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -139,22 +139,16 @@ namespace CryptoBranchTracker.Objects.Classes
         {
             try
             {
-                Globals.FixRegistry();
+                Globals.FixJSONFile();
 
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
+                JObject objTransaction = Globals.GetRawTransactionData(this.Identifier, this.BranchIdentifier);
 
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                if (objTransaction != null)
                 {
-                    if (registryBase != null)
-                    {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
-                        {
-                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.TRANSACTION_LIST))
-                                branchList.DeleteValue(this.Identifier.ToString());
-                        }
-                    }
+                    JArray arrParent = objTransaction.Parent as JArray;
+                    arrParent.Remove(objTransaction);
+
+                    Globals.UpdateDataFile(arrParent.Root.ToString());
                 }
             }
             catch (Exception ex)
@@ -174,21 +168,38 @@ namespace CryptoBranchTracker.Objects.Classes
 
                 string saveValue = Globals.Compress(this.GetDelimitedValue());
 
-                Globals.FixRegistry();
+                Globals.FixJSONFile();
 
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
+                JObject objTransaction = Globals.GetRawTransactionData(this.Identifier, this.BranchIdentifier);
 
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                if (objTransaction != null)
                 {
-                    if (registryBase != null)
+                    JProperty propData = objTransaction.Children<JProperty>().
+                        Where(x => x.Name == Strings.JSONStrings.TRANSACTION_DATA).FirstOrDefault();
+
+                    if (propData != null)
                     {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
+                        propData.Value = saveValue;
+                        Globals.UpdateDataFile(propData.Root.ToString());
+                    }
+                }
+                else
+                {
+                    JObject tarBranch = Globals.GetRawBranchData(this.BranchIdentifier);
+
+                    if (tarBranch != null)
+                    {
+                        JArray arrTransactions = Globals.GetTransactionArray(tarBranch);
+
+                        JObject newTransaction = new JObject()
                         {
-                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.TRANSACTION_LIST))
-                                branchList.SetValue(this.Identifier.ToString(), saveValue, RegistryValueKind.String);
-                        }
+                            new JProperty(Strings.JSONStrings.IDENTIFIER, this.Identifier),
+                            new JProperty(Strings.JSONStrings.TRANSACTION_DATA, Globals.Compress(this.GetDelimitedValue()))
+                        };
+
+                        arrTransactions.Add(newTransaction);
+
+                        Globals.UpdateDataFile(arrTransactions.Root.ToString());
                     }
                 }
             }
@@ -227,41 +238,6 @@ namespace CryptoBranchTracker.Objects.Classes
             }
 
             return value;
-        }
-
-        public static List<Transaction> GetAllLocalTransactions()
-        {
-            List<Transaction> lstTransactions = new List<Transaction>();
-
-            try
-            {
-                Globals.FixRegistry();
-
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
-
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
-                {
-                    if (registryBase != null)
-                    {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
-                        {
-                            using (RegistryKey transactionList = applicationKey.CreateSubKey(Strings.RegistryLocations.TRANSACTION_LIST))
-                            {
-                                lstTransactions = transactionList.GetValueNames().
-                                    Select(valueName => new Transaction(transactionList.GetValue(valueName).ToString())).ToList();
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"An error occurred getting all local transactions: {ex}");
-            }
-
-            return lstTransactions;
         }
 
         public Transaction() { }

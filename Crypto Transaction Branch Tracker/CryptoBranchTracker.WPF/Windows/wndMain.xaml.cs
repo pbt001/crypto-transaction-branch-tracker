@@ -58,8 +58,6 @@ namespace CryptoBranchTracker.WPF.Windows
                     this.ugBranches.Visibility = Visibility.Collapsed;
                 }
 
-                List<Transaction> lstTransactions = Transaction.GetAllLocalTransactions();
-
                 foreach (Branch branch in lstBranches)
                 {
                     ctrlBranch curBranch = new ctrlBranch(branch);
@@ -68,13 +66,6 @@ namespace CryptoBranchTracker.WPF.Windows
                     curBranch.RequestDelete += CurBranch_RequestDelete;
                     curBranch.RequestAddTransaction += CurBranch_RequestAddTransaction;
                     curBranch.RequestTransactionView += CurBranch_RequestTransactionView;
-
-                    curBranch.ImportTransactions(
-                            lstTransactions.
-                                Where(x => x.BranchIdentifier == branch.Identifier).
-                                OrderBy(x => x.DateProcessed).
-                                ThenBy(x => x.TimeProcessed).ToList()
-                        );
 
                     this.ugBranches.Children.Add(curBranch);
                 }
@@ -100,7 +91,7 @@ namespace CryptoBranchTracker.WPF.Windows
                 if (branch.Branch.DateCreated.HasValue)
                     this.txtCrypto.Text += $" - {branch.Branch.DateCreated.Value.ToShortDateString()}";
 
-                foreach (Transaction transaction in branch.Transactions)
+                foreach (Transaction transaction in branch.Branch.Transactions)
                 {
                     ctrlTransaction curTransaction = new ctrlTransaction(transaction, branch.Resource, branch.Branch.Cryptocurrency);
 
@@ -109,13 +100,13 @@ namespace CryptoBranchTracker.WPF.Windows
                         Transaction localTransaction = (origin as ctrlTransaction).Transaction;
                         localTransaction.Delete();
 
-                        branch.Transactions.Remove(
-                                branch.Transactions.
+                        branch.Branch.Transactions.Remove(
+                                branch.Branch.Transactions.
                                     Where(x => x.Identifier == localTransaction.Identifier).FirstOrDefault()
                             );
 
-                        this.LoadBranches();
-                        this.ReadInTransactions(branch);
+                        branch.RefreshDetails();
+                        this.pnlTransactions.Children.Remove(curTransaction);
                     };
 
                     this.pnlTransactions.Children.Add(curTransaction);
@@ -156,7 +147,7 @@ namespace CryptoBranchTracker.WPF.Windows
         {
             try
             {
-                if (this.dhTransactionDetails.DataContext is Branch curBranch)
+                if (this.dhTransactionDetails.DataContext is ctrlBranch curBranch)
                 {
                     DateTime dteNow = DateTime.Now;
 
@@ -164,7 +155,7 @@ namespace CryptoBranchTracker.WPF.Windows
                     {
                         DateProcessed = dteNow.Date,
                         TimeProcessed = dteNow.TimeOfDay,
-                        BranchIdentifier = curBranch.Identifier,
+                        BranchIdentifier = curBranch.Branch.Identifier,
                         Identifier = Guid.NewGuid()
                     };
 
@@ -182,7 +173,9 @@ namespace CryptoBranchTracker.WPF.Windows
                         transaction.Destination = (Transaction.LocationTypes)curDestination.DataContext;
 
                     transaction.Save();
-                    this.LoadBranches();
+                    curBranch.Branch.ReloadTransactions();
+
+                    curBranch.RefreshDetails();
                 }
 
                 this.dhTransactionDetails.IsOpen = false;
@@ -197,7 +190,7 @@ namespace CryptoBranchTracker.WPF.Windows
         {
             try
             {
-                this.dhTransactionDetails.DataContext = (sender as ctrlBranch).Branch;
+                this.dhTransactionDetails.DataContext = sender as ctrlBranch;
                 this.OpenTransactionDialog();
             }
             catch (Exception ex)
@@ -213,7 +206,7 @@ namespace CryptoBranchTracker.WPF.Windows
                 if (sender is ctrlBranch curBranch)
                 {
                     curBranch.Branch.Delete();
-                    this.LoadBranches();
+                    this.ugBranches.Children.Remove(curBranch);
                 }
             }
             catch (Exception ex)
@@ -423,6 +416,14 @@ namespace CryptoBranchTracker.WPF.Windows
                     {
                         brBranch.Cryptocurrency = crypto.CryptoSet.Key.ToString().ToUpper();
                         brBranch.Save();
+
+                        ctrlBranch tarBranch = this.ugBranches.Children.OfType<ctrlBranch>().
+                            Where(x => x.Branch.Identifier == brBranch.Identifier).FirstOrDefault();
+
+                        if (tarBranch != null)
+                            tarBranch.RefreshDetails();
+                        else
+                            this.LoadBranches();
                     }
                     else
                     {
@@ -437,9 +438,10 @@ namespace CryptoBranchTracker.WPF.Windows
                         };
 
                         bSave.Save();
+
+                        this.LoadBranches();
                     }
 
-                    this.LoadBranches();
                     this.dhCryptocurrency.DataContext = null;
                 }
             }

@@ -14,6 +14,25 @@ namespace CryptoBranchTracker.Objects.Classes
 
         public const string VALUE_DELIMITER = ";";
 
+        public struct JSONStrings
+        {
+            public const string FILE_NAME = "data";
+
+            public const string DEFAULT_DATA = "{ \"Branches\": [], \"Settings\": {	\"DARK_MODE\": false, \"SCHEME_A\": 255, \"SCHEME_R\": 103, \"SCHEME_G\": 58, \"SCHEME_B\": 183 } }";
+
+            public const string BRANCH_DATA = "DATA";
+
+            public const string TRANSACTION_DATA = "TRANSACTION_DATA";
+
+            public const string BRANCH_TRANSACTIONS = "TRANSACTIONS";
+
+            public const string IDENTIFIER = "IDENTIFIER";
+
+            public const string BRANCHES_OBJECT = "Branches";
+
+            public const string SETTINGS_OBJECT = "Settings";
+        }
+
         public struct SettingsNames
         {
             public const string DARK_MODE = "DARK_MODE";
@@ -55,17 +74,6 @@ namespace CryptoBranchTracker.Objects.Classes
             public const string BRANCH_CREATED_TIME = "BRANCH_CREATED_TIME";
 
             public const string BRANCH_IDENTIFIER = "BRANCH_IDENTIFIER";
-        }
-
-        public struct RegistryLocations
-        {
-            public const string APPLICATION_LOCATION = @"Software\Crypto Branch Tracker";
-
-            public const string TRANSACTION_LIST = "Transactions";
-
-            public const string BRANCH_LIST = "Branches";
-
-            public const string SETTINGS_VALUES = "Settings";
         }
     }
 }
