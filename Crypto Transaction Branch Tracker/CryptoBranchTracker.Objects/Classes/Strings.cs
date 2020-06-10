@@ -75,16 +75,5 @@ namespace CryptoBranchTracker.Objects.Classes
 
             public const string BRANCH_IDENTIFIER = "BRANCH_IDENTIFIER";
         }
-
-        public struct RegistryLocations
-        {
-            public const string APPLICATION_LOCATION = @"Software\Crypto Branch Tracker";
-
-            public const string TRANSACTION_LIST = "Transactions";
-
-            public const string BRANCH_LIST = "Branches";
-
-            public const string SETTINGS_VALUES = "Settings";
-        }
     }
 }

@@ -416,6 +416,14 @@ namespace CryptoBranchTracker.WPF.Windows
                     {
                         brBranch.Cryptocurrency = crypto.CryptoSet.Key.ToString().ToUpper();
                         brBranch.Save();
+
+                        ctrlBranch tarBranch = this.ugBranches.Children.OfType<ctrlBranch>().
+                            Where(x => x.Branch.Identifier == brBranch.Identifier).FirstOrDefault();
+
+                        if (tarBranch != null)
+                            tarBranch.RefreshDetails();
+                        else
+                            this.LoadBranches();
                     }
                     else
                     {
@@ -430,9 +438,10 @@ namespace CryptoBranchTracker.WPF.Windows
                         };
 
                         bSave.Save();
+
+                        this.LoadBranches();
                     }
 
-                    this.LoadBranches();
                     this.dhCryptocurrency.DataContext = null;
                 }
             }
