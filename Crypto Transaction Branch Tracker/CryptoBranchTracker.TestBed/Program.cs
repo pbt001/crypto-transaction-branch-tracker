@@ -13,7 +13,7 @@ namespace CryptoBranchTracker.TestBed
         [STAThread]
         static void Main(string[] args)
         {
-            Console.WriteLine(Branch.GetAllLocalBranches().First().Transactions.Count.ToString());
+            List<Branch> lstBranches = Branch.GetAllLocalBranches();
 
             Console.ReadLine();
         }

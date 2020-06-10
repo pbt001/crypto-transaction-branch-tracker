@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using System.Runtime.CompilerServices;
 
 namespace CryptoBranchTracker.Objects.Classes
 {
@@ -112,54 +113,29 @@ namespace CryptoBranchTracker.Objects.Classes
 
                 try
                 {
-                    using (StreamReader reader = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), $"{Strings.JSONStrings.FILE_NAME}.json")))
+                    JEnumerable<JObject> enBranches = Globals.GetBranchList();
+
+                    foreach (JObject branchData in enBranches)
                     {
-                        JObject mainData = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
-                        JProperty propBranches = mainData.Children<JProperty>().FirstOrDefault();
+                        JProperty branchCode = branchData.Children<JProperty>().
+                            Where(x => x.Name == Strings.JSONStrings.BRANCH_DATA).FirstOrDefault();
 
-                        if (propBranches != null)
+                        if (branchCode != null)
                         {
-                            JArray arrBranches = propBranches.Values<JArray>().FirstOrDefault();
+                            Branch branch = new Branch(branchCode.Value.ToString());
 
-                            if (arrBranches != null)
+                            JEnumerable<JObject> enTransactions = Globals.GetTransactionList(branchData);
+
+                            foreach (JObject transactionData in enTransactions)
                             {
-                                JEnumerable<JObject> enBranches = arrBranches.Children<JObject>();
+                                JProperty propData = transactionData.Children<JProperty>().
+                                    Where(x => x.Name == Strings.JSONStrings.TRANSACTION_DATA).FirstOrDefault();
 
-                                foreach (JObject branchData in enBranches)
-                                {
-                                    JProperty branchCode = branchData.Children<JProperty>().
-                                        Where(x => x.Name == Strings.JSONStrings.BRANCH_DATA).FirstOrDefault();
-
-                                    if (branchCode != null)
-                                    {
-                                        Branch branch = new Branch(branchCode.Value.ToString());
-
-                                        JProperty propTransactions = branchData.Children<JProperty>().
-                                            Where(x => x.Name == Strings.JSONStrings.BRANCH_TRANSACTIONS).FirstOrDefault();
-
-                                        if (propTransactions != null)
-                                        {
-                                            JArray arrTransactions = propTransactions.Children<JArray>().FirstOrDefault();
-
-                                            if (arrTransactions != null)
-                                            {
-                                                JEnumerable<JObject> enTransactions = arrTransactions.Children<JObject>();
-
-                                                foreach (JObject transactionData in enTransactions)
-                                                {
-                                                    JProperty propData = transactionData.Children<JProperty>().
-                                                        Where(x => x.Name == Strings.JSONStrings.TRANSACTION_DATA).FirstOrDefault();
-
-                                                    if (propData != null)
-                                                        branch.Transactions.Add(new Transaction(propData.Value.ToString()));
-                                                }
-                                            }
-                                        }
-
-                                        lstBranches.Add(branch);
-                                    }
-                                }
+                                if (propData != null)
+                                    branch.Transactions.Add(new Transaction(propData.Value.ToString()));
                             }
+
+                            lstBranches.Add(branch);
                         }
                     }
                 }
@@ -177,27 +153,25 @@ namespace CryptoBranchTracker.Objects.Classes
         {
             try
             {
-                RegistryView platformView = Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64
-                    : RegistryView.Registry32;
+                Globals.FixJSONFile();
 
-                using (RegistryKey registryBase = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, platformView))
+                JEnumerable<JObject> enBranches = Globals.GetBranchList();
+
+                foreach (JObject obj in enBranches)
                 {
-                    if (registryBase != null)
+                    JProperty propIdentifier = obj.Children<JProperty>().
+                        Where(x => x.Name == Strings.JSONStrings.IDENTIFIER).FirstOrDefault();
+
+                    if (propIdentifier != null && propIdentifier.Value.ToString() == this.Identifier.ToString())
                     {
-                        using (RegistryKey applicationKey = registryBase.CreateSubKey(Strings.RegistryLocations.APPLICATION_LOCATION))
-                        {
-                            using (RegistryKey branchList = applicationKey.CreateSubKey(Strings.RegistryLocations.BRANCH_LIST))
-                                branchList.DeleteValue(this.Identifier.ToString());
-                        }
+                        JArray arrParent = obj.Parent as JArray;
+                        arrParent.Remove(obj);
+
+                        Globals.UpdateDataFile(arrParent.Root.ToString());
+
+                        return;
                     }
                 }
-
-                List<Transaction> lstTransactions = Transaction.GetAllLocalTransactions().
-                    Where(x => x.BranchIdentifier == this.Identifier).ToList();
-
-                foreach (Transaction transaction in lstTransactions)
-                    transaction.Delete();
             }
             catch (Exception ex)
             {

@@ -1,15 +1,18 @@
 ﻿using Microsoft.Win32;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CryptoBranchTracker.Objects.Classes
 {
-    public class Globals
+    internal class Globals
     {
         [Obsolete]
         /// <summary>
@@ -40,6 +43,77 @@ namespace CryptoBranchTracker.Objects.Classes
             {
                 throw new Exception($"An error occurred fixing the registry: {ex}");
             }
+        }
+
+        //I know it's usually bad to have a method with one line, but this actually saves a bunch of time
+        public static void UpdateDataFile(string data)
+        {
+            try
+            {
+                File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), $"{Strings.JSONStrings.FILE_NAME}.json"), data);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred updating data file: {ex}");
+            }
+        }
+
+        public static JEnumerable<JObject> GetTransactionList(JObject branch)
+        {
+            JEnumerable<JObject> enTransactions = new JEnumerable<JObject>();
+
+            try
+            {
+                if (branch != null)
+                {
+                    JProperty propTransactions = branch.Children<JProperty>().
+                        Where(x => x.Name == Strings.JSONStrings.BRANCH_TRANSACTIONS).FirstOrDefault();
+
+                    if (propTransactions != null)
+                    {
+                        JArray arrTransactions = propTransactions.Children<JArray>().FirstOrDefault();
+
+                        if (arrTransactions != null)
+                        {
+                            enTransactions = arrTransactions.Children<JObject>();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred getting transaction list: {ex}");
+            }
+
+            return enTransactions;
+        }
+
+        public static JEnumerable<JObject> GetBranchList()
+        {
+            JEnumerable<JObject> enBranches = new JEnumerable<JObject>();
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), $"{Strings.JSONStrings.FILE_NAME}.json")))
+                {
+                    JObject mainData = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+                    JProperty propBranches = mainData.Children<JProperty>().FirstOrDefault();
+
+                    if (propBranches != null)
+                    {
+                        JArray arrBranches = propBranches.Values<JArray>().FirstOrDefault();
+
+                        if (arrBranches != null)
+                            enBranches = arrBranches.Children<JObject>();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred getting branches: {ex}");
+            }
+
+            return enBranches;
         }
 
         public static void FixJSONFile()

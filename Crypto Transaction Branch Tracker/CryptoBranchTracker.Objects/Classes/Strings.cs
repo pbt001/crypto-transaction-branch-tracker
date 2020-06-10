@@ -25,6 +25,8 @@ namespace CryptoBranchTracker.Objects.Classes
             public const string TRANSACTION_DATA = "TRANSACTION_DATA";
 
             public const string BRANCH_TRANSACTIONS = "TRANSACTIONS";
+
+            public const string IDENTIFIER = "IDENTIFIER";
         }
 
         public struct SettingsNames
