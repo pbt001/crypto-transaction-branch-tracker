@@ -86,6 +86,7 @@ namespace CryptoBranchTracker.WPF.Controls
         {
             try
             {
+                this.HasTransactions = this.Branch.Transactions.Any();
                 this.LoadTransactionData();
 
                 string resourceName;

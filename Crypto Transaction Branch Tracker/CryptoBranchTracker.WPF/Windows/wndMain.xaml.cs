@@ -105,8 +105,8 @@ namespace CryptoBranchTracker.WPF.Windows
                                     Where(x => x.Identifier == localTransaction.Identifier).FirstOrDefault()
                             );
 
-                        this.LoadBranches();
-                        this.ReadInTransactions(branch);
+                        branch.RefreshDetails();
+                        this.pnlTransactions.Children.Remove(curTransaction);
                     };
 
                     this.pnlTransactions.Children.Add(curTransaction);
