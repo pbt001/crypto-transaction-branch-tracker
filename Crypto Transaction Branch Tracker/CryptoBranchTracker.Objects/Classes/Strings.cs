@@ -18,8 +18,6 @@ namespace CryptoBranchTracker.Objects.Classes
         {
             public const string FILE_NAME = "data";
 
-            public const string DEFAULT_DATA = "{ \"Branches\": [], \"Settings\": {	\"DARK_MODE\": false, \"SCHEME_A\": 255, \"SCHEME_R\": 103, \"SCHEME_G\": 58, \"SCHEME_B\": 183 } }";
-
             public const string BRANCH_DATA = "DATA";
 
             public const string TRANSACTION_DATA = "TRANSACTION_DATA";
@@ -36,6 +34,8 @@ namespace CryptoBranchTracker.Objects.Classes
         public struct SettingsNames
         {
             public const string DARK_MODE = "DARK_MODE";
+
+            public const string AUTO_MAXIMIZE = "AUTO_MAX";
 
             public const string SCHEME_A = "SCHEME_A";
 

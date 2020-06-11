@@ -123,6 +123,7 @@ namespace CryptoBranchTracker.WPF.Windows
             try
             {
                 this.btnDarkMode.IsChecked = Constants.Settings.DarkMode;
+                this.btnAutoMax.IsChecked = Constants.Settings.AutoMax;
             }
             catch (Exception ex)
             {
@@ -639,6 +640,19 @@ namespace CryptoBranchTracker.WPF.Windows
             try
             {
                 this.OpenCryptoSearchDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void btnAutoMax_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Constants.Settings.AutoMax = this.btnAutoMax.IsChecked.Value;
+                Constants.Settings.Save();
             }
             catch (Exception ex)
             {
