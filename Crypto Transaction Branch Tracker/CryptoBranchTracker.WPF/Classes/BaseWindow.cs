@@ -34,6 +34,10 @@ namespace CryptoBranchTracker.WPF.Classes
             {
                 WindowChrome.SetWindowChrome(this, Constants.BaseWindowChrome);
                 this.SourceInitialized += MainWindow_SourceInitialized;
+
+                this.WindowState = Constants.Settings.AutoMax
+                    ? WindowState.Maximized
+                    : WindowState.Normal;
             }
             catch (Exception ex)
             {

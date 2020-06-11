@@ -759,6 +759,53 @@
                                                             </Grid>
                                                         </Border>
 
+                                                        <!--Auto Max Option-->
+                                                        <Border
+                                                            Padding="15"
+                                                            BorderThickness="0,0,0,1"
+                                                            BorderBrush="LightGray">
+
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="*" />
+                                                                </Grid.ColumnDefinitions>
+
+                                                                <Grid>
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="*" />
+                                                                        <RowDefinition Height="*" />
+                                                                    </Grid.RowDefinitions>
+
+                                                                    <TextBlock
+                                                                        Style="{DynamicResource MaterialDesignTextBlock}"
+                                                                        Text="Maximize Windows"
+                                                                        Padding="0"
+                                                                        VerticalAlignment="Center"
+                                                                        FontWeight="DemiBold">
+                                                                    </TextBlock>
+
+                                                                    <TextBlock
+                                                                        Grid.Row="1"
+                                                                        Padding="0,5,0,0"
+                                                                        VerticalAlignment="Center"
+                                                                        Style="{DynamicResource MaterialDesignCaptionTextBlock}"
+                                                                        Text="Choose whether or not to automatically maximize the application">
+                                                                    </TextBlock>
+                                                                </Grid>
+
+                                                                <ToggleButton
+                                                                    x:Name="btnAutoMax"
+                                                                    Checked="btnAutoMax_Checked"
+                                                                    Unchecked="btnAutoMax_Checked"
+                                                                    Grid.Column="1"
+                                                                    VerticalAlignment="Center"
+                                                                    HorizontalAlignment="Right"
+                                                                    Style="{DynamicResource MaterialDesignSwitchToggleButton}">
+                                                                </ToggleButton>
+                                                            </Grid>
+                                                        </Border>
+
                                                         <!--Colour Scheme Option-->
                                                         <Border
                                                             Padding="15">
