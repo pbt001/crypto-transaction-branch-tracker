@@ -335,6 +335,14 @@
                                 VerticalAlignment="Stretch"
                                 HorizontalAlignment="Left"
                                 Width="{Binding ElementName=dhMenu, Path=MinWidth}">
+
+                                <Image
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Margin="8"
+                                    Stretch="None"
+                                    Source="logo.png">
+                                </Image>
                             </materialDesign:ColorZone>
 
                             <!--Close Button-->
