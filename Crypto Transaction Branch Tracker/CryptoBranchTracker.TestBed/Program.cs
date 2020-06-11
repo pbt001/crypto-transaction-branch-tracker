@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -17,7 +18,7 @@ namespace CryptoBranchTracker.TestBed
         {
             try
             {
-                Console.WriteLine(Globals.GetDefaultJSONData());
+                Console.WriteLine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), Path.GetFileName(System.Reflection.Assembly.GetExecutingAssembly().Location)));
             }
             catch (Exception ex)
             {
