@@ -15,6 +15,8 @@ namespace CryptoBranchTracker.Objects.Classes
     {
         public bool DarkMode { get; set; } = false;
 
+        public bool AutoMax { get; set; } = false;
+
         public Color ColourScheme { get; set; } = Color.FromArgb(255, 103, 58, 183);
 
         public void Save()
@@ -35,6 +37,13 @@ namespace CryptoBranchTracker.Objects.Classes
 
                     if (propDarkMode != null)
                         propDarkMode.Value = this.DarkMode;
+
+                    //Auto Max
+                    JProperty propAutoMax = enProperties.
+                        Where(x => x.Name == Strings.SettingsNames.AUTO_MAXIMIZE).FirstOrDefault();
+
+                    if (propAutoMax != null)
+                        propAutoMax.Value = this.AutoMax;
 
                     //Scheme A
                     JProperty propSchemeA = enProperties.
@@ -94,6 +103,14 @@ namespace CryptoBranchTracker.Objects.Classes
                     settings.DarkMode = propDarkMode == null
                         ? false
                         : Convert.ToBoolean(propDarkMode.Value);
+
+                    //Auto Max
+                    JProperty propAutoMax = enProperties.
+                        Where(x => x.Name == Strings.SettingsNames.AUTO_MAXIMIZE).FirstOrDefault();
+
+                    settings.AutoMax = propAutoMax == null
+                        ? false
+                        : Convert.ToBoolean(propAutoMax.Value);
 
                     //Scheme A
                     JProperty propSchemeA = enProperties.

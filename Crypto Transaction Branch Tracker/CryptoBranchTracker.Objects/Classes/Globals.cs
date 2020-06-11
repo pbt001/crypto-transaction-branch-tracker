@@ -55,6 +55,48 @@ namespace CryptoBranchTracker.Objects.Classes
         }
 
         /// <summary>
+        /// Dynamically generate the default JSON data based on stored constant values
+        /// </summary>
+        /// <returns></returns>
+        public static string GetDefaultJSONData()
+        {
+            string data;
+
+            try
+            {
+                //Main data wrap
+                JObject objDataWrap = new JObject();
+
+                //Branches
+                JProperty propBranches = new JProperty(Strings.JSONStrings.BRANCHES_OBJECT, new JArray());
+
+                //Settings
+                JObject objSettings = new JObject()
+                {
+                    new JProperty(Strings.SettingsNames.DARK_MODE, false),
+                    new JProperty(Strings.SettingsNames.AUTO_MAXIMIZE, false),
+                    new JProperty(Strings.SettingsNames.SCHEME_A, Constants.DEFAULT_SCHEME_A),
+                    new JProperty(Strings.SettingsNames.SCHEME_R, Constants.DEFAULT_SCHEME_R),
+                    new JProperty(Strings.SettingsNames.SCHEME_G, Constants.DEFAULT_SCHEME_G),
+                    new JProperty(Strings.SettingsNames.SCHEME_B, Constants.DEFAULT_SCHEME_B)
+                };
+
+                JProperty propSettings = new JProperty(Strings.JSONStrings.SETTINGS_OBJECT, objSettings);
+
+                objDataWrap.Add(propBranches);
+                objDataWrap.Add(propSettings);
+
+                data = objDataWrap.ToString();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred getting default JSON data: {ex}");
+            }
+
+            return data;
+        }
+
+        /// <summary>
         /// Get the JSON data associated with a specific transaction
         /// </summary>
         /// <param name="identifier"></param>
@@ -184,7 +226,7 @@ namespace CryptoBranchTracker.Objects.Classes
                 {
                     using (FileStream stream = File.Create(strExpectedLocation))
                     {
-                        byte[] arrData = ASCIIEncoding.ASCII.GetBytes(Strings.JSONStrings.DEFAULT_DATA);
+                        byte[] arrData = ASCIIEncoding.ASCII.GetBytes(Globals.GetDefaultJSONData());
                         stream.Write(arrData, 0, arrData.Length);
                     }
                 }

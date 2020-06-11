@@ -15,7 +15,18 @@ namespace CryptoBranchTracker.TestBed
         [STAThread]
         static void Main(string[] args)
         {
-            Console.ReadLine();
+            try
+            {
+                Console.WriteLine(Globals.GetDefaultJSONData());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                Console.ReadLine();
+            }
         }
     }
 }
